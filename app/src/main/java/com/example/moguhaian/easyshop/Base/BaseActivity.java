@@ -12,7 +12,7 @@ import com.example.moguhaian.easyshop.R;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseActivity<Vu extends BaseVu,Biz extends BaseBiz> extends Activity {
+public abstract class BaseActivity<Vu extends BaseVu,Biz extends BaseBiz> extends AppCompatActivity {
 
     public Vu vu;
     public Biz biz;
