@@ -43,18 +43,13 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     @Override
     protected void afterOnCreate() {
         vu.initWebViewSetting(wvSearch, this);
-//        biz.initWebView(wvSearch, this);
-//        biz.loadTBSearchUrlByName("连衣裙");
+        biz.initWebView(wvSearch, this);
         wvSearch.loadUrl(UrlUtils.setQueryWord("连衣裙"));
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogUtils.e(JsUtils.addJsMethod("jsCangkuGoNextPage();"));
-                wvSearch.loadUrl("javascript: var newscript = document.createElement(\"script\");newscript.text = window.onload=doAutoTest();function doAutoTest() { jsCangkuGoNextPage();}document.body.appendChild(newscript);");
-
-//                wvSearch.loadUrl("javascript: var newscript = document.createElement(\"script\");newscript.text = window.onload=doAutoTest();function doAutoTest() { jsCangkuGoNextPage();}document.body.appendChild(newscript);");
-
+                wvSearch.loadUrl(JsUtils.addJsMethod("jsCangkuGoNextPage();"));
             }
         });
     }
@@ -62,10 +57,6 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
 
     @Override
     public void loadFinish(WebView wv) {
-//        wv.loadUrl(JsUtils.addJsMethod("testJs();"));
-        LogUtils.e(JsUtils.addJsMethod("jsCangkuGoNextPage();"));
-        LogUtils.e("6666666");
-//        LogUtils.e("wv:" + wv.getUrl());
 
     }
 

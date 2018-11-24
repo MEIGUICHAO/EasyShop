@@ -8,22 +8,13 @@ import com.example.moguhaian.easyshop.Utils.UrlUtils;
 
 public class BaseBiz {
 
-    LoadFinishListener listener;
     WebView webView;
 
 
 
     public void initWebView(WebView wv,LoadFinishListener loadFinishListener) {
         this.webView = wv;
-        this.listener = loadFinishListener;
-        webView.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                BaseApplication.getInjectJS();
-                super.onPageFinished(view, url);
-                listener.loadFinish(view);
-            }
-        });
+        webView.setWebViewClient(new MyWebViewClient(loadFinishListener));
     }
 
     public void loadTBSearchUrlByName(String name) {

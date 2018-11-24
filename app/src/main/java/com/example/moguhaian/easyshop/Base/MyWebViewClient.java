@@ -8,11 +8,18 @@ import com.example.moguhaian.easyshop.Utils.LogUtils;
 
 public class MyWebViewClient extends WebViewClient {
 
+
+    LoadFinishListener listener;
+
+    public MyWebViewClient(LoadFinishListener loadFinishListener) {
+        listener = loadFinishListener;
+    }
+
     @Override
     public void onPageFinished(WebView view, String url) {
         view.loadUrl(BaseApplication.getInjectJS());
         super.onPageFinished(view, url);
-
+        listener.loadFinish(view);
     }
 
     @Override

@@ -16,8 +16,6 @@ public abstract class BaseVu implements Vu {
 
     public void initWebViewSetting(WebView webView, Context context) {
         WebSettings webSetting = webView.getSettings();
-
-
         // 支持获取手势焦点
         webView.requestFocusFromTouch();
         webView.setHorizontalFadingEdgeEnabled(true);
@@ -39,11 +37,8 @@ public abstract class BaseVu implements Vu {
         );//就是这个属性把我搞惨了，
         // 隐藏原声缩放控件
         // 支持内容重新布局
-//		webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSetting.supportMultipleWindows();
-//        webSetting.setSupportMultipleWindows(true);
         // 设置缓存模式
         webSetting.setDomStorageEnabled(true);
         webSetting.setDatabaseEnabled(true);
@@ -62,27 +57,17 @@ public abstract class BaseVu implements Vu {
         webSetting.setNeedInitialFocus(true);
         // 设定编码格式
         webSetting.setDefaultTextEncodingName("UTF-8");
-
-
         webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
         //支持js
-
-
         webSetting.setUserAgentString("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36");
         //自适应屏幕
         //自动缩放
         webSetting.setBuiltInZoomControls(true);
         webSetting.setSupportZoom(true);
-
         //支持获取手势焦点
-
-
-
-
-        webView.setWebViewClient(new MyWebViewClient());
+//        webView.setWebViewClient(new MyWebViewClient());
         webView.addJavascriptInterface(new LocalMethod(context), "localMethod");
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-
     }
 
 }
