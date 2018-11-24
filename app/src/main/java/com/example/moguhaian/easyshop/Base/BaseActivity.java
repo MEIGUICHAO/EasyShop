@@ -1,21 +1,33 @@
 package com.example.moguhaian.easyshop.Base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Handler;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
-import com.example.moguhaian.easyshop.R;
+import com.example.moguhaian.easyshop.Utils.LogUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import butterknife.ButterKnife;
 
-public abstract class BaseActivity<Vu extends BaseVu,Biz extends BaseBiz> extends AppCompatActivity {
+import static android.content.ContentValues.TAG;
+
+public abstract class BaseActivity<Vu extends BaseVu,Biz extends BaseBiz> extends Activity {
 
     public Vu vu;
     public Biz biz;
+    public Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,5 +55,6 @@ public abstract class BaseActivity<Vu extends BaseVu,Biz extends BaseBiz> extend
     protected abstract Class<Vu> getVuClass();
 
     protected abstract Class<Biz> getBizClass();
+
 
 }

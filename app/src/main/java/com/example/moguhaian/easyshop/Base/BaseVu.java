@@ -15,7 +15,6 @@ public abstract class BaseVu implements Vu {
     public View view;
 
     public void initWebViewSetting(WebView webView, Context context) {
-
         WebSettings webSetting = webView.getSettings();
 
 
@@ -44,7 +43,7 @@ public abstract class BaseVu implements Vu {
 
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSetting.supportMultipleWindows();
-        webSetting.setSupportMultipleWindows(true);
+//        webSetting.setSupportMultipleWindows(true);
         // 设置缓存模式
         webSetting.setDomStorageEnabled(true);
         webSetting.setDatabaseEnabled(true);
@@ -77,12 +76,13 @@ public abstract class BaseVu implements Vu {
 
         //支持获取手势焦点
 
+
+
+
+        webView.setWebViewClient(new MyWebViewClient());
+        webView.addJavascriptInterface(new LocalMethod(context), "localMethod");
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
-
-//        webView.setWebChromeClient(new MyWebChromeClient());
-        LocalMethod localMethod = new LocalMethod(context);
-        webView.addJavascriptInterface(localMethod, "localMethod");
     }
 
 }

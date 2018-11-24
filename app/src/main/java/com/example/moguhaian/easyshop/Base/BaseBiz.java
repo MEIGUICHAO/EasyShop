@@ -2,6 +2,7 @@ package com.example.moguhaian.easyshop.Base;
 
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
 
@@ -15,13 +16,12 @@ public class BaseBiz {
     public void initWebView(WebView wv,LoadFinishListener loadFinishListener) {
         this.webView = wv;
         this.listener = loadFinishListener;
-        webView.setWebChromeClient(new WebChromeClient(){
+        webView.setWebViewClient(new WebViewClient(){
             @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-                if (newProgress == 100) {
-                    listener.loadFinish(view);
-                }
+            public void onPageFinished(WebView view, String url) {
+                BaseApplication.getInjectJS();
+                super.onPageFinished(view, url);
+                listener.loadFinish(view);
             }
         });
     }

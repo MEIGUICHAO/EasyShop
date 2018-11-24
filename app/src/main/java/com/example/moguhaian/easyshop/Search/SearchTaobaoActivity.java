@@ -1,12 +1,16 @@
 package com.example.moguhaian.easyshop.Search;
 
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 
 import com.example.moguhaian.easyshop.Base.BaseActivity;
 import com.example.moguhaian.easyshop.Base.LoadFinishListener;
-import com.example.moguhaian.easyshop.Base.Vu;
 import com.example.moguhaian.easyshop.R;
+import com.example.moguhaian.easyshop.Utils.JsUtils;
+import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.UrlUtils;
 import com.example.moguhaian.easyshop.View.SearchVu;
 
 import butterknife.BindView;
@@ -16,6 +20,8 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
 
     @BindView(R.id.wv_search)
     WebView wvSearch;
+    @BindView(R.id.btn)
+    Button btn;
 
 
     @Override
@@ -37,16 +43,36 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     @Override
     protected void afterOnCreate() {
         vu.initWebViewSetting(wvSearch, this);
-        biz.initWebView(wvSearch,this);
-        biz.loadTBSearchUrlByName("连衣裙");
+//        biz.initWebView(wvSearch, this);
+//        biz.loadTBSearchUrlByName("连衣裙");
+        wvSearch.loadUrl(UrlUtils.setQueryWord("连衣裙"));
 
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LogUtils.e(JsUtils.addJsMethod("jsCangkuGoNextPage();"));
+                wvSearch.loadUrl("javascript: var newscript = document.createElement(\"script\");newscript.text = window.onload=doAutoTest();function doAutoTest() { jsCangkuGoNextPage();}document.body.appendChild(newscript);");
+
+//                wvSearch.loadUrl("javascript: var newscript = document.createElement(\"script\");newscript.text = window.onload=doAutoTest();function doAutoTest() { jsCangkuGoNextPage();}document.body.appendChild(newscript);");
+
+            }
+        });
     }
 
 
     @Override
     public void loadFinish(WebView wv) {
-//        wv.loadUrl("javascript:" + "");
-//        "function find3WaySameStyle(){var nids = document.getElementsByClassName(\"J_ClickStat\");}";
+//        wv.loadUrl(JsUtils.addJsMethod("testJs();"));
+        LogUtils.e(JsUtils.addJsMethod("jsCangkuGoNextPage();"));
+        LogUtils.e("6666666");
+//        LogUtils.e("wv:" + wv.getUrl());
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
