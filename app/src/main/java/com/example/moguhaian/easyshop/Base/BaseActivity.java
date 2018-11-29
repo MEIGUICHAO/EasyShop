@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 
 import static android.content.ContentValues.TAG;
 
-public abstract class BaseActivity<Vu extends BaseVu,Biz extends BaseBiz> extends Activity {
+public abstract class BaseActivity<Vu extends BaseVu,Biz extends BaseBiz> extends AppCompatActivity {
 
     public Vu vu;
     public Biz biz;
@@ -46,6 +47,8 @@ public abstract class BaseActivity<Vu extends BaseVu,Biz extends BaseBiz> extend
         afterOnCreate();
 
     }
+
+
 
 
     protected abstract int getLayoutId();

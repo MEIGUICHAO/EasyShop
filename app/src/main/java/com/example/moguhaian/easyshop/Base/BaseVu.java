@@ -70,4 +70,15 @@ public abstract class BaseVu implements Vu {
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
     }
 
+    public boolean onBackPress(WebView webView) {
+        if (null == webView) {
+            return false;
+        }
+        boolean canGoBack = webView.canGoBack();
+        if (webView.canGoBack()) {
+            webView.goBack();
+        }
+        return canGoBack;
+    }
+
 }

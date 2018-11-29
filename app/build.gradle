@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.moguhaian.easyshop"
-        minSdkVersion 14
+        minSdkVersion 18
         targetSdkVersion 18
         versionCode 1
         versionName "1.0"

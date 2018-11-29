@@ -9,7 +9,6 @@ import com.example.moguhaian.easyshop.Base.BaseActivity;
 import com.example.moguhaian.easyshop.Base.LoadFinishListener;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
-import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
 import com.example.moguhaian.easyshop.View.SearchVu;
 
@@ -20,8 +19,8 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
 
     @BindView(R.id.wv_search)
     WebView wvSearch;
-    @BindView(R.id.btn)
-    Button btn;
+    @BindView(R.id.btn_test)
+    Button btnTest;
 
 
     @Override
@@ -44,20 +43,35 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     protected void afterOnCreate() {
         vu.initWebViewSetting(wvSearch, this);
         biz.initWebView(wvSearch, this);
-        wvSearch.loadUrl(UrlUtils.setQueryWord("连衣裙"));
+        wvSearch.loadUrl(UrlUtils.setQueryWord("手电筒"));
+//        wvSearch.loadUrl("https://www.taobao.com/");
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wvSearch.loadUrl(JsUtils.addJsMethod("jsCangkuGoNextPage();"));
+                wvSearch.loadUrl(JsUtils.addJsMethod("findSameStyle();"));
             }
         });
+
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                wvSearch.loadUrl(JsUtils.addJsMethod("jsCangkuGoNextPage();"));
+//            }
+//        });
     }
 
 
     @Override
     public void loadFinish(WebView wv) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!vu.onBackPress(wvSearch)) {
+            super.onBackPressed();
+        }
     }
 
     @Override
