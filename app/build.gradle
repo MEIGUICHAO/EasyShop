@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
 
 
 android {
@@ -17,6 +19,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    greendao {
+        schemaVersion 1
+        daoPackage 'com.example.moguhaian.easyshop'
+        targetGenDir 'src/main/java'
+
+    }
 }
 
 dependencies {
@@ -28,5 +37,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.jakewharton:butterknife:8.5.1'
+    implementation 'org.jsoup:jsoup:1.11.3'
+    implementation 'org.greenrobot:greendao:3.2.0'
+
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
