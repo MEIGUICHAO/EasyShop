@@ -1,17 +1,32 @@
 package com.example.moguhaian.easyshop.Search;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 
 import com.example.moguhaian.easyshop.Base.BaseActivity;
+import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Base.LoadFinishListener;
+import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
+import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
 import com.example.moguhaian.easyshop.View.SearchVu;
+
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +39,12 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     Button btnTest;
     @BindView(R.id.btn_test2)
     Button btnTest2;
+
+    String name = "晾衣架";
+    @BindView(R.id.btn_test3)
+    Button btnTest3;
+    private String cookie;
+    private String url = "https://s.taobao.com/search?q=%E5%8D%95%E6%9D%86%E5%BC%8F%E5%87%89%E8%A1%A3%E6%9E%B6%E8%90%BD%E5%9C%B0%E7%AE%80%E6%98%93%E6%99%BE%E8%A1%A3%E6%9D%86%E5%AE%B6%E7%94%A8%E5%8D%A7%E5%AE%A4%E5%86%85%E6%99%92%E8%A1%A3%E6%9E%B6%E6%8A%98%E5%8F%A0%E9%98%B3%E5%8F%B0%E6%8C%82%E8%A1%A3%E6%9C%8D%E6%9E%B6%E5%AD%90&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20181202&ie=utf8";
 
 
     @Override
@@ -46,20 +67,113 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     protected void afterOnCreate() {
         vu.initWebViewSetting(wvSearch, this);
         biz.initWebView(wvSearch, this);
-        wvSearch.loadUrl(UrlUtils.setQueryWord("连衣裙"));
+        wvSearch.loadUrl(UrlUtils.setQueryWord(name));
 
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wvSearch.loadUrl(JsUtils.addJsMethod("findSameStyle(\"连衣裙\")"));
+
+                wvSearch.loadUrl(JsUtils.addJsMethod("findSameStyle(\"" + name + "\")"));
             }
         });
         btnTest2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GreenDaoUtils.getUrlList();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+//                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.Cookies))) {
+//
+//                            return;
+//                        }
+
+                        try {
+
+                            Connection connect = Jsoup.connect("https://login.taobao.com/");
+                            // 带参数开始
+                            connect.data("TPL_username", "17665495053");
+                            connect.data("TPL_password", "Mgc520553");
+                            connect.method(Connection.Method.POST);
+                            Connection.Response execute = connect.execute();
+                            Map<String, String> cookies = execute.cookies();
+                            cookie = cookies.toString();
+                            cookie = cookie.substring(cookie.indexOf("{")+1, cookie.lastIndexOf("}"));
+                            cookie = cookie.replaceAll(",", ";");
+                            SharedPreferencesUtils.putValue(Constants.Cookies, cookie);
+                        } catch (Exception e) {
+
+                            LogUtils.e(e.toString());
+
+                        }
+                    }
+                }).start();
+
+//                List<SameSytleUrlBean> list = GreenDaoUtils.getSameStyleUrlListByName(name);
+//                list.get(0);
+//                for (int i = 0; i < list.size(); i++) {
+//                    SameSytleUrlBean sameSytleUrlBean = list.get(i);
+//                    LogUtils.e(sameSytleUrlBean.getSameStyleUrl());
+//                }
             }
         });
+        btnTest3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        jsoupData();
+                    }
+                }).start();
+            }
+        });
+
+    }
+
+    private void jsoupData() {
+        try {
+
+//            String body= Jsoup.connect("https://s.taobao.com/search?q=%E5%8D%95%E6%9D%86%E5%BC%8F%E5%87%89%E8%A1%A3%E6%9E%B6%E8%90%BD%E5%9C%B0%E7%AE%80%E6%98%93%E6%99%BE%E8%A1%A3%E6%9D%86%E5%AE%B6%E7%94%A8%E5%8D%A7%E5%AE%A4%E5%86%85%E6%99%92%E8%A1%A3%E6%9E%B6%E6%8A%98%E5%8F%A0%E9%98%B3%E5%8F%B0%E6%8C%82%E8%A1%A3%E6%9C%8D%E6%9E%B6%E5%AD%90&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20181202&ie=utf8")
+//                    .cookie("Cookie", SharedPreferencesUtils.getValue(Constants.Cookies)).userAgent(Constants.UserAgentString).ignoreContentType(true).execute().body();
+//            Connection conn = Jsoup.connect("https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-1507930292&sort=sale-desc");
+//            conn.header("Connection","keep-alive");
+//            conn.header("Cache-Control","max-age=0");
+//            conn.header("Upgrade-Insecure-Requests","1");
+//            conn.header("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36");
+//            conn.header("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+////          conn.header("Accept-Encoding","gzip, deflate, sdch, br");
+//            conn.header("Accept-Language","zh-CN,zh;q=0.8");
+//            conn.header("Cookie",cookie);
+//            conn.method(Connection.Method.GET);
+////            conn.execute();
+//            Document document = conn.get();
+
+//            String body = response.body();
+            // 带参数结束
+////            Document post = connect.post();
+
+            Document document = Jsoup.connect(url).cookie("Cookie", SharedPreferencesUtils.getValue(Constants.Cookies)).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
+            Elements script = document.getElementsByTag("script");
+            for (Element ele : script) {
+                Attributes attributes = ele.attributes();
+                LogUtils.e(ele.text().toString());
+            }
+
+////
+//            Document document = Jsoup.connect("https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-1507930292&sort=sale-desc").get();
+//            Elements selectList = document.select("div.info1__itemname");
+//            Element masthead = document.select("div.info1__itemname").first();
+//
+//            for (Element tag : selectList) {
+//                LogUtils.e(tag.text());
+//            }
+        } catch (Exception e) {
+
+            LogUtils.e(e.toString());
+
+        }
 
     }
 

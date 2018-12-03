@@ -54,6 +54,11 @@ public class GreenDaoUtils {
         sameSytleUrlBeanDao.insertInTx(bean);
     }
 
+    public static void insertSameStyleUrlBean(SameSytleUrlBean bean) {
+        initSameStyleUrlBeanDao();
+        sameSytleUrlBeanDao.insertInTx(bean);
+    }
+
 
     public static void insertSameStyleTitleArrayBean(SameStyleTitleArrayBean bean) {
         initSameStyleTitleArrayBeanDao();
@@ -74,6 +79,15 @@ public class GreenDaoUtils {
             String sameStyleUrl = beanList.get(i).getSameStyleUrl();
             LogUtils.e(sameStyleUrl);
         }
+    }
+
+
+    public static List<SameSytleUrlBean> getSameStyleUrlListByName(String name) {
+        List<SamestyleBean> list = getSameStyleBeanByProductName(name);
+        Long id = list.get(0).getId();
+        initSameStyleUrlBeanDao();
+        List<SameSytleUrlBean> urlBeanList = sameSytleUrlBeanDao.queryBuilder().where(SameSytleUrlBeanDao.Properties.ProductId.eq(id)).list();
+        return urlBeanList;
     }
 
 

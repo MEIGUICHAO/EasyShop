@@ -43,25 +43,22 @@ public class LocalMethod {
             bean.setProductNames(name);
             GreenDaoUtils.insertSameStyleBean(bean);
         }
-        SamestyleBean samestyleBean = GreenDaoUtils.getSameStyleBeanByProductName(name).get(0);
-        ArrayList<SameSytleUrlBean> samestyleBeanArrayList = new ArrayList<>();
         for (int i = 0; i < urls.length; i++) {
-            String url = urls[i];
+            String url = urls[i].split("&nid=")[0] + Constants.SaleDescSort;
             LogUtils.e(url);
-            SameSytleUrlBean sameSytleUrlBean = new SameSytleUrlBean();
-            sameSytleUrlBean.setProductId(samestyleBean.getId());
-            sameSytleUrlBean.setSameStyleUrl(url);
-            samestyleBeanArrayList.add(sameSytleUrlBean);
+            insertSameStyleUrlBean(name, url);
         }
-        GreenDaoUtils.insertSameStyleUrlBean(samestyleBeanArrayList);
-//        insertSameStyleUrlBean(name, url);
+//
     }
 
     private void insertSameStyleUrlBean(String name, String url) {
-
-
-//        if (!GreenDaoUtils.isUrlExist(url,samestyleBean.getId())) {
-//        }
+        SamestyleBean samestyleBean = GreenDaoUtils.getSameStyleBeanByProductName(name).get(0);
+        if (!GreenDaoUtils.isUrlExist(url,samestyleBean.getId())) {
+            SameSytleUrlBean sameSytleUrlBean = new SameSytleUrlBean();
+            sameSytleUrlBean.setProductId(samestyleBean.getId());
+            sameSytleUrlBean.setSameStyleUrl(url);
+            GreenDaoUtils.insertSameStyleUrlBean(sameSytleUrlBean);
+        }
     }
 
 
