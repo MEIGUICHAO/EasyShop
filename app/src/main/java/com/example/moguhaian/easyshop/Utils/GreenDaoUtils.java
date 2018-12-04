@@ -1,7 +1,5 @@
 package com.example.moguhaian.easyshop.Utils;
 
-import android.util.Log;
-
 import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Bean.SameStyleTitleArrayBean;
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
@@ -72,13 +70,16 @@ public class GreenDaoUtils {
         return list.size() > 0 ? true : false;
     }
 
-    public static void getUrlList() {
+    public static ArrayList<String> getSameStyleUrlList() {
         initSameStyleUrlBeanDao();
+        ArrayList<String> urlList = new ArrayList<>();
         List<SameSytleUrlBean> beanList = sameSytleUrlBeanDao.queryBuilder().list();
         for (int i = 0; i < beanList.size(); i++) {
             String sameStyleUrl = beanList.get(i).getSameStyleUrl();
             LogUtils.e(sameStyleUrl);
+            urlList.add(sameStyleUrl);
         }
+        return urlList;
     }
 
 

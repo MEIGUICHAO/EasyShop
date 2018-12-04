@@ -3,14 +3,11 @@ package com.example.moguhaian.easyshop.Base;
 import android.content.Context;
 import android.webkit.JavascriptInterface;
 
-import com.example.moguhaian.easyshop.Bean.SameStyleTitleArrayBean;
-import com.example.moguhaian.easyshop.SamestyleBeanDao;
-import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
-import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.Bean.SamestyleBean;
+import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
+import com.example.moguhaian.easyshop.Utils.LogUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocalMethod {
@@ -45,7 +42,6 @@ public class LocalMethod {
         }
         for (int i = 0; i < urls.length; i++) {
             String url = urls[i].split("&nid=")[0] + Constants.SaleDescSort;
-            LogUtils.e(url);
             insertSameStyleUrlBean(name, url);
         }
 //
