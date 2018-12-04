@@ -10,6 +10,7 @@ import com.example.moguhaian.easyshop.Base.BaseActivity;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Base.LoadFinishListener;
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
+import com.example.moguhaian.easyshop.Bean.TBSameStyleBean;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
@@ -18,6 +19,7 @@ import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
 import com.example.moguhaian.easyshop.View.SearchVu;
+import com.google.gson.Gson;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -47,6 +49,7 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     @BindView(R.id.btn_test3)
     Button btnTest3;
     private String cookie;
+    private String sameUrl = "https://s.taobao.com/search?spm=a230r.1.14.479.67f12140b7MMNr&type=samestyle&app=i2i&rec_type=1&uniqpid=-233600459";
     private String url = "https://s.taobao.com/search?q=%E5%8D%95%E6%9D%86%E5%BC%8F%E5%87%89%E8%A1%A3%E6%9E%B6%E8%90%BD%E5%9C%B0%E7%AE%80%E6%98%93%E6%99%BE%E8%A1%A3%E6%9D%86%E5%AE%B6%E7%94%A8%E5%8D%A7%E5%AE%A4%E5%86%85%E6%99%92%E8%A1%A3%E6%9E%B6%E6%8A%98%E5%8F%A0%E9%98%B3%E5%8F%B0%E6%8C%82%E8%A1%A3%E6%9C%8D%E6%9E%B6%E5%AD%90&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20181202&ie=utf8";
 
 
@@ -144,18 +147,11 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
             for (Element ele : script) {
                 Attributes attributes = ele.attributes();
                 if (ele.data().contains("g_page_config")) {
-//                    LogUtils.e("ele.data()~~~~~~~~~~~~~~~" + ele.data());
                     json = ele.data();
                 }
             }
             TaoUtils.getNameSplitResult(json);
-//            json = json.replace("\\", "");
-//            String regex = "classu003dHu003e(.*?)u003c";
-//            Pattern pattern = Pattern.compile (regex);
-//            Matcher matcher = pattern.matcher(json);
-//            while (matcher.find()) {
-//                LogUtils.e(matcher.group());
-//            }
+            TaoUtils.getSameStyleInfoBean(json);
         } catch (Exception e) {
 
             LogUtils.e(e.toString());
@@ -163,6 +159,7 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
         }
 
     }
+
 
 
     @Override
