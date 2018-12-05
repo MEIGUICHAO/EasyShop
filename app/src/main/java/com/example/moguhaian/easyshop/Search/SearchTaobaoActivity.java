@@ -11,7 +11,6 @@ import com.example.moguhaian.easyshop.Base.LoadFinishListener;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
-import com.example.moguhaian.easyshop.Utils.UrlUtils;
 import com.example.moguhaian.easyshop.View.SearchVu;
 
 import java.util.ArrayList;
@@ -60,9 +59,13 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
 
     @Override
     protected void afterOnCreate() {
+
+        System.getProperties().setProperty("http.proxyHost", "61.142.72.154");
+        System.getProperties().setProperty("http.proxyPort", "30074");
         vu.initWebViewSetting(wvSearch, this);
         biz.initWebView(wvSearch, this);
-        wvSearch.loadUrl(UrlUtils.setQueryWord(name));
+//        wvSearch.loadUrl(UrlUtils.setQueryWord(name));
+        wvSearch.loadUrl("http://www.ip138.com/");
 
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override

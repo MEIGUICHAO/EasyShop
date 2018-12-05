@@ -16,35 +16,40 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+
 public class SearchBiz extends BaseBiz {
 
+
     public void getTitleSplitArray(final String url) {
-        new Thread(new Runnable() {
+        singleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 String json = jsoupData(url);
                 TaoUtils.getNameSplitResult(json);
             }
-        }).start();
+        });
     }
 
 
     public void getSameStyleBean(final String url, final JsoupParseListener listener) {
-        new Thread(new Runnable() {
+        singleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 String json = jsoupData(url);
                 if (!TextUtils.isEmpty(json)) {
                     TaoUtils.getSameStyleInfoBean(json);
                     try {
-                        Thread.sleep(1000);
+
+                        LogUtils.e("before");
+                        Thread.sleep(3000);
+                        LogUtils.e("after");
+                        listener.complete();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    listener.complete();
                 }
             }
-        }).start();
+        });
     }
 
 
@@ -58,6 +63,10 @@ public class SearchBiz extends BaseBiz {
                 if (ele.data().contains("g_page_config")) {
                     json = ele.data();
                 }
+            }
+
+            if (TextUtils.isEmpty(json)) {
+                LogUtils.e(document.toString());
             }
         } catch (Exception e) {
             LogUtils.e(e.toString());
