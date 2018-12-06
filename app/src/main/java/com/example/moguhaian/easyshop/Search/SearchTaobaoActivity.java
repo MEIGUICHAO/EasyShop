@@ -136,12 +136,8 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
 
             @Override
             public void onFail(final String url) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        wvSearch.loadUrl(url);
-                    }
-                });
+                isGetCookie = true;
+                wvSearch.loadUrl(url);
             }
         });
     }

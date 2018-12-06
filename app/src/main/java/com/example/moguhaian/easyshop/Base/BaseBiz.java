@@ -1,5 +1,6 @@
 package com.example.moguhaian.easyshop.Base;
 
+import android.app.Activity;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Utils.LogUtils;
@@ -18,11 +19,12 @@ public class BaseBiz {
 
     WebView webView;
 
+    public Activity activity;
 
-    public void initWebView(WebView wv, LoadFinishListener loadFinishListener) {
+    public void initWebView(WebView wv,Activity activity) {
         this.webView = wv;
-        webView.setWebViewClient(new MyWebViewClient(loadFinishListener));
-
+        webView.setWebViewClient(new MyWebViewClient((LoadFinishListener) activity));
+        this.activity = activity;
     }
 
 

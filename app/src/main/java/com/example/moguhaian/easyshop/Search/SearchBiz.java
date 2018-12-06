@@ -49,8 +49,13 @@ public class SearchBiz extends BaseBiz {
                         e.printStackTrace();
                     }
                 } else {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.onFail(url);
+                        }
+                    });
 
-                    listener.onFail(url);
                 }
             }
         });

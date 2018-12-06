@@ -70,7 +70,7 @@ public class TaoUtils {
         }
         cookie = cookie.replace("; ;", ";");
         LogUtils.e(cookie);
-        SharedPreferencesUtils.putValue(Constants.Cookies, cookie);
+        SharedPreferencesUtils.putValue(Constants.Cookies, json);
     }
 
 
