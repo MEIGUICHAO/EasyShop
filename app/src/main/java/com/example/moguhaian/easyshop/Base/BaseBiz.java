@@ -42,6 +42,8 @@ public class BaseBiz {
                     cookie = cookie.substring(cookie.indexOf("{")+1, cookie.lastIndexOf("}"));
                     cookie = cookie.replaceAll(",", ";");
                     SharedPreferencesUtils.putValue(Constants.Cookies, cookie);
+                    LogUtils.e("login success");
+                    LogUtils.e(cookie);
                 } catch (Exception e) {
 
                     LogUtils.e(e.toString());

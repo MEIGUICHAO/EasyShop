@@ -2,6 +2,7 @@ package com.example.moguhaian.easyshop.Utils;
 
 import android.util.Log;
 
+import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Bean.TBSameStyleBean;
 import com.google.gson.Gson;
 
@@ -50,6 +51,26 @@ public class TaoUtils {
             single.get(i);
             LogUtils.e(single.get(i));
         }
+    }
+
+    public static void getCookieFromWv(String json) {
+
+        String cookie = " v=0";
+        String regex1 = "; t=(.*?); ";
+        String regex2 = "; cookie2(.*?); ";
+        String regex3 = "; _tb_token_(.*?); ";
+        String[] regexs = {regex1, regex2, regex3};
+        for (int i = 0; i < regexs.length; i++) {
+            Pattern pattern = Pattern.compile (regexs[i]);
+            Matcher matcher = pattern.matcher(json);
+            while (matcher.find()) {
+                cookie = cookie + matcher.group();
+                LogUtils.e(matcher.group());
+            }
+        }
+        cookie = cookie.replace("; ;", ";");
+        LogUtils.e(cookie);
+        SharedPreferencesUtils.putValue(Constants.Cookies, cookie);
     }
 
 

@@ -44,6 +44,7 @@ public class LocalMethod {
             String url = urls[i].split("&nid=")[0] + Constants.SaleDescSort;
             insertSameStyleUrlBean(name, url);
         }
+        LogUtils.e("find complete");
 //
     }
 
