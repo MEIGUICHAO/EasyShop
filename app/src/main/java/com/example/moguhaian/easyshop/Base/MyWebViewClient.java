@@ -19,7 +19,7 @@ public class MyWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         view.loadUrl(BaseApplication.getInjectJS());
         super.onPageFinished(view, url);
-        listener.loadFinish(view);
+        listener.loadFinish(view,url);
     }
 
     @Override

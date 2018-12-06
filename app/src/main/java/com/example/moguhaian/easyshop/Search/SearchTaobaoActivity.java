@@ -1,7 +1,9 @@
 package com.example.moguhaian.easyshop.Search;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.Button;
 
@@ -11,6 +13,7 @@ import com.example.moguhaian.easyshop.Base.LoadFinishListener;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.UrlUtils;
 import com.example.moguhaian.easyshop.View.SearchVu;
 
 import java.util.ArrayList;
@@ -34,11 +37,14 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     Button btnTest4;
     @BindView(R.id.btn_test5)
     Button btnTest5;
+    @BindView(R.id.btn_test6)
+    Button btnTest6;
     private String cookie;
     private String sameUrl = "https://s.taobao.com/search?spm=a230r.1.14.479.67f12140b7MMNr&type=samestyle&app=i2i&rec_type=1&uniqpid=-233600459";
     private String url = "https://s.taobao.com/search?q=%E5%8D%95%E6%9D%86%E5%BC%8F%E5%87%89%E8%A1%A3%E6%9E%B6%E8%90%BD%E5%9C%B0%E7%AE%80%E6%98%93%E6%99%BE%E8%A1%A3%E6%9D%86%E5%AE%B6%E7%94%A8%E5%8D%A7%E5%AE%A4%E5%86%85%E6%99%92%E8%A1%A3%E6%9E%B6%E6%8A%98%E5%8F%A0%E9%98%B3%E5%8F%B0%E6%8C%82%E8%A1%A3%E6%9C%8D%E6%9E%B6%E5%AD%90&imgfile=&js=1&stats_click=search_radio_all%3A1&initiative_id=staobaoz_20181202&ie=utf8";
     private int index = 0;
     private ArrayList<String> sameStyleUrlList;
+    private boolean isGetCookie = false;
 
 
     @Override
@@ -60,12 +66,12 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     @Override
     protected void afterOnCreate() {
 
-        System.getProperties().setProperty("http.proxyHost", "61.142.72.154");
-        System.getProperties().setProperty("http.proxyPort", "30074");
+//        System.getProperties().setProperty("http.proxyHost", "61.142.72.154");
+//        System.getProperties().setProperty("http.proxyPort", "30074");
         vu.initWebViewSetting(wvSearch, this);
         biz.initWebView(wvSearch, this);
-//        wvSearch.loadUrl(UrlUtils.setQueryWord(name));
-        wvSearch.loadUrl("http://www.ip138.com/");
+        wvSearch.loadUrl(UrlUtils.setQueryWord(name));
+//        wvSearch.loadUrl("http://www.ip138.com/");
 
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +107,12 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
                 foreachTitle();
             }
         });
+        btnTest6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isGetCookie = true;
+            }
+        });
 
     }
 
@@ -114,12 +126,29 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
                     foreachTitle();
                 }
             }
+
+            @Override
+            public void onFail(final String url) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        wvSearch.loadUrl(url);
+                    }
+                });
+            }
         });
     }
 
 
     @Override
-    public void loadFinish(WebView wv) {
+    public void loadFinish(WebView wv, String url) {
+        CookieManager cookieManager = CookieManager.getInstance();
+
+        String cookie = cookieManager.getCookie(url);
+        if (!TextUtils.isEmpty(cookie)&&isGetCookie) {
+            isGetCookie = false;
+            LogUtils.e(cookie);
+        }
 
     }
 
