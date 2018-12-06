@@ -150,6 +150,7 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
             LogUtils.e(cookie);
         }
 
+
     }
 
     @Override
