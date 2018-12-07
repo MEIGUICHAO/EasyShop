@@ -10,6 +10,14 @@ function findSameStyle(productname){
         var btn = similars[i].getElementsByTagName("a");
         if(btn[0].href.length>0){
             array[array.length] = btn[0].href;
+            var pos = btn[0].getBoundingClientRect();
+            var position = "top:"+pos.top +
+              "left:"+pos.left +
+              "bottom:"+pos.bottom +
+              "right:"+pos.right +
+              "width:"+pos.width +
+              "height:"+pos.height;
+              localMethod.JI_LOG(position);
         }
     }
     localMethod.insertSameStyleUrls(productname,array);
