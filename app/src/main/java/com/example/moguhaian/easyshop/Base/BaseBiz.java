@@ -11,6 +11,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,6 +59,12 @@ public class BaseBiz {
 
     public void loadTBSearchUrlByName(String name) {
         webView.loadUrl(UrlUtils.setQueryWord(name));
+    }
+
+
+    public int getRandomNum() {
+        Random random = new Random();
+        return random.nextInt(10) + 3000;
     }
 
 }

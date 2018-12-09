@@ -40,10 +40,13 @@
         android:layout_below="@id/btn_test3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <WebView
+
+    <com.example.moguhaian.easyshop.weidge.MyWebView
         android:id="@+id/wv_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <!--<TextView-->
         <!--android:text="one"-->

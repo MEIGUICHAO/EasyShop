@@ -1,20 +1,17 @@
 package com.example.moguhaian.easyshop.Base;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Build;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.example.moguhaian.easyshop.Search.SearchTaobaoActivity;
-
-import butterknife.ButterKnife;
+import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 public abstract class BaseVu implements Vu {
     public View view;
 
-    public void initWebViewSetting(WebView webView, Context context) {
+    public void initWebViewSetting(MyWebView webView, Activity context) {
         WebSettings webSetting = webView.getSettings();
         // 支持获取手势焦点
         webView.requestFocusFromTouch();
@@ -66,7 +63,7 @@ public abstract class BaseVu implements Vu {
         webSetting.setSupportZoom(true);
         //支持获取手势焦点
 //        webView.setWebViewClient(new MyWebViewClient());
-        webView.addJavascriptInterface(new LocalMethod(context), "localMethod");
+        webView.addJavascriptInterface(new LocalMethod(context,webView), "localMethod");
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
     }
 

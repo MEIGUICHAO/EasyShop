@@ -1,21 +1,25 @@
 package com.example.moguhaian.easyshop.Base;
 
-import android.content.Context;
+import android.app.Activity;
 import android.webkit.JavascriptInterface;
 
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.Bean.SamestyleBean;
+import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 import java.util.List;
 
 public class LocalMethod {
 
-    Context mContext;
+    private final MyWebView mWebView;
+    Activity mContext;
 
-    public LocalMethod(Context c) {
+    public LocalMethod(Activity c, MyWebView webView) {
         this.mContext = c;
+        mWebView = webView;
     }
 
 
@@ -26,7 +30,18 @@ public class LocalMethod {
 
 
     @JavascriptInterface
-    public void localGo() {
+    public void slideTouch(final int left, final int width, final int bottom) {
+
+        mContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                GestureTouchUtils.simulateScroll(mWebView, left, bottom*4, width * 3, bottom, 2000, GestureTouchUtils.HIGH);
+//                for (int i = 3 * bottom/4; i < bottom; i++) {
+//                    GestureTouchUtils.simulateScroll(mWebView, left, i, width * 3, i, 2000, GestureTouchUtils.HIGH);
+//                }
+            }
+        });
+
 
     }
 

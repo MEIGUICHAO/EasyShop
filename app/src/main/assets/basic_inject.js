@@ -18,6 +18,9 @@ function findSameStyle(productname){
               "width:"+pos.width +
               "height:"+pos.height;
               localMethod.JI_LOG(position);
+              if(i==0){
+                  localMethod.slideTouch(pos.left,pos.width,pos.bottom);
+              }
         }
     }
     localMethod.insertSameStyleUrls(productname,array);
