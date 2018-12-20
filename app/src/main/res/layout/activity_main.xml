@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
+        <FrameLayout
+            android:id="@+id/fl_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:layout_height="match_parent"/>
 
         <com.github.mzule.fantasyslide.SideBar
             android:id="@+id/leftSideBar"
@@ -23,42 +23,11 @@
             android:gravity="center_vertical"
             app:maxTranslationX="66dp">
 
-            <LinearLayout
-                android:id="@+id/userInfo"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_mian"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:gravity="center_horizontal"
-                android:onClick="onClick"
-                android:orientation="vertical">
+                android:layout_height="match_parent"/>
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="mzule"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <TextView
-                style="@style/MenuText"
-                android:text="朋友圈" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="钱包" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="优惠券" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="好友" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="设置" />
         </com.github.mzule.fantasyslide.SideBar>
 
         <com.github.mzule.fantasyslide.SideBar
@@ -66,36 +35,14 @@
             android:layout_width="133dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            android:background="@color/colorPrimary"
             android:gravity="center_vertical|right"
             app:maxTranslationX="-33dp">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_left"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
 
-            <TextView
-                style="@style/MenuText"
-                android:text="星期一" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="星期二" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="星期三" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="星期四" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="星期五" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="星期六" />
-
-            <TextView
-                style="@style/MenuText"
-                android:text="星期日" />
         </com.github.mzule.fantasyslide.SideBar>
     </com.github.mzule.fantasyslide.FantasyDrawerLayout>
 

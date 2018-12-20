@@ -1,81 +1,64 @@
 package com.example.moguhaian.easyshop;
 
-import android.animation.ObjectAnimator;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.moguhaian.easyshop.Base.BaseActivity;
+import com.example.moguhaian.easyshop.Search.MainBiz;
+import com.example.moguhaian.easyshop.View.MainVu;
+import com.github.mzule.fantasyslide.FantasyDrawerLayout;
 import com.github.mzule.fantasyslide.SideBar;
-import com.github.mzule.fantasyslide.Transformer;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.BindView;
 
-    private DrawerLayout drawerLayout;
+public class MainActivity extends BaseActivity<MainVu, MainBiz> {
+
+
+    @BindView(R.id.fl_container)
+    FrameLayout flContainer;
+    @BindView(R.id.rcv_mian)
+    RecyclerView rcvMian;
+    @BindView(R.id.leftSideBar)
+    SideBar leftSideBar;
+    @BindView(R.id.rcv_left)
+    RecyclerView rcvLeft;
+    @BindView(R.id.rightSideBar)
+    SideBar rightSideBar;
+    @BindView(R.id.drawerLayout)
+    FantasyDrawerLayout drawerLayout;
+    @BindView(R.id.tipView)
+    TextView tipView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
-        indicator.setColor(Color.WHITE);
-        getSupportActionBar().setHomeAsUpIndicator(indicator);
-
-        setTransformer();
-        // setListener();
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
-        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
-                    indicator.setProgress(slideOffset);
-                }
-            }
-        });
+        vu.initDrawerLayout(drawerLayout, this);
     }
 
-
-    private void setTransformer() {
-        final float spacing = getResources().getDimensionPixelSize(R.dimen.spacing);
-        SideBar rightSideBar = (SideBar) findViewById(R.id.rightSideBar);
-        rightSideBar.setTransformer(new Transformer() {
-            private View lastHoverView;
-
-            @Override
-            public void apply(ViewGroup sideBar, View itemView, float touchY, float slideOffset, boolean isLeft) {
-                boolean hovered = itemView.isPressed();
-                if (hovered && lastHoverView != itemView) {
-                    animateIn(itemView);
-                    animateOut(lastHoverView);
-                    lastHoverView = itemView;
-                }
-            }
-
-            private void animateOut(View view) {
-                if (view == null) {
-                    return;
-                }
-                ObjectAnimator translationX = ObjectAnimator.ofFloat(view, "translationX", -spacing, 0);
-                translationX.setDuration(200);
-                translationX.start();
-            }
-
-            private void animateIn(View view) {
-                ObjectAnimator translationX = ObjectAnimator.ofFloat(view, "translationX", 0, -spacing);
-                translationX.setDuration(200);
-                translationX.start();
-            }
-        });
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
     }
+
+    @Override
+    protected void afterOnCreate() {
+
+    }
+
+    @Override
+    protected Class<MainVu> getVuClass() {
+        return MainVu.class;
+    }
+
+    @Override
+    protected Class<MainBiz> getBizClass() {
+        return MainBiz.class;
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -89,16 +72,4 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void onClick(View view) {
-        if (view instanceof TextView) {
-            String title = ((TextView) view).getText().toString();
-            if (title.startsWith("星期")) {
-                Toast.makeText(this, title, Toast.LENGTH_SHORT).show();
-            } else {
-//                startActivity(UniversalActivity.newIntent(this, title));
-            }
-        } else if (view.getId() == R.id.userInfo) {
-//            startActivity(UniversalActivity.newIntent(this, "个人中心"));
-        }
-    }
 }
