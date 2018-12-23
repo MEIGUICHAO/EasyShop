@@ -2,9 +2,9 @@ package com.example.moguhaian.easyshop;
 
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.moguhaian.easyshop.Base.BaseActivity;
@@ -18,8 +18,8 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity<MainVu, MainBiz> {
 
 
-    @BindView(R.id.fl_container)
-    FrameLayout flContainer;
+    @BindView(R.id.fl_vp)
+    ViewPager flVp;
     @BindView(R.id.rcv_mian)
     RecyclerView rcvMian;
     @BindView(R.id.leftSideBar)
@@ -37,6 +37,8 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vu.initDrawerLayout(drawerLayout, this);
+
+
     }
 
     @Override
@@ -46,8 +48,12 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> {
 
     @Override
     protected void afterOnCreate() {
-
+        vu.initViewPage(getSupportFragmentManager(),flVp);
+//
+//        new ListAdapter()
+//        rcvMian.setAdapter();
     }
+
 
     @Override
     protected Class<MainVu> getVuClass() {

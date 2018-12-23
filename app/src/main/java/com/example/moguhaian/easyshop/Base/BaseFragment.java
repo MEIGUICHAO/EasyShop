@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extends Fragment {
 
-    private Vu vu;
-    private Biz biz;
+    protected Vu vu;
+    protected Biz biz;
+    Unbinder unbinder;
+
 
     @Nullable
     @Override
@@ -27,16 +30,19 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
             e.printStackTrace();
         }
         View view = inflater.inflate(getLayoutId(), container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
+        afterOnCreate();
 
         return view;
 
     }
 
 
-
-
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 
 
 

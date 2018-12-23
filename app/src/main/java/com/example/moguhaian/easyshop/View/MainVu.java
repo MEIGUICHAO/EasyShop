@@ -2,6 +2,9 @@ package com.example.moguhaian.easyshop.View;
 
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
@@ -10,9 +13,13 @@ import android.view.ViewGroup;
 
 import com.example.moguhaian.easyshop.Base.BaseVu;
 import com.example.moguhaian.easyshop.R;
+import com.example.moguhaian.easyshop.adapter.ViewPageAdapter;
+import com.example.moguhaian.easyshop.fragment.Top20wFragment;
 import com.github.mzule.fantasyslide.FantasyDrawerLayout;
 import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.Transformer;
+
+import java.util.ArrayList;
 
 public class MainVu extends BaseVu {
 
@@ -67,5 +74,15 @@ public class MainVu extends BaseVu {
                 translationX.start();
             }
         });
+    }
+
+    public void initViewPage(FragmentManager fm, ViewPager flVp) {
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(new Top20wFragment());
+        fragments.add(new Top20wFragment());
+        fragments.add(new Top20wFragment());
+        ViewPageAdapter viewPageAdapter = new ViewPageAdapter(fm, fragments);
+        flVp.setAdapter(viewPageAdapter);
+        flVp.setCurrentItem(0);
     }
 }
