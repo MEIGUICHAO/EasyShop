@@ -38,7 +38,6 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> {
         super.onCreate(savedInstanceState);
         vu.initDrawerLayout(drawerLayout, this);
 
-
     }
 
     @Override

@@ -79,9 +79,9 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
         btnTest.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            public void onClick(View v) {
-                biz.findSameStyleUrl(wvSearch, name);
-            }
+                public void onClick(View v) {
+                    biz.findSameStyleUrl(wvSearch, name);
+                }
         });
         btnTest2.setOnClickListener(new View.OnClickListener() {
             @Override
