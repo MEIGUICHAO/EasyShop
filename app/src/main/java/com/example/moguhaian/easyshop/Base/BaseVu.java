@@ -5,6 +5,7 @@ import android.os.Build;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
@@ -63,8 +64,18 @@ public abstract class BaseVu implements Vu {
         webSetting.setSupportZoom(true);
         //支持获取手势焦点
 //        webView.setWebViewClient(new MyWebViewClient());
-        webView.addJavascriptInterface(new LocalMethod(context,webView), "localMethod");
+        webView.addJavascriptInterface(new LocalMethod(context, webView), "localMethod");
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
+
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+
     }
 
     public boolean onBackPress(WebView webView) {

@@ -23,6 +23,7 @@ public class Top20wFragment extends BaseFragment<Top20wVu, Top20wBiz> {
     @Override
     protected void afterOnCreate() {
         LogUtils.e("Top20wFragment loadUrl");
+        vu.initWebViewSetting(webView,getActivity());
         webView.loadUrl(Constants.Top20wUrl);
 
     }
