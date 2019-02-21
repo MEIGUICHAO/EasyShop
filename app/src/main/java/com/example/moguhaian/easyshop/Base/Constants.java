@@ -11,6 +11,23 @@ public interface Constants {
     public String SaleDescSort = "&sort=sale-desc";
     public String UserAgentString = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36";
 
+
+//    https://www.taosj.com/tool/tool.htm#/optimize_market/keyword/?keyword=%E5%8F%98%E5%BD%A2&pageNo=1&pageSize=100
+//    https://www.taosj.com/tool/tool.htm#/optimize_market/keyword/
+//    搜索指数-在线宝贝数
+
+
+//    https://www.taosj.com/tool/ztc.htm#wordPrecise?word=%E6%B0%B4%E5%BC%B9&decorateWords=&excludeWords=
+//    直通车选词
+
+
+
+
+//    店查查 词可查关键词
+
+
+
+
     String EASYSHOP = "EASYSHOP";
 
     String Cookies = "Cookies";
