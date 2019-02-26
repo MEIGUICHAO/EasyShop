@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.moguhaian.easyshop.Base.BaseVu;
 import com.example.moguhaian.easyshop.R;
+import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.adapter.ViewPageAdapter;
 import com.example.moguhaian.easyshop.fragment.Top20wFragment;
 import com.github.mzule.fantasyslide.FantasyDrawerLayout;
@@ -23,20 +24,18 @@ import java.util.ArrayList;
 
 public class MainVu extends BaseVu {
 
-    public void initDrawerLayout(FantasyDrawerLayout drawerLayout, AppCompatActivity activity) {
+    public void initDrawerLayout(final DrawerLayout drawerLayout, AppCompatActivity activity) {
 
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final DrawerArrowDrawable indicator = new DrawerArrowDrawable(activity);
         indicator.setColor(Color.WHITE);
         activity.getSupportActionBar().setHomeAsUpIndicator(indicator);
-        setTransformer(activity);
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
+//        setTransformer(activity);
+//        drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
-                    indicator.setProgress(slideOffset);
-                }
+                indicator.setProgress(slideOffset);
             }
         });
     }
