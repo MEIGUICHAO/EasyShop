@@ -1,28 +1,39 @@
 package com.example.moguhaian.easyshop.View;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.moguhaian.easyshop.Base.BaseVu;
 import com.example.moguhaian.easyshop.R;
-import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.UiUtils;
+import com.example.moguhaian.easyshop.adapter.CommomRecyclerAdapter;
+import com.example.moguhaian.easyshop.adapter.CommonViewHolder;
 import com.example.moguhaian.easyshop.adapter.ViewPageAdapter;
 import com.example.moguhaian.easyshop.fragment.Top20wFragment;
-import com.github.mzule.fantasyslide.FantasyDrawerLayout;
 import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.Transformer;
 
 import java.util.ArrayList;
 
 public class MainVu extends BaseVu {
+
+    private boolean openAnimator;
+    private int leftPosition = 0;
+    private int rightPosition = 0;
 
     public void initDrawerLayout(final DrawerLayout drawerLayout, AppCompatActivity activity) {
 
@@ -35,9 +46,28 @@ public class MainVu extends BaseVu {
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                indicator.setProgress(slideOffset);
+                if (openAnimator) {
+                    indicator.setProgress(slideOffset);
+                }
             }
         });
+
+        ActionBarDrawerToggle drawerbar = new ActionBarDrawerToggle(activity, drawerLayout, R.string.open, R.string.close) {
+
+            //菜单打开
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            // 菜单关闭
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+
+        drawerLayout.setDrawerListener(drawerbar);
     }
 
 
@@ -83,5 +113,41 @@ public class MainVu extends BaseVu {
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(fm, fragments);
         flVp.setAdapter(viewPageAdapter);
         flVp.setCurrentItem(0);
+    }
+
+
+
+    public void toggleDrawerLayout(DrawerLayout mainDrawerLayout, RelativeLayout childDrawerLayout, RelativeLayout colseDrawerLayout) {
+        if (mainDrawerLayout.isDrawerOpen(colseDrawerLayout)) {
+            mainDrawerLayout.closeDrawer(colseDrawerLayout);
+        }
+        if (mainDrawerLayout.isDrawerOpen(childDrawerLayout)) {
+            mainDrawerLayout.closeDrawer(childDrawerLayout);
+        } else {
+            mainDrawerLayout.openDrawer(childDrawerLayout);
+        }
+    }
+
+    public void setArrowAnimatorEnable(boolean isOpen) {
+        openAnimator = isOpen;
+    }
+
+    public void setAdapter(Activity activity, RecyclerView recyclerView, String[] strings, final boolean isLeft) {
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < strings.length; i++) {
+            list.add(strings[i]);
+        }
+        recyclerView.setAdapter(new CommomRecyclerAdapter<String>(activity,R.layout.item_tv,list) {
+            @Override
+            public void convert(CommonViewHolder holder, String str, int position) {
+                holder.setText(R.id.tv_item, str);
+                TextView tvItem = holder.getView(R.id.tv_item);
+                tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(14) : UiUtils.dp2px(10));
+                tvItem.setTextColor((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.getC(R.color.color_white_select) : UiUtils.getC(R.color.color_white));
+
+            }
+
+        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
     }
 }

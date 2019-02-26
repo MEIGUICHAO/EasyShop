@@ -1,6 +1,5 @@
 package com.example.moguhaian.easyshop.Utils;
 
-import android.content.Context;
 import android.util.TypedValue;
 
 import com.example.moguhaian.easyshop.Base.BaseApplication;
@@ -15,4 +14,7 @@ public class UiUtils {
                 dpVal, BaseApplication.getInstances().getResources().getDisplayMetrics());
     }
 
+    public static int getC(int color_white) {
+        return BaseApplication.getInstances().getResources().getColor(color_white);
+    }
 }
