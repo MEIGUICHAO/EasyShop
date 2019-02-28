@@ -5,12 +5,11 @@ import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Base.BaseBiz;
 import com.example.moguhaian.easyshop.Base.Constants;
-import com.example.moguhaian.easyshop.Base.JsoupParseListener;
+import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
-import com.example.moguhaian.easyshop.Utils.UrlUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

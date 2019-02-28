@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 
 public class MyWebViewClient extends WebViewClient {
 

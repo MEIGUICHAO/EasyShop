@@ -23,6 +23,7 @@ import com.example.moguhaian.easyshop.Utils.UiUtils;
 import com.example.moguhaian.easyshop.adapter.CommomRecyclerAdapter;
 import com.example.moguhaian.easyshop.adapter.CommonViewHolder;
 import com.example.moguhaian.easyshop.adapter.ViewPageAdapter;
+import com.example.moguhaian.easyshop.fragment.SelectionFragment;
 import com.example.moguhaian.easyshop.fragment.Top20wFragment;
 import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.Transformer;
@@ -107,7 +108,7 @@ public class MainVu extends BaseVu {
 
     public void initViewPage(FragmentManager fm, ViewPager flVp) {
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(new Top20wFragment());
+        fragments.add(new SelectionFragment());
         fragments.add(new Top20wFragment());
         fragments.add(new Top20wFragment());
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(fm, fragments);

@@ -1,4 +1,4 @@
-package com.example.moguhaian.easyshop.Base;
+package com.example.moguhaian.easyshop.listener;
 
 import android.webkit.WebView;
 

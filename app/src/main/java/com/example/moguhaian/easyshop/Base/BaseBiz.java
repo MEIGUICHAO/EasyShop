@@ -6,6 +6,8 @@ import android.webkit.WebView;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
+import com.example.moguhaian.easyshop.listener.JsoupParseListener;
+import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -56,6 +58,44 @@ public class BaseBiz {
         });
 
     }
+
+    public void quickLogin(final String loginUrl, final String loginAccount, final String loginAccountValue, final String loginPSw, final String loginPSwValue, final String cacheName,final JsoupParseListener listener) {
+
+        singleThreadExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Connection connect = Jsoup.connect(loginUrl);
+
+                    connect.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+                    connect.header("Accept-Encoding", "gzip, deflate");
+                    connect.header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
+                    connect.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
+                    connect.header("Content-Type", "application/x-www-form-urlencoded");
+                    // 带参数开始
+                    connect.data(loginAccount, loginAccountValue);
+                    connect.data(loginPSw, loginPSwValue);
+                    connect.method(Connection.Method.POST);
+                    Connection.Response execute = connect.execute();
+                    Map<String, String> cookies = execute.cookies();
+                    String cookie = cookies.toString();
+                    cookie = cookie.substring(cookie.indexOf("{")+1, cookie.lastIndexOf("}"));
+                    cookie = cookie.replaceAll(",", ";");
+                    SharedPreferencesUtils.putValue(cacheName, cookie);
+                    LogUtils.e("login success");
+                    LogUtils.e(cookie);
+                    listener.complete();
+                } catch (Exception e) {
+                    listener.onFail("");
+                    LogUtils.e(e.toString());
+
+                }
+            }
+        });
+
+    }
+
+
 
     public void loadTBSearchUrlByName(String name) {
         webView.loadUrl(UrlUtils.setQueryWord(name));

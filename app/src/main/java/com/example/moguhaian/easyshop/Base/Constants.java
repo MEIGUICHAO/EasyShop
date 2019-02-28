@@ -3,6 +3,8 @@ package com.example.moguhaian.easyshop.Base;
 public interface Constants {
 
 //    public String Top20wUrl = "http://www.taocece.com/ztctop20wmobile";
+    public String taosjLoginUrl = "http://login.taosj.com/?redirectURL=http%3A%2F%2Fwww.taosj.com%2Ftool%2Ftool.htm%23%2Foptimize_market%2Ftitle%2F";
+    public String SelectionUrl = "https://www.taosj.com/tool/tool.htm#/optimize_market/keyword/";
     public String Top20wUrl = "https://www.dianchacha.com/keyword/info/?day=2019-02-12&id=46&type=1&num=24";
     public String MY_INDEX = "###MYINDEX###";
     public String SORT_TYPE = "###SORT_TYPE###";

@@ -9,8 +9,8 @@ import android.webkit.WebView;
 import android.widget.Button;
 
 import com.example.moguhaian.easyshop.Base.BaseActivity;
-import com.example.moguhaian.easyshop.Base.JsoupParseListener;
-import com.example.moguhaian.easyshop.Base.LoadFinishListener;
+import com.example.moguhaian.easyshop.listener.JsoupParseListener;
+import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
