@@ -1,21 +1,28 @@
 package com.example.moguhaian.easyshop;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
 import com.example.moguhaian.easyshop.Base.BaseActivity;
 import com.example.moguhaian.easyshop.Search.MainBiz;
 import com.example.moguhaian.easyshop.View.MainVu;
+import com.example.moguhaian.easyshop.fragment.SelectionFragment;
+import com.example.moguhaian.easyshop.listener.LoadFinishListener;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity<MainVu, MainBiz> {
+public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadFinishListener {
 
 
     @BindView(R.id.main_left_drawer_layout)
@@ -33,6 +40,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> {
 
     private String[] mainList = {"1", "2", "3"};
     private String[] rightList = {"4", "5", "6"};
+    private ArrayList<Fragment> fragments;
 
 
     @Override
@@ -49,11 +57,22 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> {
 
     @Override
     protected void afterOnCreate() {
-        vu.initViewPage(getSupportFragmentManager(), flVp);
+        fragments = vu.initViewPage(getSupportFragmentManager(), flVp);
         vu.initDrawerLayout(mainDrawerLayout, this);
-        vu.setAdapter(this, rcvMian, mainList, true);
-        vu.setAdapter(this, rcvRight, rightList, false);
+        vu.setAdapter(this, rcvMian, mainList, true, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainDrawerLayout.closeDrawer(mainLeftDrawerLayout);
+            }
+        });
+        vu.setAdapter(this, rcvRight, rightList, false, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainDrawerLayout.closeDrawer(mainRightDrawerLayout);
+                ((SelectionFragment)fragments.get(0)).test();
 
+            }
+        });
     }
 
 
@@ -88,5 +107,10 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public void loadFinish(WebView wv, String url) {
+
     }
 }

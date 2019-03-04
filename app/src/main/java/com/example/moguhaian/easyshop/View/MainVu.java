@@ -35,6 +35,8 @@ public class MainVu extends BaseVu {
     private boolean openAnimator;
     private int leftPosition = 0;
     private int rightPosition = 0;
+    private CommomRecyclerAdapter<String> leftAdapter;
+    private CommomRecyclerAdapter<String> rightAdapter;
 
     public void initDrawerLayout(final DrawerLayout drawerLayout, AppCompatActivity activity) {
 
@@ -106,7 +108,7 @@ public class MainVu extends BaseVu {
         });
     }
 
-    public void initViewPage(FragmentManager fm, ViewPager flVp) {
+    public ArrayList<Fragment> initViewPage(FragmentManager fm, ViewPager flVp) {
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(new SelectionFragment());
         fragments.add(new Top20wFragment());
@@ -114,6 +116,7 @@ public class MainVu extends BaseVu {
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(fm, fragments);
         flVp.setAdapter(viewPageAdapter);
         flVp.setCurrentItem(0);
+        return fragments;
     }
 
 
@@ -133,22 +136,63 @@ public class MainVu extends BaseVu {
         openAnimator = isOpen;
     }
 
-    public void setAdapter(Activity activity, RecyclerView recyclerView, String[] strings, final boolean isLeft) {
+    public void setAdapter(Activity activity, RecyclerView recyclerView, String[] strings, final boolean isLeft,final View.OnClickListener listener) {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < strings.length; i++) {
             list.add(strings[i]);
         }
-        recyclerView.setAdapter(new CommomRecyclerAdapter<String>(activity,R.layout.item_tv,list) {
-            @Override
-            public void convert(CommonViewHolder holder, String str, int position) {
-                holder.setText(R.id.tv_item, str);
-                TextView tvItem = holder.getView(R.id.tv_item);
-                tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(14) : UiUtils.dp2px(10));
-                tvItem.setTextColor((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.getC(R.color.color_white_select) : UiUtils.getC(R.color.color_white));
+        if (isLeft) {
+            leftAdapter = new CommomRecyclerAdapter<String>(activity, R.layout.item_tv, list) {
+                @Override
+                public void convert(CommonViewHolder holder, String str, final int position) {
+                    holder.setText(R.id.tv_item, str);
+                    TextView tvItem = holder.getView(R.id.tv_item);
+                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(14) : UiUtils.dp2px(10));
+                    tvItem.setTextColor((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.getC(R.color.color_white_select) : UiUtils.getC(R.color.color_white));
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (isLeft) {
+                                leftPosition = position;
+                            } else {
+                                rightPosition = position;
+                            }
+                            listener.onClick(v);
+                            leftAdapter.notifyDataSetChanged();
+                        }
+                    });
 
-            }
+                }
 
-        });
+            };
+
+        } else {
+            rightAdapter = new CommomRecyclerAdapter<String>(activity, R.layout.item_tv, list) {
+                @Override
+                public void convert(CommonViewHolder holder, String str, final int position) {
+                    holder.setText(R.id.tv_item, str);
+                    TextView tvItem = holder.getView(R.id.tv_item);
+                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(14) : UiUtils.dp2px(10));
+                    tvItem.setTextColor((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.getC(R.color.color_white_select) : UiUtils.getC(R.color.color_white));
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (isLeft) {
+                                leftPosition = position;
+                            } else {
+                                rightPosition = position;
+                            }
+                            listener.onClick(v);
+                            rightAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                }
+
+            };
+
+        }
+        recyclerView.setAdapter(isLeft?leftAdapter:rightAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
     }
 }

@@ -32,19 +32,25 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> {
     @Override
     protected void afterOnCreate() {
         vu.initWebViewSetting(webView, getActivity());
+        biz.initWebView(webView, getActivity());
+        webView.loadUrl(Constants.SelectionUrl);
 //        loginCode   loginPassword
-        biz.quickLogin(Constants.taosjLoginUrl, "loginCode", "18620587647", "loginPassword", "m123456", "taosjCookie", new JsoupParseListener() {
-            @Override
-            public void complete() {
-                webView.loadUrl(Constants.SelectionUrl);
-            }
+//        biz.quickLogin(Constants.taosjLoginUrl, "loginCode", "18620587647", "loginPassword", "m123456", "taosjCookie", new JsoupParseListener() {
+//            @Override
+//            public void complete() {
+//                webView.loadUrl(Constants.SelectionUrl);
+//            }
+//
+//            @Override
+//            public void onFail(String url) {
+//
+//                LogUtils.e("taosjLoginUrl quickLogin fail");
+//            }
+//        });
+    }
 
-            @Override
-            public void onFail(String url) {
-
-                LogUtils.e("taosjLoginUrl quickLogin fail");
-            }
-        });
+    public void test() {
+        biz.dropDown();
     }
 
     @Override
