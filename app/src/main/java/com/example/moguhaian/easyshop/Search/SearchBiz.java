@@ -1,15 +1,15 @@
 package com.example.moguhaian.easyshop.Search;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Base.BaseBiz;
 import com.example.moguhaian.easyshop.Base.Constants;
-import com.example.moguhaian.easyshop.listener.JsoupParseListener;
-import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
+import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -84,7 +84,14 @@ public class SearchBiz extends BaseBiz {
         return json;
     }
 
-    public void findSameStyleUrl(WebView wvSearch, String name) {
-        wvSearch.loadUrl(JsUtils.addJsMethod("findSameStyle(\"" + name + "\")"));
+    public void findSameStyleUrl(final WebView wvSearch, final String name) {
+        wvSearch.loadUrl("javascript: var newscript = document.createElement(\"script\");newscript.text = window.onload=doAutoTest();function doAutoTest() { jsCangkuGoNextPage();}document.body.appendChild(newscript);");
+        Log.e("findSameStyle", "findSameStyle");
+        //        singleThreadExecutor.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                wvSearch.loadUrl(JsUtils.addJsMethod("findSameStyle(\"" + name + "\")"));
+//            }
+//        });
     }
 }

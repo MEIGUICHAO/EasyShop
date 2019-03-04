@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.R;
-import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.View.SelectionVu;
 import com.example.moguhaian.easyshop.biz.SelectionBiz;
-import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 import butterknife.BindView;
@@ -50,7 +48,7 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> {
     }
 
     public void test() {
-        biz.dropDown();
+        biz.dropDown(webView);
     }
 
     @Override
