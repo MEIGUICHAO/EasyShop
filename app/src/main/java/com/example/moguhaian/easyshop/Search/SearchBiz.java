@@ -6,6 +6,7 @@ import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Base.BaseBiz;
 import com.example.moguhaian.easyshop.Base.Constants;
+import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
@@ -61,7 +62,6 @@ public class SearchBiz extends BaseBiz {
     }
 
 
-
     private String jsoupData(String url) {
         String json = "";
         try {
@@ -85,13 +85,7 @@ public class SearchBiz extends BaseBiz {
     }
 
     public void findSameStyleUrl(final WebView wvSearch, final String name) {
-        wvSearch.loadUrl("javascript: var newscript = document.createElement(\"script\");newscript.text = window.onload=doAutoTest();function doAutoTest() { jsCangkuGoNextPage();}document.body.appendChild(newscript);");
-        Log.e("findSameStyle", "findSameStyle");
-        //        singleThreadExecutor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                wvSearch.loadUrl(JsUtils.addJsMethod("findSameStyle(\"" + name + "\")"));
-//            }
-//        });
+        wvSearch.loadUrl(JsUtils.addJsMethod("findSameStyle(\"" + name + "\")"));
+
     }
 }
