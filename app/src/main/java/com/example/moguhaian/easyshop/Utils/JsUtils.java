@@ -5,6 +5,7 @@ public class JsUtils {
 
     public static String addJsMethod(String jsMethod) {
 
+        LogUtils.e(jsMethod);
         return "javascript:" + buildJsMethod(initMethod(jsMethod))+";";
 
     }

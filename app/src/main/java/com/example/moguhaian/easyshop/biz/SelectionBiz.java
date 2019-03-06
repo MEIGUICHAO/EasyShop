@@ -6,7 +6,6 @@ import android.webkit.WebView;
 import com.example.moguhaian.easyshop.Base.BaseBiz;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
-import com.example.moguhaian.easyshop.Utils.JsoupUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 
@@ -19,7 +18,8 @@ public class SelectionBiz extends BaseBiz {
 
     public void dropDown(WebView webView) {
 //        widget-multi-dropdown
-        webView.loadUrl(JsUtils.addJsMethod("foreachTable(\"" + "ui-table ui-table-simple" + "\")"));
+        webView.loadUrl(JsUtils.addJsMethod("foreachTable(" + "\"ui-table ui-table-simple\"" + ",0" + ")"));
+//        + "ui-table ui-table-simple" + "\"0\"" + "\
 //        singleThreadExecutor.execute(new Runnable() {
 //            @Override
 //            public void run() {
