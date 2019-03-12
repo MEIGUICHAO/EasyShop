@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
             @Override
             public void onClick(View v) {
                 mainDrawerLayout.closeDrawer(mainRightDrawerLayout);
-                ((SelectionFragment)fragments.get(0)).test();
+                ((SelectionFragment)fragments.get(0)).test(0);
 
             }
         });

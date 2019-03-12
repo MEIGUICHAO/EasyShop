@@ -8,11 +8,14 @@ import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
+import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.IOException;
 
 public class SelectionBiz extends BaseBiz {
 
@@ -57,4 +60,26 @@ public class SelectionBiz extends BaseBiz {
         }
         return json;
     }
+
+    public void jsoupShop(final String url, final JsoupParseListener listener) {
+        LogUtils.e("url:" + url);
+        singleThreadExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Document document = Jsoup.connect(url).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
+                    Elements title = document.getElementsByClass("tb-main-title");
+                    LogUtils.e("采集~~标题:" + title.html());
+                    Element j_imgBooth = document.getElementById("J_ImgBooth");
+                    LogUtils.e("采集~~图片地址:" + "https:" + j_imgBooth.attr("src"));
+                    listener.complete();
+                } catch (IOException e) {
+                    listener.onFail(url);
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
 }
