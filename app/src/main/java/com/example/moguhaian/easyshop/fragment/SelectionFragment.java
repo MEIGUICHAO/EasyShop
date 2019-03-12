@@ -15,8 +15,6 @@ import com.example.moguhaian.easyshop.biz.SelectionBiz;
 import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -61,12 +59,14 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> {
 
     public void test(final int position) {
 
-        biz.jsoupShop(split[position], new JsoupParseListener() {
+        biz.jsoupShop(split[position], position,new JsoupParseListener() {
             @Override
             public void complete() {
                 LogUtils.e(position + "采集~~success!!!!!!!!!!!!!!!!!!!");
                 if ((position + 1) < split.length) {
                     test(position + 1);
+                } else {
+                    biz.upateCaijiExchageTitle();
                 }
             }
 

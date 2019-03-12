@@ -3,8 +3,12 @@ package com.example.moguhaian.easyshop.biz;
 import android.text.TextUtils;
 import android.webkit.WebView;
 
+import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseBiz;
 import com.example.moguhaian.easyshop.Base.Constants;
+import com.example.moguhaian.easyshop.Bean.CaijiBean;
+import com.example.moguhaian.easyshop.CaijiBeanDao;
+import com.example.moguhaian.easyshop.Utils.CommonUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
@@ -16,8 +20,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectionBiz extends BaseBiz {
+
+    private CaijiBeanDao caijiBeanDao;
+    private ArrayList<String> caijiBeansRecords;
 
     public void dropDown(WebView webView) {
 //        widget-multi-dropdown
@@ -61,7 +70,7 @@ public class SelectionBiz extends BaseBiz {
         return json;
     }
 
-    public void jsoupShop(final String url, final JsoupParseListener listener) {
+    public void jsoupShop(final String url, final int position, final JsoupParseListener listener) {
         LogUtils.e("url:" + url);
         singleThreadExecutor.execute(new Runnable() {
             @Override
@@ -70,8 +79,21 @@ public class SelectionBiz extends BaseBiz {
                     Document document = Jsoup.connect(url).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
                     Elements title = document.getElementsByClass("tb-main-title");
                     LogUtils.e("采集~~标题:" + title.html());
-                    Element j_imgBooth = document.getElementById("J_ImgBooth");
-                    LogUtils.e("采集~~图片地址:" + "https:" + j_imgBooth.attr("src"));
+                    if (!TextUtils.isEmpty(title.html())) {
+                        Element j_imgBooth = document.getElementById("J_ImgBooth");
+                        LogUtils.e("采集~~图片地址:" + "https:" + j_imgBooth.attr("src"));
+
+                        CaijiBean caijiBean = new CaijiBean();
+                        caijiBean.setLv1Name("玩具/童车/益智/积木/模型");
+                        caijiBean.setLv2Name("串珠/拼图/配对/拆装/敲打玩具");
+                        caijiBean.setLv3Name("建构/拼插积木");
+                        caijiBean.setShopUrl(url);
+                        caijiBean.setMainPath(j_imgBooth.attr("src"));
+                        caijiBean.setPosition(position);
+                        caijiBean.setOriginTitle(title.html());
+                        insertCaijiBean(caijiBean);
+                    }
+
                     listener.complete();
                 } catch (IOException e) {
                     listener.onFail(url);
@@ -81,5 +103,49 @@ public class SelectionBiz extends BaseBiz {
             }
         });
     }
+
+    public void insertCaijiBean(CaijiBean bean) {
+        initCaijiDao();
+        List<CaijiBean> list = caijiBeanDao.queryBuilder().where(CaijiBeanDao.Properties.ShopUrl.eq(bean.getShopUrl())).build().list();
+        if (list.size() < 1) {
+            caijiBeanDao.insert(bean);
+            if (null == caijiBeansRecords) {
+                caijiBeansRecords = new ArrayList<>();
+            }
+            caijiBeansRecords.add(bean.getOriginTitle());
+        }
+
+    }
+
+
+
+    public void upateCaiji() {
+        initCaijiDao();
+        caijiBeanDao.queryBuilder().where(CaijiBeanDao.Properties.Position.eq(CaijiBeanDao.Properties.ExchagePosition)).build().list();
+
+    }
+
+
+    public void initCaijiDao() {
+        if (null == caijiBeanDao) {
+            caijiBeanDao = BaseApplication.getInstances().getDaoSession().getCaijiBeanDao();
+        }
+    }
+
+    public void upateCaijiExchageTitle() {
+        int[] random = CommonUtils.getRandom(caijiBeansRecords.size());
+        for (int i = 0; i < random.length; i++) {
+            CaijiBean caijiBean = caijiBeanDao.queryBuilder().where(CaijiBeanDao.Properties.Position.eq(i)).build().unique();
+            caijiBean.setExchagePosition(random[i]);
+            caijiBean.setExchangeTitle(caijiBeansRecords.get(random[i]));
+            caijiBeanDao.update(caijiBean);
+        }
+        List<CaijiBean> list = caijiBeanDao.queryBuilder().list();
+        for (int i = 0; i < list.size(); i++) {
+            LogUtils.e("采集结果!!!!：" + "\n" + list.get(i).getShopUrl() + "\n" + list.get(i).getExchangeTitle());
+        }
+    }
+
+
 
 }
