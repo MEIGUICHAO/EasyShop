@@ -29,6 +29,8 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> i
     TextView tvProgress;
     @BindView(R.id.btn_foreach_title)
     Button btnForeachTitle;
+    @BindView(R.id.btn_get_exchange_title_result)
+    Button btnGetExchangeTitleResult;
     private String[] split;
 
     @Override
@@ -41,9 +43,10 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> i
         split = Shops.shops.split("\n");
         LogUtils.e("split_length:" + split.length);
         btnForeachTitle.setOnClickListener(this);
+        btnGetExchangeTitleResult.setOnClickListener(this);
     }
 
-    public void test(final int position) {
+    public void jsoupData(final int position) {
 
         biz.jsoupShop(split[position], position, new JsoupParseListener() {
             @Override
@@ -53,16 +56,16 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> i
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvProgress.setText(((position + 1)*100 / split.length) + "%");
+                            tvProgress.setText(((position + 1) * 100 / split.length) + "%");
                             pbProcess.setProgress((position + 1));
-                            test(position + 1);
+                            jsoupData(position + 1);
                         }
                     });
                 } else {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvProgress.setText(((position + 1)*100 / split.length) + "%");
+                            tvProgress.setText(((position + 1) * 100 / split.length) + "%");
                             pbProcess.setProgress((position + 1));
                             biz.updateCaijiExchageTitle();
                         }
@@ -74,7 +77,7 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> i
             public void onFail(String url) {
                 LogUtils.e(position + "采集~~fail!!!!!!!!!!!!!!!!!!!");
                 if (position < split.length) {
-                    test(position + 1);
+                    jsoupData(position + 1);
                 }
             }
         });
@@ -109,8 +112,11 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> i
         switch (v.getId()) {
             case R.id.btn_foreach_title:
                 pbProcess.setMax(split.length);
+                jsoupData(0);
+                break;
+            case R.id.btn_get_exchange_title_result:
                 biz.updateCaijiExchageTitle();
-//                test(0);
+//                jsoupData(0);
                 break;
         }
     }

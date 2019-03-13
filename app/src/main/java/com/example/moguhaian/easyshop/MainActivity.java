@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     @BindView(R.id.rcv_right)
     RecyclerView rcvRight;
 
-    private String[] mainList = {"1", "2", "3"};
+    private String[] mainList = {"采集", "同款", "3"};
     private String[] rightList = {"4", "5", "6"};
     private ArrayList<Fragment> fragments;
 
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
             @Override
             public void onClick(View v) {
                 mainDrawerLayout.closeDrawer(mainRightDrawerLayout);
-                ((SelectionFragment)fragments.get(0)).test(0);
+                ((SelectionFragment)fragments.get(0)).jsoupData(0);
 
             }
         });
