@@ -22,11 +22,13 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class SelectionBiz extends BaseBiz {
 
     private CaijiBeanDao caijiBeanDao;
     private ArrayList<String> caijiBeansRecords;
+    private boolean randomAgain;
 
     public void dropDown(WebView webView) {
 //        widget-multi-dropdown
@@ -132,13 +134,35 @@ public class SelectionBiz extends BaseBiz {
         }
     }
 
-    public void upateCaijiExchageTitle() {
-        int[] random = CommonUtils.getRandom(caijiBeansRecords.size());
+    public void updateCaijiExchageTitle() {
+        initCaijiDao();
+        List<CaijiBean> caijiList = caijiBeanDao.queryBuilder().build().list();
+        if (null == caijiBeansRecords) {
+            caijiBeansRecords = new ArrayList<>();
+            for (int i = 0; i < caijiList.size(); i++) {
+                caijiBeansRecords.add(caijiList.get(i).getOriginTitle());
+            }
+        }
+
+
+        randomAgain = false;
+        final int[] random = CommonUtils.getRandom(caijiBeansRecords.size());
         for (int i = 0; i < random.length; i++) {
-            CaijiBean caijiBean = caijiBeanDao.queryBuilder().where(CaijiBeanDao.Properties.Position.eq(i)).build().unique();
+            if (i == random[i]) {
+                randomAgain = true;
+            }
+        }
+        LogUtils.e("random.length:" + random.length);
+        if (randomAgain) {
+            updateCaijiExchageTitle();
+            return;
+        }
+
+        for (int i = 0; i < random.length; i++) {
+            CaijiBean caijiBean = caijiList.get(i);
             caijiBean.setExchagePosition(random[i]);
             caijiBean.setExchangeTitle(caijiBeansRecords.get(random[i]));
-            caijiBeanDao.update(caijiBean);
+            caijiBeanDao.updateInTx(caijiBean);
         }
         List<CaijiBean> list = caijiBeanDao.queryBuilder().list();
         for (int i = 0; i < list.size(); i++) {

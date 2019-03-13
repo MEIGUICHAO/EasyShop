@@ -4,69 +4,69 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.moguhaian.easyshop.Base.BaseFragment;
-import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Base.Shops;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.View.SelectionVu;
 import com.example.moguhaian.easyshop.biz.SelectionBiz;
 import com.example.moguhaian.easyshop.listener.JsoupParseListener;
-import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> {
-    @BindView(R.id.webView)
-    MyWebView webView;
+public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> implements View.OnClickListener {
     Unbinder unbinder;
+    @BindView(R.id.pb_process)
+    ProgressBar pbProcess;
+    @BindView(R.id.tv_progress)
+    TextView tvProgress;
+    @BindView(R.id.btn_foreach_title)
+    Button btnForeachTitle;
     private String[] split;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_webview;
+        return R.layout.fragment_caiji;
     }
 
     @Override
     protected void afterOnCreate() {
-        vu.initWebViewSetting(webView, getActivity());
-        biz.initWebView(webView, getActivity());
-        webView.loadUrl(Constants.SelectionUrl);
         split = Shops.shops.split("\n");
-        LogUtils.e("split.length:" + split.length);
-//        for (int i = 0; i < split.length; i++) {
-//            LogUtils.e("split" + i + ":" + split[i]);
-//        }
-
-//        loginCode   loginPassword
-//        biz.quickLogin(Constants.taosjLoginUrl, "loginCode", "18620587647", "loginPassword", "m123456", "taosjCookie", new JsoupParseListener() {
-//            @Override
-//            public void complete() {
-//                webView.loadUrl(Constants.SelectionUrl);
-//            }
-//
-//            @Override
-//            public void onFail(String url) {
-//
-//                LogUtils.e("taosjLoginUrl quickLogin fail");
-//            }
-//        });
+        LogUtils.e("split_length:" + split.length);
+        btnForeachTitle.setOnClickListener(this);
     }
 
     public void test(final int position) {
 
-        biz.jsoupShop(split[position], position,new JsoupParseListener() {
+        biz.jsoupShop(split[position], position, new JsoupParseListener() {
             @Override
             public void complete() {
                 LogUtils.e(position + "采集~~success!!!!!!!!!!!!!!!!!!!");
                 if ((position + 1) < split.length) {
-                    test(position + 1);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvProgress.setText(((position + 1)*100 / split.length) + "%");
+                            pbProcess.setProgress((position + 1));
+                            test(position + 1);
+                        }
+                    });
                 } else {
-                    biz.upateCaijiExchageTitle();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvProgress.setText(((position + 1)*100 / split.length) + "%");
+                            pbProcess.setProgress((position + 1));
+                            biz.updateCaijiExchageTitle();
+                        }
+                    });
                 }
             }
 
@@ -102,5 +102,16 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_foreach_title:
+                pbProcess.setMax(split.length);
+                biz.updateCaijiExchageTitle();
+//                test(0);
+                break;
+        }
     }
 }
