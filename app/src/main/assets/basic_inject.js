@@ -28,7 +28,11 @@ function findSameStyle(productname){
 
 }
 
+function getDocument(){
+    var mHtml = document.getElementsByTagName('html')[0].innerHTML;
 
+    localMethod.JI_LOG("!!!!!!"+mHtml);
+}
 
 
 

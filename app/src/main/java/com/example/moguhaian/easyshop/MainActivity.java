@@ -12,9 +12,11 @@ import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
 import com.example.moguhaian.easyshop.Base.BaseActivity;
+import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Search.MainBiz;
 import com.example.moguhaian.easyshop.View.MainVu;
 import com.example.moguhaian.easyshop.fragment.SelectionFragment;
+import com.example.moguhaian.easyshop.listener.AdapterClickListener;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
 
     private String[] mainList = {"采集", "同款", "3"};
     private String[] rightList = {"4", "5", "6"};
-    private ArrayList<Fragment> fragments;
+    private ArrayList<BaseFragment> fragments;
 
 
     @Override
@@ -59,18 +61,18 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     protected void afterOnCreate() {
         fragments = vu.initViewPage(getSupportFragmentManager(), flVp);
         vu.initDrawerLayout(mainDrawerLayout, this);
-        vu.setAdapter(this, rcvMian, mainList, true, new View.OnClickListener() {
+        vu.setAdapter(this, rcvMian, mainList, true, new AdapterClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onAdapterClick(int position) {
                 mainDrawerLayout.closeDrawer(mainLeftDrawerLayout);
+                flVp.setCurrentItem(position,false);
             }
         });
-        vu.setAdapter(this, rcvRight, rightList, false, new View.OnClickListener() {
+        vu.setAdapter(this, rcvRight, rightList, false, new AdapterClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onAdapterClick(int position) {
                 mainDrawerLayout.closeDrawer(mainRightDrawerLayout);
-                ((SelectionFragment)fragments.get(0)).jsoupData(0);
-
+                fragments.get(vu.getLeftPosition()).fragmentRightClick(position);
             }
         });
     }

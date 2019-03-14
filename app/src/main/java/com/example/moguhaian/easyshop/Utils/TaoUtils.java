@@ -53,6 +53,30 @@ public class TaoUtils {
         }
     }
 
+    public static void getSameStyleUrl(String json) {
+
+        ArrayList<String> list = new ArrayList<>();
+
+        json = json.replace("\\", "");
+        json = json.replace("\"", "");
+        json = json.replace("{", "");
+        json = json.replace("}", "");
+        String regex = "samestyle:url:(.*?),similar";
+        Pattern pattern = Pattern.compile (regex);
+        Matcher matcher = pattern.matcher(json);
+        while (matcher.find()) {
+            if (!"samestyle:url:,similar".equals(matcher.group())) {
+                list.add("https://s.taobao.com" + matcher.group().replace("samestyle:url:", "").replace(",similar", "").replace("u003d", "=").replace("u0026", "&") + "&sort=sale-desc");
+                LogUtils.e(matcher.group());
+            }
+        }
+        ArrayList<String> single = getSingle(list);
+        for (int i = 0; i < single.size(); i++) {
+            single.get(i);
+            LogUtils.e(single.get(i));
+        }
+    }
+
     public static void getCookieFromWv(String json) {
 
         String cookie = " v=0";

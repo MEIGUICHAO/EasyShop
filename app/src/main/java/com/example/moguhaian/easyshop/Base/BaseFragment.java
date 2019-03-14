@@ -54,4 +54,7 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
 
     protected abstract Class<Biz> getBizClass();
 
+    public void fragmentRightClick(int position) {
+        
+    }
 }

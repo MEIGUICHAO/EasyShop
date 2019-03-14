@@ -17,14 +17,17 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.BaseVu;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.UiUtils;
 import com.example.moguhaian.easyshop.adapter.CommomRecyclerAdapter;
 import com.example.moguhaian.easyshop.adapter.CommonViewHolder;
 import com.example.moguhaian.easyshop.adapter.ViewPageAdapter;
+import com.example.moguhaian.easyshop.fragment.SameStyleFragment;
 import com.example.moguhaian.easyshop.fragment.SelectionFragment;
 import com.example.moguhaian.easyshop.fragment.Top20wFragment;
+import com.example.moguhaian.easyshop.listener.AdapterClickListener;
 import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.Transformer;
 
@@ -33,6 +36,15 @@ import java.util.ArrayList;
 public class MainVu extends BaseVu {
 
     private boolean openAnimator;
+
+    public int getLeftPosition() {
+        return leftPosition;
+    }
+
+    public int getRightPosition() {
+        return rightPosition;
+    }
+
     private int leftPosition = 0;
     private int rightPosition = 0;
     private CommomRecyclerAdapter<String> leftAdapter;
@@ -108,10 +120,10 @@ public class MainVu extends BaseVu {
         });
     }
 
-    public ArrayList<Fragment> initViewPage(FragmentManager fm, ViewPager flVp) {
-        ArrayList<Fragment> fragments = new ArrayList<>();
+    public ArrayList<BaseFragment> initViewPage(FragmentManager fm, ViewPager flVp) {
+        ArrayList<BaseFragment> fragments = new ArrayList<>();
         fragments.add(new SelectionFragment());
-        fragments.add(new Top20wFragment());
+        fragments.add(new SameStyleFragment());
         fragments.add(new Top20wFragment());
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(fm, fragments);
         flVp.setAdapter(viewPageAdapter);
@@ -136,7 +148,7 @@ public class MainVu extends BaseVu {
         openAnimator = isOpen;
     }
 
-    public void setAdapter(Activity activity, RecyclerView recyclerView, String[] strings, final boolean isLeft,final View.OnClickListener listener) {
+    public void setAdapter(Activity activity, RecyclerView recyclerView, String[] strings, final boolean isLeft,final AdapterClickListener listener) {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < strings.length; i++) {
             list.add(strings[i]);
@@ -147,7 +159,7 @@ public class MainVu extends BaseVu {
                 public void convert(CommonViewHolder holder, String str, final int position) {
                     holder.setText(R.id.tv_item, str);
                     TextView tvItem = holder.getView(R.id.tv_item);
-                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(14) : UiUtils.dp2px(10));
+                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(10) : UiUtils.dp2px(8));
                     tvItem.setTextColor((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.getC(R.color.color_white_select) : UiUtils.getC(R.color.color_white));
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -157,7 +169,7 @@ public class MainVu extends BaseVu {
                             } else {
                                 rightPosition = position;
                             }
-                            listener.onClick(v);
+                            listener.onAdapterClick(position);
                             leftAdapter.notifyDataSetChanged();
                         }
                     });
@@ -172,7 +184,7 @@ public class MainVu extends BaseVu {
                 public void convert(CommonViewHolder holder, String str, final int position) {
                     holder.setText(R.id.tv_item, str);
                     TextView tvItem = holder.getView(R.id.tv_item);
-                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(14) : UiUtils.dp2px(10));
+                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(10) : UiUtils.dp2px(8));
                     tvItem.setTextColor((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.getC(R.color.color_white_select) : UiUtils.getC(R.color.color_white));
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -182,7 +194,7 @@ public class MainVu extends BaseVu {
                             } else {
                                 rightPosition = position;
                             }
-                            listener.onClick(v);
+                            listener.onAdapterClick(position);
                             rightAdapter.notifyDataSetChanged();
                         }
                     });

@@ -4,13 +4,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.example.moguhaian.easyshop.Base.BaseFragment;
+
 import java.util.List;
 
 public class ViewPageAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> fragments;
+    private List<BaseFragment> fragments;
 
-    public ViewPageAdapter(FragmentManager fm, List<Fragment> list) {
+    public ViewPageAdapter(FragmentManager fm, List<BaseFragment> list) {
         super(fm);
         fragments = list;
     }
