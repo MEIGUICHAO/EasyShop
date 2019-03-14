@@ -22,7 +22,6 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class SelectionBiz extends BaseBiz {
 
@@ -165,9 +164,16 @@ public class SelectionBiz extends BaseBiz {
             caijiBeanDao.updateInTx(caijiBean);
         }
         List<CaijiBean> list = caijiBeanDao.queryBuilder().list();
+        String url = "";
+        String title = "";
+
         for (int i = 0; i < list.size(); i++) {
-            LogUtils.e("采集结果!!!!：" + "\n" + list.get(i).getShopUrl() + "\n" + list.get(i).getExchangeTitle());
+            url = TextUtils.isEmpty(url) ? list.get(i).getShopUrl() : url + "\n"  +list.get(i).getShopUrl();
+            title = TextUtils.isEmpty(title) ? list.get(i).getExchangeTitle() : title + "\n" + list.get(i).getExchangeTitle();
         }
+        LogUtils.e("采集结果url：" + url);
+        LogUtils.e("采集结果title：" + title);
+
     }
 
 
