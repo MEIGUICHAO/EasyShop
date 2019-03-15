@@ -32,6 +32,7 @@ import com.github.mzule.fantasyslide.SideBar;
 import com.github.mzule.fantasyslide.Transformer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainVu extends BaseVu {
 
@@ -49,6 +50,12 @@ public class MainVu extends BaseVu {
     private int rightPosition = 0;
     private CommomRecyclerAdapter<String> leftAdapter;
     private CommomRecyclerAdapter<String> rightAdapter;
+
+    public void notifyRightAdapter(List<String> datas) {
+        rightAdapter.getData().clear();
+        rightAdapter.getData().addAll(datas);
+        rightAdapter.notifyDataSetChanged();
+    }
 
     public void initDrawerLayout(final DrawerLayout drawerLayout, AppCompatActivity activity) {
 
@@ -159,7 +166,7 @@ public class MainVu extends BaseVu {
                 public void convert(CommonViewHolder holder, String str, final int position) {
                     holder.setText(R.id.tv_item, str);
                     TextView tvItem = holder.getView(R.id.tv_item);
-                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(10) : UiUtils.dp2px(8));
+                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(8) : UiUtils.dp2px(6));
                     tvItem.setTextColor((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.getC(R.color.color_white_select) : UiUtils.getC(R.color.color_white));
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -184,7 +191,7 @@ public class MainVu extends BaseVu {
                 public void convert(CommonViewHolder holder, String str, final int position) {
                     holder.setText(R.id.tv_item, str);
                     TextView tvItem = holder.getView(R.id.tv_item);
-                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(10) : UiUtils.dp2px(8));
+                    tvItem.setTextSize((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.dp2px(8) : UiUtils.dp2px(6));
                     tvItem.setTextColor((isLeft ? leftPosition == position : rightPosition == position) ? UiUtils.getC(R.color.color_white_select) : UiUtils.getC(R.color.color_white));
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override

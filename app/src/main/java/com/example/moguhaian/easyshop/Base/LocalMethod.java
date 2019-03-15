@@ -1,5 +1,6 @@
 package com.example.moguhaian.easyshop.Base;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.webkit.JavascriptInterface;
 
@@ -12,6 +13,7 @@ import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 import java.util.List;
 
+@SuppressLint({ "SetJavaScriptEnabled", "JavascriptInterface" })
 public class LocalMethod {
 
     private final MyWebView mWebView;
@@ -22,13 +24,13 @@ public class LocalMethod {
         mWebView = webView;
     }
 
-
+    @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void JI_LOG(String content) {
         LogUtils.e("JI_LOG: " + content);
     }
 
-
+    @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void slideTouch(final int left, final int width, final int bottom) {
 
@@ -45,7 +47,7 @@ public class LocalMethod {
 
     }
 
-
+    @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void insertSameStyleUrls(String name, String[] urls) {
 
@@ -74,6 +76,7 @@ public class LocalMethod {
     }
 
 
+    @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void JsLog(String string) {
         LogUtils.e(string);

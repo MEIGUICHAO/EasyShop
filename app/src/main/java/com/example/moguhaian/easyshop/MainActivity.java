@@ -1,5 +1,6 @@
 package com.example.moguhaian.easyshop;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+@SuppressLint({ "SetJavaScriptEnabled", "JavascriptInterface" })
 public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadFinishListener {
 
 
@@ -41,7 +44,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     RecyclerView rcvRight;
 
     private String[] mainList = {"采集", "同款", "3"};
-    private String[] rightList = {"4", "5", "6"};
+    private String[] rightList = {};
     private ArrayList<BaseFragment> fragments;
 
 
@@ -66,6 +69,8 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
             public void onAdapterClick(int position) {
                 mainDrawerLayout.closeDrawer(mainLeftDrawerLayout);
                 flVp.setCurrentItem(position,false);
+                fragments.get(vu.getLeftPosition()).setItems();
+                vu.notifyRightAdapter(fragments.get(vu.getLeftPosition()).getItems());
             }
         });
         vu.setAdapter(this, rcvRight, rightList, false, new AdapterClickListener() {

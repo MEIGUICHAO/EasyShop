@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -17,6 +20,28 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
     protected Biz biz;
     Unbinder unbinder;
 
+    public String[] getDataStrs() {
+        return dataStrs;
+    }
+
+    public void setDataStrs(String[] dataStrs) {
+        this.dataStrs = dataStrs;
+    }
+
+    private String[] dataStrs;
+    private ArrayList<String> items = new ArrayList<>();
+
+    public ArrayList<String> getItems() {
+        return items;
+    }
+
+    public void setItems() {
+        if (items.size() < 1 && null != dataStrs) {
+            for (int i = 0; i < dataStrs.length; i++) {
+                items.add(dataStrs[i]);
+            }
+        }
+    }
 
     @Nullable
     @Override

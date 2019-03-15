@@ -28,6 +28,20 @@ function findSameStyle(productname){
 
 }
 
+
+function test(){
+    localMethod.JI_LOG("!!!!!!test");
+}
+
+
+function login(){
+    var accounts = document.getElementById("TPL_username_1");
+    var psws = document.getElementById("TPL_password_1");
+    accounts.value ="大王派我来巡山23333:鬼鬼";
+    psws.value ="m12345678";
+}
+
+
 function getDocument(){
     var mHtml = document.getElementsByTagName('html')[0].innerHTML;
 

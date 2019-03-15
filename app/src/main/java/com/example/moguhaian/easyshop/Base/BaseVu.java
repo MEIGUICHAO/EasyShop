@@ -20,6 +20,7 @@ public abstract class BaseVu implements Vu {
         webView.setVerticalScrollBarEnabled(false);
         // 支持JS
         webSetting.setJavaScriptEnabled(true);
+//        webView.loadData("", "text/html", "UTF-8");
         webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
         webSetting.setBuiltInZoomControls(true);
         webSetting.setDisplayZoomControls(true);

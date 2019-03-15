@@ -26,6 +26,16 @@ public class BaseApplication extends Application {
 
     private static String injectJS;
 
+    public static boolean isCookieOpen() {
+        return cookieOpen;
+    }
+
+    public static void setCookieOpen(boolean open) {
+        cookieOpen = open;
+    }
+
+    private static boolean cookieOpen = false;
+
 
     private static final String BASIC_JS_PATH = "basic_inject.js";
 
