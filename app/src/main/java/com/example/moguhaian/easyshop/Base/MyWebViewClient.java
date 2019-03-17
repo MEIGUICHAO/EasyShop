@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
@@ -42,4 +41,6 @@ public class MyWebViewClient extends WebViewClient {
         super.onPageStarted(view, url, favicon);
 
     }
+
+
 }

@@ -26,8 +26,15 @@ public class LocalMethod {
 
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
-    public void JI_LOG(String content) {
-        LogUtils.e("JI_LOG: " + content);
+    public void JI_LOG(final String content) {
+        mContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LogUtils.e("JI_LOG: " + content);
+            }
+        });
+
+
     }
 
     @SuppressLint("JavascriptInterface")
