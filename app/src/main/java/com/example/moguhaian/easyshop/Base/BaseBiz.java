@@ -3,6 +3,7 @@ package com.example.moguhaian.easyshop.Base;
 import android.app.Activity;
 import android.webkit.WebView;
 
+import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
@@ -12,6 +13,7 @@ import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -105,6 +107,19 @@ public class BaseBiz {
     public int getRandomNum() {
         Random random = new Random();
         return random.nextInt(10) + 3000;
+    }
+
+    public void bubbleSort(List<SameStyleShopsBean.DataBean.ItemsBean> items) {
+        SameStyleShopsBean.DataBean.ItemsBean[] itemsBeans = new SameStyleShopsBean.DataBean.ItemsBean[items.size()];
+        for(int i=0;i<itemsBeans.length-1;i++){
+            for(int j=0;j<itemsBeans.length-1-i;j++){
+                if (Double.parseDouble(itemsBeans[j].getView_price()) > Double.parseDouble(itemsBeans[j + 1].getView_price())) {
+                    SameStyleShopsBean.DataBean.ItemsBean tmp = itemsBeans[j + 1];
+                    itemsBeans[j + 1] = itemsBeans[j];
+                    itemsBeans[j] = tmp;
+                }
+            }
+        }
     }
 
 }

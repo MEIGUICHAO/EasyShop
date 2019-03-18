@@ -44,7 +44,6 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> {
         setDataStrs(items);
         vu.initWebViewSetting(webView,getActivity());
         biz.initWebView(webView, getActivity());
-//        webView.loadUrl(url);
 
 
     }
@@ -67,7 +66,17 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> {
                 });
                 break;
             case 1:
-                biz.jsoupSameStyleJson("https://s.taobao.com/search?spm=a230r.1.14.317.30544dbcgv2lax&type=samestyle&app=i2i&rec_type=1&uniqpid=-1355953323&nid=44773059703&sort=sale-desc");
+                biz.jsoupSameStyleJson("https://s.taobao.com/search?spm=a230r.1.14.317.30544dbcgv2lax&type=samestyle&app=i2i&rec_type=1&uniqpid=-1355953323&nid=44773059703&sort=sale-desc", new JsoupParseListener() {
+                    @Override
+                    public void complete() {
+
+                    }
+
+                    @Override
+                    public void onFail(String url) {
+
+                    }
+                });
                 break;
             case 2:
                 BaseApplication.setCookieOpen(true);
