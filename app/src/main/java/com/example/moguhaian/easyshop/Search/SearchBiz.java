@@ -86,6 +86,5 @@ public class SearchBiz extends BaseBiz {
 
     public void findSameStyleUrl(final WebView wvSearch, final String name) {
         wvSearch.loadUrl(JsUtils.addJsMethod("findSameStyle(\"" + name + "\")"));
-
     }
 }

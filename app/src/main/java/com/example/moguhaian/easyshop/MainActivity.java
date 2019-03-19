@@ -19,6 +19,7 @@ import com.example.moguhaian.easyshop.View.MainVu;
 import com.example.moguhaian.easyshop.fragment.SelectionFragment;
 import com.example.moguhaian.easyshop.listener.AdapterClickListener;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
+import com.example.moguhaian.easyshop.weidge.NoScrollViewPager;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     @BindView(R.id.main_drawer_layout)
     DrawerLayout mainDrawerLayout;
     @BindView(R.id.fl_vp)
-    ViewPager flVp;
+    NoScrollViewPager flVp;
     @BindView(R.id.rcv_mian)
     RecyclerView rcvMian;
     @BindView(R.id.rcv_right)

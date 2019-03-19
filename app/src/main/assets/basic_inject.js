@@ -29,6 +29,25 @@ function findSameStyle(productname){
 }
 
 
+//小二滑动
+function slide(){
+    localMethod.JI_LOG("slide!!!!!!");
+    var slideBtn = document.getElementById("nc_1_n1z");
+    localMethod.JI_LOG("slideBtn!!!!!!");
+
+    var pos = slideBtn.getBoundingClientRect();
+    localMethod.JI_LOG("pos!!!!!!");
+    var position = "top:"+pos.top +
+      "left:"+pos.left +
+      "bottom:"+pos.bottom +
+      "right:"+pos.right +
+      "width:"+pos.width +
+      "height:"+pos.height;
+      localMethod.JI_LOG(position);
+      localMethod.slideTouch(pos.left,pos.width,pos.bottom);
+}
+
+
 function test(){
     localMethod.JI_LOG("!!!!!!test");
 }

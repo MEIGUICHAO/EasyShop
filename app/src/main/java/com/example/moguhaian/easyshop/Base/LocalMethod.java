@@ -44,7 +44,7 @@ public class LocalMethod {
         mContext.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                GestureTouchUtils.simulateScroll(mWebView, left, bottom*4, width * 3, bottom, 2000, GestureTouchUtils.HIGH);
+                GestureTouchUtils.simulateScroll(mWebView, 600, 244, 920, 244, 2000, GestureTouchUtils.HIGH);
 //                for (int i = 3 * bottom/4; i < bottom; i++) {
 //                    GestureTouchUtils.simulateScroll(mWebView, left, i, width * 3, i, 2000, GestureTouchUtils.HIGH);
 //                }

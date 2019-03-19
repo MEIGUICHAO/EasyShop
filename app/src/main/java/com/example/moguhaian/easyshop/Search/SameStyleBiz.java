@@ -57,11 +57,35 @@ public class SameStyleBiz extends BaseBiz {
                     SameStyleShopsBean sameStyleShopsBean = gson.fromJson(jsonResult, SameStyleShopsBean.class);
                     List<SameStyleShopsBean.DataBean.ItemsBean> items = sameStyleShopsBean.getData().getItems();
                     if (items.size() > 20) {
-                        String position5PayNums = items.get(5).getView_sales().replace("人付款", "");
+                        String position5PayNums = items.get(7).getView_sales().replace("人付款", "");
                         if (Integer.parseInt(position5PayNums) > 5) {
+                            String minUrl = "";
+                            String maxUrl = "";
+                            String resultUrl = "";
+                            double minPrice = 10000;
+                            double maxPrice = 0;
                             for (int i = 0; i < items.size(); i++) {
+                                int positionPayNums = Integer.parseInt(items.get(i).getView_sales().replace("人付款", ""));
+                                int commentCount = Integer.parseInt(items.get(i).getComment_count());
+                                double viewPrice = Double.parseDouble(items.get(i).getView_price());
+                                if (positionPayNums > 10 && commentCount > 2) {
+                                    if (minPrice > viewPrice) {
+                                        minPrice = viewPrice;
+                                        minUrl = "https:" + items.get(i).getDetail_url();
+                                    }
+                                    if (maxPrice < viewPrice) {
+                                        maxPrice = viewPrice;
+                                        maxUrl = "https:" + items.get(i).getDetail_url();
+                                    }
+
+                                }
 
                             }
+                            if (minPrice * 1.3 < maxPrice) {
+                                resultUrl = minUrl;
+                            }
+
+                            LogUtils.e("resultUrl:" + resultUrl + "\n" + "maxUrl:" + maxUrl);
 
                         }
                     }

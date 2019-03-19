@@ -6,7 +6,7 @@
     android:background="@android:color/transparent">
 
     <!-- 下面显示的主要是主界面内容 -->
-    <android.support.v4.view.ViewPager
+    <com.example.moguhaian.easyshop.weidge.NoScrollViewPager
         android:id="@+id/fl_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

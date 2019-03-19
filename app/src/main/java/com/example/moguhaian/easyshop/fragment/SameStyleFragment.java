@@ -27,7 +27,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> {
     MyWebView webView;
     Unbinder unbinder;
 
-    private String[] items = {"同款链接", "同款分析", "获取cookie", "清除cookie","登录"};
+    private String[] items = {"同款链接", "同款分析", "获取cookie", "清除cookie", "登录", "小二"};
 //    private String shopsUrl = "https://www.taobao.com/?spm=a21bo.2017.201857.1.5c0111d9sMj916";
     private String shopsUrl = "https://s.taobao.com/search?spm=a230r.1.14.107.7396d7b2qjum31&type=samestyle&app=i2i&rec_type=1&uniqpid=-580033393&nid=568968377828&sort=sale-desc";
     private String sameUrl = "https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-465089991&nid=569519871896&sort=sale-desc";
@@ -88,6 +88,9 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> {
             case 4:
 //                webView.loadUrl(JsUtils.addJsMethod("test()"));
                 webView.loadUrl(JsUtils.addJsMethod("login()"));
+                break;
+            case 5:
+                webView.loadUrl(JsUtils.addJsMethod("slide()"));
                 break;
         }
 
