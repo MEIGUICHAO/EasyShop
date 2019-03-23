@@ -6,8 +6,13 @@ import com.example.moguhaian.easyshop.Base.BaseApplication;
 
 public class ToastUtils {
 
-    public static void showToast(String string) {
-        Toast.makeText(BaseApplication.getInstances(), string, Toast.LENGTH_SHORT).show();
+    public static void showToast(final String string) {
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(BaseApplication.getInstances(), string, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }

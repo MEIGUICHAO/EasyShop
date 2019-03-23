@@ -15,6 +15,16 @@ public class MyWebViewClient extends WebViewClient {
 
     LoadFinishListener listener;
 
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+
+    private String userAgent = "";
+
     public MyWebViewClient(LoadFinishListener loadFinishListener) {
         listener = loadFinishListener;
     }
@@ -26,10 +36,10 @@ public class MyWebViewClient extends WebViewClient {
         if (BaseApplication.isCookieOpen()) {
             CookieManager cookieManager = CookieManager.getInstance();
             String CookieStr = cookieManager.getCookie(url);
-            SharedPreferencesUtils.putValue(Constants.Cookies, CookieStr);
+            SharedPreferencesUtils.putValue(Constants.Cookies + userAgent, CookieStr);
             ToastUtils.showToast("获取cookie成功");
-            LogUtils.e("CookieStr:" + CookieStr);
-            LogUtils.e("SharedPreferencesUtils_CookieStr:" + SharedPreferencesUtils.getValue(Constants.Cookies));
+//            LogUtils.e("CookieStr:" + CookieStr);
+            LogUtils.e("SharedPreferencesUtils_CookieStr:" + SharedPreferencesUtils.getValue(Constants.Cookies + userAgent));
         }
 
         super.onPageFinished(view, url);

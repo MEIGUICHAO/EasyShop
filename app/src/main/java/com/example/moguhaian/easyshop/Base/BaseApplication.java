@@ -3,6 +3,9 @@ package com.example.moguhaian.easyshop.Base;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import com.example.moguhaian.easyshop.DaoMaster;
 import com.example.moguhaian.easyshop.DaoSession;
@@ -38,6 +41,18 @@ public class BaseApplication extends Application {
 
 
     private static final String BASIC_JS_PATH = "basic_inject.js";
+
+    public static Handler getmHandler() {
+        return mHandler;
+    }
+
+    private static Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+        }
+    };
+
 
 
     @Override

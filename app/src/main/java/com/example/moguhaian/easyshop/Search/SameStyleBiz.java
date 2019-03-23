@@ -1,11 +1,14 @@
 package com.example.moguhaian.easyshop.Search;
 
+import android.text.TextUtils;
+
 import com.example.moguhaian.easyshop.Base.BaseBiz;
 import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.listener.JsoupParseListener;
+import com.example.moguhaian.easyshop.weidge.MyWebView;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -13,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SameStyleBiz extends BaseBiz {
+
+    private int sleepTime = 5000;
+
     public ArrayList<String> getSameStyleUrl() {
         return sameStyleUrl;
     }
@@ -21,9 +27,9 @@ public class SameStyleBiz extends BaseBiz {
         this.sameStyleUrl = sameStyleUrl;
     }
 
-    private ArrayList<String> sameStyleUrl;
+    private ArrayList<String> sameStyleUrl = new ArrayList<>();
 
-    public void jsoupSameStyleList(final String shopsUrl, final JsoupParseListener listener) {
+    public void jsoupSameStyleList(final MyWebView webView, final String shopsUrl, final String ip, final JsoupParseListener listener) {
 
         singleThreadExecutor.execute(new Runnable() {
 
@@ -32,7 +38,11 @@ public class SameStyleBiz extends BaseBiz {
             public void run() {
                 String json = null;
                 try {
-                    json = TaoUtils.getJsoupJson(shopsUrl);
+                    json = TaoUtils.getJsoupJson(webView,shopsUrl,ip);
+                    if (TextUtils.isEmpty(json)) {
+                        listener.onFail(shopsUrl);
+                        return;
+                    }
                     sameStyleUrl = TaoUtils.getSameStyleUrl(json);
                     listener.complete();
                 } catch (IOException e) {
@@ -43,16 +53,20 @@ public class SameStyleBiz extends BaseBiz {
         });
     }
 
-    public void jsoupSameStyleJson(final String url, final JsoupParseListener listener) {
+    public void jsoupSameStyleJson(final MyWebView webView, final String url, final JsoupParseListener listener) {
         singleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    String json = TaoUtils.getJsoupJson(url);
+                    String json = TaoUtils.getJsoupJson(webView,url, "");
                     String[] sameJson1 = json.split("recitem");
                     String[] sameJson2 = sameJson1[1].split(",\"style\"");
                     String jsonResult = sameJson2[0].replace("\":{\"status\"", "{\"status\"") + "}}";
-                    LogUtils.e(jsonResult);
+                    if (TextUtils.isEmpty(jsonResult)) {
+                        listener.onFail(url);
+                        return;
+                    }
+//                    LogUtils.e(jsonResult);
                     Gson gson = new Gson();
                     SameStyleShopsBean sameStyleShopsBean = gson.fromJson(jsonResult, SameStyleShopsBean.class);
                     List<SameStyleShopsBean.DataBean.ItemsBean> items = sameStyleShopsBean.getData().getItems();
@@ -84,11 +98,13 @@ public class SameStyleBiz extends BaseBiz {
                             if (minPrice * 1.3 < maxPrice) {
                                 resultUrl = minUrl;
                             }
-
                             LogUtils.e("resultUrl:" + resultUrl + "\n" + "maxUrl:" + maxUrl);
-
                         }
                     }
+                    LogUtils.e("before_sleep:");
+                    Thread.sleep(sleepTime);
+                    LogUtils.e("after_sleep:");
+                    listener.complete();
 
                 } catch (final Exception e) {
                     activity.runOnUiThread(new Runnable() {
@@ -97,6 +113,7 @@ public class SameStyleBiz extends BaseBiz {
                             ToastUtils.showToast(e.toString());
                         }
                     });
+                    listener.onFail(url);
                 }
 
             }

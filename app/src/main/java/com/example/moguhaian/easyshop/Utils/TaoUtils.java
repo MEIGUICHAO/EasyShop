@@ -1,6 +1,7 @@
 package com.example.moguhaian.easyshop.Utils;
 
 import android.text.TextUtils;
+import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Bean.TBSameStyleBean;
@@ -84,10 +85,13 @@ public class TaoUtils {
         return list;
     }
 
-    public static String getJsoupJson(String url) throws IOException {
+    public static String getJsoupJson(final WebView webView, final String url, String ip) throws IOException {
 
         String json = "";
-        Document document = Jsoup.connect(url).cookie("Cookie", SharedPreferencesUtils.getValue(Constants.Cookies)).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
+        String[] ip_port = ip.split("/");
+        Document document = Jsoup.connect(url).proxy(ip_port[0], Integer.parseInt(ip_port[1])).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
+//        Document document = Jsoup.connect(url).cookie("Cookie", SharedPreferencesUtils.getValue(Constants.Cookies)).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
+//        Document document = Jsoup.connect(url).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
 //            Document document = Jsoup.connect(url).cookie("Cookie", "t=09739d8b9ea2481146e732e9f3c29613; cookie2=18ebce4230b2907136b111c94bb425f0; v=0; _tb_token_=e7a48e5e3fefe").userAgent(Constants.UserAgentString).ignoreContentType(true).get();
         Elements script = document.getElementsByTag("script");
         for (Element ele : script) {
@@ -96,8 +100,14 @@ public class TaoUtils {
             }
         }
 
-        if (TextUtils.isEmpty(json)) {
-            LogUtils.e(document.toString());
+        if (json.contains("亲，小二正忙，滑动一下马上回来") || TextUtils.isEmpty(json)) {
+            webView.post(new Runnable() {
+                @Override
+                public void run() {
+                    webView.loadUrl(url);
+                }
+            });
+            ToastUtils.showToast("小二来了！！！");
         }
         return json;
     }

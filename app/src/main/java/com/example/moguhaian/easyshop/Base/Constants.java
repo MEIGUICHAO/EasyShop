@@ -13,6 +13,8 @@ public interface Constants {
     public String SaleDescSort = "&sort=sale-desc";
 //    public String UserAgentString = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36";
     public String UserAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36";
+//    public String UserAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36";
+
 
 
 //    https://www.taosj.com/tool/tool.htm#/optimize_market/keyword/?keyword=%E5%8F%98%E5%BD%A2&pageNo=1&pageSize=100
