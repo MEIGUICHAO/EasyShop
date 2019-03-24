@@ -46,6 +46,7 @@ public class SameStyleBiz extends BaseBiz {
                     sameStyleUrl = TaoUtils.getSameStyleUrl(json);
                     listener.complete();
                 } catch (IOException e) {
+                    LogUtils.e("IOException:" + e.toString());
                     e.printStackTrace();
                     listener.onFail(shopsUrl);
                 }
