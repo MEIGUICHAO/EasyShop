@@ -62,9 +62,18 @@ function login(){
 
 
 function getDocument(){
-    var mHtml = document.getElementsByTagName('html')[0].innerHTML;
+    var mHtml = document.getElementsByTagName('script');
 
-    localMethod.JI_LOG("!!!!!!"+mHtml);
+    for(var i=0;i<mHtml.length;i++){
+        localMethod.JI_LOG("innerText!!!!!!"+mHtml[i].innerText);
+        if(mHtml[i].innerText.indexOf("g_page_config") != -1 ){
+            localMethod.JI_LOG("script!!!!!!"+mHtml[i].innerText);
+        }
+//        if($.trim(a)){
+//
+//        }
+    }
+
 }
 
 

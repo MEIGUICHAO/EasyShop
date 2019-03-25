@@ -89,7 +89,7 @@ public class TaoUtils {
 
         String json = "";
         String[] ip_port = ip.split("/");
-        Document document = Jsoup.connect(url).proxy(ip_port[0], Integer.parseInt(ip_port[1])).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
+        Document document = Jsoup.connect(url).proxy(ip_port[0], Integer.parseInt(ip_port[1])).userAgent(Constants.UserAgentString).ignoreContentType(true).header("referer", "https://www.taobao.com/").get();
 //        Document document = Jsoup.connect(url).cookie("Cookie", SharedPreferencesUtils.getValue(Constants.Cookies)).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
 //        Document document = Jsoup.connect(url).userAgent(Constants.UserAgentString).ignoreContentType(true).get();
 //            Document document = Jsoup.connect(url).cookie("Cookie", "t=09739d8b9ea2481146e732e9f3c29613; cookie2=18ebce4230b2907136b111c94bb425f0; v=0; _tb_token_=e7a48e5e3fefe").userAgent(Constants.UserAgentString).ignoreContentType(true).get();

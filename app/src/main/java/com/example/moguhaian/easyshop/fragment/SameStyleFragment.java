@@ -97,7 +97,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> {
                 webView.loadUrl(JsUtils.addJsMethod("login()"));
                 break;
             case 5:
-                webView.loadUrl(JsUtils.addJsMethod("slide()"));
+                webView.loadUrl(JsUtils.addJsMethod("getDocument()"));
                 break;
             case 6:
                 userAgent = getResources().getStringArray(R.array.user_agent);
