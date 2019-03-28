@@ -34,7 +34,7 @@ public class BaseBiz {
 
     public void initWebView(WebView wv,Activity activity) {
         this.webView = wv;
-        webViewClient = new MyWebViewClient((LoadFinishListener) activity);
+        webViewClient = new MyWebViewClient();
         webView.setWebViewClient(webViewClient);
         this.activity = activity;
     }

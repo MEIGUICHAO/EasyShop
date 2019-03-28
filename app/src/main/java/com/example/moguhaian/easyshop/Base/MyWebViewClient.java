@@ -25,8 +25,11 @@ public class MyWebViewClient extends WebViewClient {
 
     private String userAgent = "";
 
-    public MyWebViewClient(LoadFinishListener loadFinishListener) {
-        listener = loadFinishListener;
+    public MyWebViewClient() {
+    }
+
+    public void setOnLoadFinishListener(LoadFinishListener onLoadFinishListener) {
+        listener = onLoadFinishListener;
     }
 
     @Override
@@ -43,7 +46,9 @@ public class MyWebViewClient extends WebViewClient {
         }
 
         super.onPageFinished(view, url);
-        listener.loadFinish(view,url);
+        if (null != listener) {
+            listener.loadFinish(view,url);
+        }
     }
 
     @Override

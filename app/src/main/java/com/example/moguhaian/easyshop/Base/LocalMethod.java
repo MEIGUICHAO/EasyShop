@@ -19,6 +19,16 @@ public class LocalMethod {
     private final MyWebView mWebView;
     Activity mContext;
 
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
+    }
+
+    public String json;
+
     public LocalMethod(Activity c, MyWebView webView) {
         this.mContext = c;
         mWebView = webView;
@@ -33,8 +43,12 @@ public class LocalMethod {
                 LogUtils.e("JI_LOG: " + content);
             }
         });
+    }
 
-
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void getJsonData(final String content) {
+        json = content;
     }
 
     @SuppressLint("JavascriptInterface")

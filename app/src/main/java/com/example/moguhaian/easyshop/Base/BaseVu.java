@@ -11,6 +11,24 @@ import com.example.moguhaian.easyshop.weidge.MyWebView;
 public abstract class BaseVu implements Vu {
     public View view;
 
+    public LocalMethod getLocalMethod() {
+        return localMethod;
+    }
+
+    public void setLocalMethod(LocalMethod localMethod) {
+        this.localMethod = localMethod;
+    }
+
+    private LocalMethod localMethod;
+
+    public View getView() {
+        return view;
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
     public void initWebViewSetting(MyWebView webView, Activity context) {
         WebSettings webSetting = webView.getSettings();
         // 支持获取手势焦点
@@ -64,7 +82,8 @@ public abstract class BaseVu implements Vu {
         webSetting.setSupportZoom(true);
         //支持获取手势焦点
 //        webView.setWebViewClient(new MyWebViewClient());
-        webView.addJavascriptInterface(new LocalMethod(context, webView), "localMethod");
+        localMethod = new LocalMethod(context, webView);
+        webView.addJavascriptInterface(localMethod, "localMethod");
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
 

@@ -67,11 +67,8 @@ function getDocument(){
     for(var i=0;i<mHtml.length;i++){
         localMethod.JI_LOG("innerText!!!!!!"+mHtml[i].innerText);
         if(mHtml[i].innerText.indexOf("g_page_config") != -1 ){
-            localMethod.JI_LOG("script!!!!!!"+mHtml[i].innerText);
+            localMethod.getJsonData("script!!!!!!"+mHtml[i].innerText);
         }
-//        if($.trim(a)){
-//
-//        }
     }
 
 }
