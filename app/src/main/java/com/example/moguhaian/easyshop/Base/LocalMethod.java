@@ -9,6 +9,7 @@ import com.example.moguhaian.easyshop.Bean.SamestyleBean;
 import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 import java.util.List;
@@ -18,20 +19,17 @@ public class LocalMethod {
 
     private final MyWebView mWebView;
     Activity mContext;
+    LoalMethodListener listener;
 
-    public String getJson() {
-        return json;
-    }
 
-    public void setJson(String json) {
-        this.json = json;
-    }
-
-    public String json;
 
     public LocalMethod(Activity c, MyWebView webView) {
         this.mContext = c;
         mWebView = webView;
+    }
+
+    public void setLocalMethodListener(LoalMethodListener localMethodListener) {
+        listener = localMethodListener;
     }
 
     @SuppressLint("JavascriptInterface")
@@ -48,7 +46,7 @@ public class LocalMethod {
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void getJsonData(final String content) {
-        json = content;
+        listener.afterGetJson(content);
     }
 
     @SuppressLint("JavascriptInterface")

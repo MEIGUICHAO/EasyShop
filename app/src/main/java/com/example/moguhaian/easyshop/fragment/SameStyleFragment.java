@@ -16,21 +16,24 @@ import com.example.moguhaian.easyshop.Search.SameStyleBiz;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
+import com.example.moguhaian.easyshop.Utils.TaoUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.View.SameStyleVu;
 import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
+import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
-public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> implements LoadFinishListener {
+public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> implements LoadFinishListener, LoalMethodListener {
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
@@ -62,6 +65,8 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
         biz.initWebView(webView, getActivity());
         ips = Ips.ips_dianxin.split("\n");
         biz.getWebViewClient().setOnLoadFinishListener(SameStyleFragment.this);
+        vu.getLocalMethod().setLocalMethodListener(this);
+
     }
 
 
@@ -180,10 +185,19 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     public void loadFinish(WebView wv, String url) {
         LogUtils.e("loadFinish!!!!!");
         switch (clickPosition) {
-            case 1:
+            case 0:
                 LogUtils.e("getDocument!!!");
-                LogUtils.e(vu.getLocalMethod().getJson());
                 break;
         }
+    }
+
+    @Override
+    public void afterGetJson(String json) {
+        LogUtils.e("afterGetJson!!!");
+//        ArrayList<String> sameStyleUrl = TaoUtils.getSameStyleUrl(json);
+        TaoUtils.getNameSplitResult(json);
+//        for (int i = 0; i < sameStyleUrl.size(); i++) {
+//            LogUtils.e(sameStyleUrl.get(i));
+//        }
     }
 }

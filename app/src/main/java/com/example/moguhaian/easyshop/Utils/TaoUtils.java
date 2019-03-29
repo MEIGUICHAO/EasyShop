@@ -46,18 +46,55 @@ public class TaoUtils {
         ArrayList<String> list = new ArrayList<>();
 
         json = json.replace("\\", "");
-        String regex = "classu003dHu003e(.*?)u003c";
-        Pattern pattern = Pattern.compile (regex);
-        Matcher matcher = pattern.matcher(json);
-        while (matcher.find()) {
-            list.add(matcher.group().replace("classu003dHu003e", "").replace("u003c",""));
-            LogUtils.e(matcher.group());
+        json = json.replace("\"", "");
+        json = json.replace("/", "");
+        json = json.replace("[", "");
+        json = json.replace("]", "");
+        json = json.replace("{", "");
+        json = json.replace("\"", "");
+//        String[] regex = {"classu003dHu003e", "u003cspanu003e", "u003cspanu003e","text:","rsKeywords"};
+//        String[] regex2 = {"u003c", "u003cspan classu003dHu003e", ",raw_title:", ",isHighlight",",tagList"};
+        String[] regex = {"text:","rsKeywords","classu003dHu003e", "u003cspanu003e", "u003cspanu003e"};
+        String[] regex2 = {",isHighlight", ",tagList","u003c", "u003cspan classu003dHu003e", ",raw_title:"};
+        for (int i = 0; i < regex.length; i++) {
+            String result = regexMatcher(json, regex[i], regex2[i]);
+            String[] resultSplit = result.split("@@@###");
+            for (int j = 0; j < resultSplit.length; j++) {
+                list.add(resultSplit[j]);
+            }
         }
         ArrayList<String> single = getSingle(list);
         for (int i = 0; i < single.size(); i++) {
             single.get(i);
-            LogUtils.e(single.get(i));
+            if (single.get(i).length() < 500) {
+                LogUtils.e("getNameSplitResult" + i + ":" + single.get(i) + "\nlength:" + single.get(i).length());
+            }
         }
+    }
+
+    private static String regexMatcher(String json, String regex, String regex2) {
+        String result = "";
+//        Pattern basePattern = Pattern.compile("icon:title(.*?)totalRate");
+//        Matcher baseMatcher = basePattern.matcher(json);
+//        while (baseMatcher.find()) {
+//        }
+        Pattern pattern = Pattern.compile(regex + "(.*?)" + regex2);
+        Matcher matcher = pattern.matcher(json);
+        while (matcher.find()) {
+            String replace = matcher.group().replace(regex, "").replace(regex2, "");
+//            LogUtils.e(matcher.group());
+            if (!result.contains(replace) && !result.contains("raw_title") && !result.contains("raw_title") && result.length() < 500) {
+                replace = replace.replace("u003cspan classu003dHu003e", "@@@###");
+                replace = replace.replace("u003cspanu003e", "@@@###");
+                if (regex.equals("rsKeywords")) {
+                    replace = replace.replace(",", "@@@###");
+                }
+                result = TextUtils.isEmpty(result) ? replace : result + "@@@###" + replace;
+            }
+        }
+
+        result = result.replace("@@@###@@@###", "@@@###");
+        return result;
     }
 
     public static ArrayList<String> getSameStyleUrl(String json) {
