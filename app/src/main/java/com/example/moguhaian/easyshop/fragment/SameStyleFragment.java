@@ -11,8 +11,11 @@ import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Base.Ips;
+import com.example.moguhaian.easyshop.Bean.TemSameUrlBean;
+import com.example.moguhaian.easyshop.Bean.TemTitleBean;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Search.SameStyleBiz;
+import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
@@ -24,8 +27,6 @@ import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -184,6 +185,12 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     @Override
     public void loadFinish(WebView wv, String url) {
         LogUtils.e("loadFinish!!!!!");
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
         switch (clickPosition) {
             case 0:
                 LogUtils.e("getDocument!!!");
@@ -194,10 +201,37 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     @Override
     public void afterGetJson(String json) {
         LogUtils.e("afterGetJson!!!");
-//        ArrayList<String> sameStyleUrl = TaoUtils.getSameStyleUrl(json);
-        TaoUtils.getNameSplitResult(json);
-//        for (int i = 0; i < sameStyleUrl.size(); i++) {
-//            LogUtils.e(sameStyleUrl.get(i));
-//        }
+        ArrayList<String> nameSplitResult = TaoUtils.getNameSplitResult(json);
+        for (int i = 0; i < nameSplitResult.size(); i++) {
+            try {
+                if (!GreenDaoUtils.isTemSameTitleExist(nameSplitResult.get(i))) {
+                    if (nameSplitResult.get(i).length() < 500) {
+                        TemTitleBean temTitleBean = new TemTitleBean();
+                        temTitleBean.setTitle(nameSplitResult.get(i));
+                        GreenDaoUtils.insertTemTitleBeanDao(temTitleBean);
+                        LogUtils.e("titleSplit" + i + ":" + nameSplitResult.get(i));
+
+                    }
+                }
+            } catch (Exception e) {
+                if (nameSplitResult.get(i).length() < 500) {
+                    TemTitleBean temTitleBean = new TemTitleBean();
+                    temTitleBean.setTitle(nameSplitResult.get(i));
+                    GreenDaoUtils.insertTemTitleBeanDao(temTitleBean);
+                    LogUtils.e("titleSplit" + i + ":" + nameSplitResult.get(i));
+
+                }
+            }
+
+        }
+        ArrayList<String> sameStyleUrl = TaoUtils.getSameStyleUrl(json);
+        for (int i = 0; i < sameStyleUrl.size(); i++) {
+            if (!GreenDaoUtils.isTemSameUrlExist(sameStyleUrl.get(i))) {
+                TemSameUrlBean temSameUrlBean = new TemSameUrlBean();
+                temSameUrlBean.setUrl(sameStyleUrl.get(i));
+                GreenDaoUtils.insertTemSameUrlBean(temSameUrlBean);
+                LogUtils.e(sameStyleUrl.get(i));
+            }
+        }
     }
 }

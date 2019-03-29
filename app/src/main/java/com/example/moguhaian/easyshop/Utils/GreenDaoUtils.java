@@ -4,9 +4,13 @@ import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Bean.SameStyleTitleArrayBean;
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.Bean.SamestyleBean;
+import com.example.moguhaian.easyshop.Bean.TemSameUrlBean;
+import com.example.moguhaian.easyshop.Bean.TemTitleBean;
 import com.example.moguhaian.easyshop.SameStyleTitleArrayBeanDao;
 import com.example.moguhaian.easyshop.SameSytleUrlBeanDao;
 import com.example.moguhaian.easyshop.SamestyleBeanDao;
+import com.example.moguhaian.easyshop.TemSameUrlBeanDao;
+import com.example.moguhaian.easyshop.TemTitleBeanDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +20,21 @@ public class GreenDaoUtils {
     private static SamestyleBeanDao samestyleBeanDao;
     private static SameSytleUrlBeanDao sameSytleUrlBeanDao;
     private static SameStyleTitleArrayBeanDao sameStyleTitleArrayBeanDao;
+    private static TemSameUrlBeanDao temSameUrlBeanDao;
+    private static TemTitleBeanDao temTitleBeanDao;
+
+
+    public static void initTemSameUrlBeanDao() {
+        if (null == temSameUrlBeanDao) {
+            temSameUrlBeanDao = BaseApplication.getInstances().getDaoSession().getTemSameUrlBeanDao();
+        }
+    }
+
+    public static void initTemTitleBeanDao() {
+        if (null == temTitleBeanDao) {
+            temTitleBeanDao = BaseApplication.getInstances().getDaoSession().getTemTitleBeanDao();
+        }
+    }
 
     public static void initSameStyleBeanDao() {
         if (null == samestyleBeanDao) {
@@ -55,6 +74,31 @@ public class GreenDaoUtils {
     public static void insertSameStyleUrlBean(SameSytleUrlBean bean) {
         initSameStyleUrlBeanDao();
         sameSytleUrlBeanDao.insertInTx(bean);
+    }
+
+
+    public static void insertTemSameUrlBean(TemSameUrlBean bean) {
+        initTemSameUrlBeanDao();
+        temSameUrlBeanDao.insertInTx(bean);
+    }
+
+    public static boolean isTemSameUrlExist(String url) {
+        initTemSameUrlBeanDao();
+        List<TemSameUrlBean> list = temSameUrlBeanDao.queryBuilder().where(TemSameUrlBeanDao.Properties.Url.eq(url)).list();
+        return list.size() > 0 ? true : false;
+    }
+
+
+    public static void insertTemTitleBeanDao(TemTitleBean bean) {
+        initTemSameUrlBeanDao();
+        temTitleBeanDao.insertInTx(bean);
+    }
+
+    public static boolean isTemSameTitleExist(String title) {
+        initTemTitleBeanDao();
+        List<TemTitleBean> list1 = temTitleBeanDao.queryBuilder().list();
+        List<TemTitleBean> list = temTitleBeanDao.queryBuilder().where(TemTitleBeanDao.Properties.Title.eq(title)).list();
+        return list.size() > 0 ? true : false;
     }
 
 

@@ -42,7 +42,7 @@ public class TaoUtils {
         return mJson.replace("g_page_config =", "").replace(";", "");
     }
 
-    public static void getNameSplitResult(String json) {
+    public static ArrayList<String> getNameSplitResult(String json) {
         ArrayList<String> list = new ArrayList<>();
 
         json = json.replace("\\", "");
@@ -64,12 +64,13 @@ public class TaoUtils {
             }
         }
         ArrayList<String> single = getSingle(list);
-        for (int i = 0; i < single.size(); i++) {
-            single.get(i);
-            if (single.get(i).length() < 500) {
-                LogUtils.e("getNameSplitResult" + i + ":" + single.get(i) + "\nlength:" + single.get(i).length());
-            }
-        }
+        return single;
+//        for (int i = 0; i < single.size(); i++) {
+//            single.get(i);
+//            if (single.get(i).length() < 500) {
+//                LogUtils.e("getNameSplitResult" + i + ":" + single.get(i) + "\nlength:" + single.get(i).length());
+//            }
+//        }
     }
 
     private static String regexMatcher(String json, String regex, String regex2) {
@@ -110,8 +111,13 @@ public class TaoUtils {
         Matcher matcher = pattern.matcher(json);
         while (matcher.find()) {
             if (!"samestyle:url:,similar".equals(matcher.group())) {
-                list.add("https://s.taobao.com" + matcher.group().replace("samestyle:url:", "").replace(",similar", "").replace("u003d", "=").replace("u0026", "&") + "&sort=sale-desc");
-                LogUtils.e(matcher.group());
+                String url = "https://s.taobao.com" + matcher.group().replace("samestyle:url:", "").replace(",similar", "").replace("u003d", "=").replace("u0026", "&");
+                try {
+                    String[] urlSplit = url.split("&nid");
+                    list.add(urlSplit[0] + "&sort=sale-desc");
+                } catch (Exception e) {
+                    LogUtils.e("urlsplit_Exception:" + e.toString());
+                }
             }
         }
         ArrayList<String> single = getSingle(list);
