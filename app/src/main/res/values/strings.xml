@@ -26,4 +26,16 @@
         <item>Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)</item>
     </string-array>
 
+    <string-array name="page_index">
+        <item>s=44</item>
+        <!--<item>s=88</item>-->
+        <!--<item>s=132</item>-->
+        <!--<item>s=176</item>-->
+        <!--<item>s=220</item>-->
+        <!--<item>s=264</item>-->
+        <!--<item>s=308</item>-->
+        <!--<item>s=352</item>-->
+        <!--<item>s=396</item>-->
+    </string-array>
+
 </resources>

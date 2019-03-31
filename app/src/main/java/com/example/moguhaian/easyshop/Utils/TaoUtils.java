@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Base.Constants;
+import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
 import com.example.moguhaian.easyshop.Bean.TBSameStyleBean;
 import com.google.gson.Gson;
 
@@ -60,7 +61,9 @@ public class TaoUtils {
             String result = regexMatcher(json, regex[i], regex2[i]);
             String[] resultSplit = result.split("@@@###");
             for (int j = 0; j < resultSplit.length; j++) {
-                list.add(resultSplit[j]);
+                if (resultSplit[j].length() < 500) {
+                    list.add(resultSplit[j]);
+                }
             }
         }
         ArrayList<String> single = getSingle(list);
@@ -121,11 +124,11 @@ public class TaoUtils {
             }
         }
         ArrayList<String> single = getSingle(list);
-        for (int i = 0; i < single.size(); i++) {
-            single.get(i);
-            LogUtils.e(single.get(i));
-        }
-        return list;
+//        for (int i = 0; i < single.size(); i++) {
+//            single.get(i);
+//            LogUtils.e(single.get(i));
+//        }
+        return single;
     }
 
     public static String getJsoupJson(final WebView webView, final String url, String ip) throws IOException {
@@ -177,7 +180,7 @@ public class TaoUtils {
     }
 
 
-    private static ArrayList<String> getSingle(ArrayList list) {
+    public static ArrayList<String> getSingle(ArrayList list) {
         ArrayList tempList = new ArrayList();                    //1,创建新集合
         Iterator it = list.iterator();                            //2,根据传入的集合(老集合)获取迭代器
 
@@ -190,4 +193,122 @@ public class TaoUtils {
 
         return tempList;
     }
+
+
+    public static String getInitShop(String json) {
+        String resultUrl = "";
+        String[] sameJson1 = json.split("recitem");
+        String[] sameJson2 = sameJson1[1].split(",\"style\"");
+        String jsonResult = sameJson2[0].replace("\":{\"status\"", "{\"status\"") + "}}";
+        Gson gson = new Gson();
+        SameStyleShopsBean sameStyleShopsBean = gson.fromJson(jsonResult, SameStyleShopsBean.class);
+        List<SameStyleShopsBean.DataBean.ItemsBean> items = sameStyleShopsBean.getData().getItems();
+        if (items.size() > 20) {
+            String position5PayNums = items.get(7).getView_sales().replace("人付款", "");
+            if (Integer.parseInt(position5PayNums) > 5) {
+                String minUrl = "";
+                String maxUrl = "";
+                double minPrice = 10000;
+                double maxPrice = 0;
+                for (int i = 0; i < items.size(); i++) {
+                    int positionPayNums = Integer.parseInt(items.get(i).getView_sales().replace("人付款", ""));
+                    int commentCount = Integer.parseInt(items.get(i).getComment_count());
+                    double viewPrice = Double.parseDouble(items.get(i).getView_price());
+                    if (positionPayNums > 10 && commentCount > 2) {
+                        if (minPrice > viewPrice) {
+                            minPrice = viewPrice;
+                            minUrl = "https:" + items.get(i).getDetail_url();
+                        }
+                        if (maxPrice < viewPrice) {
+                            maxPrice = viewPrice;
+                            maxUrl = "https:" + items.get(i).getDetail_url();
+                        }
+
+                    }
+
+                }
+                if (minPrice * 1.1 < maxPrice) {
+                    resultUrl = minUrl;
+                }
+                LogUtils.e("resultUrl:" + resultUrl + "\n" + "maxUrl:" + maxUrl);
+            }
+        }
+        return resultUrl;
+    }
+
+
+    public static int[] getRandom(int min, int max, int n){
+        if (n > max) {
+            n = max - 1;
+        }
+        if (n > (max - min + 1) || max < min) {
+            return null;
+        }
+        int[] result = new int[n];
+        int count = 0;
+        while(count < n) {
+            int num = (int) (Math.random() * (max - min)) + min;
+            boolean flag = true;
+            for (int j = 0; j < n; j++) {
+                if(num == result[j]){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                result[count] = num;
+                count++;
+            }
+        }
+        return result;
+    }
+
+
+
+
+    public static float levenshtein(String str1,String str2) {
+        //计算两个字符串的长度。
+        int len1 = str1.length();
+        int len2 = str2.length();
+        //建立上面说的数组，比字符长度大一个空间
+        int[][] dif = new int[len1 + 1][len2 + 1];
+        //赋初值，步骤B。
+        for (int a = 0; a <= len1; a++) {
+            dif[a][0] = a;
+        }
+        for (int a = 0; a <= len2; a++) {
+            dif[0][a] = a;
+        }
+        //计算两个字符是否一样，计算左上的值
+        int temp;
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+                    temp = 0;
+                } else {
+                    temp = 1;
+                }
+                //取三个值中最小的
+                dif[i][j] = min(dif[i - 1][j - 1] + temp, dif[i][j - 1] + 1,
+                        dif[i - 1][j] + 1);
+            }
+        }
+        //取数组右下角的值，同样不同位置代表不同字符串的比较
+        //计算相似度
+        float similarity =1 - (float) dif[len1][len2] / Math.max(str1.length(), str2.length());
+        return similarity;
+    }
+
+
+    //得到最小值
+    private static int min(int... is) {
+        int min = Integer.MAX_VALUE;
+        for (int i : is) {
+            if (min > i) {
+                min = i;
+            }
+        }
+        return min;
+    }
+
 }
