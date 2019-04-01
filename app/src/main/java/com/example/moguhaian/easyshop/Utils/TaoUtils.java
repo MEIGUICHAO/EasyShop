@@ -208,6 +208,8 @@ public class TaoUtils {
             if (Integer.parseInt(position5PayNums) > 5) {
                 String minUrl = "";
                 String maxUrl = "";
+                String shopPhoto = "";
+                String shoptitle = "";
                 double minPrice = 10000;
                 double maxPrice = 0;
                 for (int i = 0; i < items.size(); i++) {
@@ -218,6 +220,8 @@ public class TaoUtils {
                         if (minPrice > viewPrice) {
                             minPrice = viewPrice;
                             minUrl = "https:" + items.get(i).getDetail_url();
+                            shopPhoto = items.get(i).getPic_url();
+                            shoptitle = items.get(i).getTitle();
                         }
                         if (maxPrice < viewPrice) {
                             maxPrice = viewPrice;
@@ -228,7 +232,9 @@ public class TaoUtils {
 
                 }
                 if (minPrice * 1.5 < maxPrice) {
-                    resultUrl = minUrl;
+                    if (!TextUtils.isEmpty(minUrl)) {
+                        resultUrl = minUrl + "###" + shopPhoto + "###" + shoptitle;
+                    }
                 }
                 LogUtils.e("resultUrl:" + resultUrl + "\n" + "maxUrl:" + maxUrl);
             }
