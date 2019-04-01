@@ -1,9 +1,14 @@
 package com.example.moguhaian.easyshop.Search;
 
+import android.app.Activity;
 import android.text.TextUtils;
+import android.webkit.WebView;
 
+import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseBiz;
+import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
+import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
@@ -18,109 +23,165 @@ import java.util.List;
 public class SameStyleBiz extends BaseBiz {
 
     private int sleepTime = 5000;
+    private String[] sortTypeArray;
 
-    public ArrayList<String> getSameStyleUrl() {
-        return sameStyleUrl;
+    public int getSleepTime() {
+        return sleepTime;
     }
 
-    public void setSameStyleUrl(ArrayList<String> sameStyleUrl) {
-        this.sameStyleUrl = sameStyleUrl;
+    public void setSleepTime(int sleepTime) {
+        this.sleepTime = sleepTime;
     }
 
-    private ArrayList<String> sameStyleUrl = new ArrayList<>();
+    public ArrayList<String> getSameUrlList() {
+        return sameUrlList;
+    }
 
-    public void jsoupSameStyleList(final MyWebView webView, final String shopsUrl, final String ip, final JsoupParseListener listener) {
+    public void setSameUrlList(ArrayList<String> sameUrlList) {
+        this.sameUrlList = sameUrlList;
+    }
 
-        singleThreadExecutor.execute(new Runnable() {
+    public ArrayList<String> getTitleList() {
+        return titleList;
+    }
+
+    public void setTitleList(ArrayList<String> titleList) {
+        this.titleList = titleList;
+    }
+
+    public boolean isGetSameUrlBegin() {
+        return isGetSameUrlBegin;
+    }
+
+    public void setGetSameUrlBegin(boolean getSameUrlBegin) {
+        isGetSameUrlBegin = getSameUrlBegin;
+    }
+
+    public ArrayList<String> getMinUrlList() {
+        return minUrlList;
+    }
+
+    public void setMinUrlList(ArrayList<String> minUrlList) {
+        this.minUrlList = minUrlList;
+    }
+
+    public int getFunctionIndex() {
+        return functionIndex;
+    }
+
+    public void setFunctionIndex(int functionIndex) {
+        this.functionIndex = functionIndex;
+    }
+
+    public int getSameUrlIndex() {
+        return sameUrlIndex;
+    }
+
+    public void setSameUrlIndex(int sameUrlIndex) {
+        this.sameUrlIndex = sameUrlIndex;
+    }
+
+    private ArrayList<String> sameUrlList = new ArrayList<>();
+    private ArrayList<String> titleList = new ArrayList<>();
+    private boolean isGetSameUrlBegin = false;
+    private ArrayList<String> minUrlList = new ArrayList<>();
+    private int functionIndex = -1;
+    private int sameUrlIndex = -1;
+    private String[] pageArray;
+    private int pageIndedx = 0;
+    private int srotTypeIndex = 0;
 
 
+    @Override
+    public void initWebView(WebView wv, Activity activity) {
+        super.initWebView(wv, activity);
+        pageArray = activity.getResources().getStringArray(R.array.page_index);
+        sortTypeArray = activity.getResources().getStringArray(R.array.sort_type);
+    }
+
+    public void getSameUrl(String json, final String url) {
+        isGetSameUrlBegin = true;
+        ArrayList<String> nameSplitResult = TaoUtils.getNameSplitResult(json);
+        titleList.addAll(nameSplitResult);
+        titleList = TaoUtils.getSingle(titleList);
+//        for (int i = 0; i < nameSplitResult.size(); i++) {
+//            try {
+//                if (!GreenDaoUtils.isTemSameTitleExist(nameSplitResult.get(i))) {
+//                    if (nameSplitResult.get(i).length() < 500) {
+//                        TemTitleBean temTitleBean = new TemTitleBean();
+//                        temTitleBean.setTitle(nameSplitResult.get(i));
+//                        GreenDaoUtils.insertTemTitleBeanDao(temTitleBean);
+//                        LogUtils.e("titleSplit" + i + ":" + nameSplitResult.get(i));
+//
+//                    }
+//                }
+//            } catch (Exception e) {
+//                if (nameSplitResult.get(i).length() < 500) {
+//                    TemTitleBean temTitleBean = new TemTitleBean();
+//                    temTitleBean.setTitle(nameSplitResult.get(i));
+//                    GreenDaoUtils.insertTemTitleBeanDao(temTitleBean);
+//                    LogUtils.e("titleSplit" + i + ":" + nameSplitResult.get(i));
+//
+//                }
+//            }
+//
+//        }
+        ArrayList<String> sameStyleUrl = TaoUtils.getSameStyleUrl(json);
+        sameUrlList.addAll(sameStyleUrl);
+        sameUrlList = TaoUtils.getSingle(sameUrlList);
+//        for (int i = 0; i < sameStyleUrl.size(); i++) {
+//            if (!GreenDaoUtils.isTemSameUrlExist(sameStyleUrl.get(i))) {
+//                TemSameUrlBean temSameUrlBean = new TemSameUrlBean();
+//                temSameUrlBean.setUrl(sameStyleUrl.get(i));
+//                GreenDaoUtils.insertTemSameUrlBean(temSameUrlBean);
+//                LogUtils.e(sameStyleUrl.get(i));
+//            }
+//        }
+
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                String json = null;
-                try {
-                    json = TaoUtils.getJsoupJson(webView,shopsUrl,ip);
-                    if (TextUtils.isEmpty(json)) {
-                        listener.onFail(shopsUrl);
-                        return;
+                if (pageIndedx < pageArray.length) {
+                    String loadUrl = url + "&" + sortTypeArray[srotTypeIndex] + "&" + pageArray[pageIndedx];
+                    LogUtils.e("loadUrl:" + loadUrl);
+                    webView.loadUrl(loadUrl);
+                    pageIndedx++;
+                } else {
+                    pageIndedx = 0;
+                    srotTypeIndex++;
+                    if (srotTypeIndex < sortTypeArray.length) {
+                        String loadUrl = url + "&" + sortTypeArray[srotTypeIndex] + "&" + pageArray[pageIndedx];
+                        pageIndedx++;
+                        LogUtils.e("loadUrl:" + loadUrl);
+                        webView.loadUrl(loadUrl);
+                    } else {
+                        isGetSameUrlBegin = false;
                     }
-                    sameStyleUrl = TaoUtils.getSameStyleUrl(json);
-                    listener.complete();
-                } catch (IOException e) {
-                    LogUtils.e("IOException:" + e.toString());
-                    e.printStackTrace();
-                    listener.onFail(shopsUrl);
-                }
-            }
-        });
-    }
-
-    public void jsoupSameStyleJson(final MyWebView webView, final String url, final JsoupParseListener listener) {
-        singleThreadExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String json = TaoUtils.getJsoupJson(webView,url, "");
-                    String[] sameJson1 = json.split("recitem");
-                    String[] sameJson2 = sameJson1[1].split(",\"style\"");
-                    String jsonResult = sameJson2[0].replace("\":{\"status\"", "{\"status\"") + "}}";
-                    if (TextUtils.isEmpty(jsonResult)) {
-                        listener.onFail(url);
-                        return;
-                    }
-//                    LogUtils.e(jsonResult);
-                    Gson gson = new Gson();
-                    SameStyleShopsBean sameStyleShopsBean = gson.fromJson(jsonResult, SameStyleShopsBean.class);
-                    List<SameStyleShopsBean.DataBean.ItemsBean> items = sameStyleShopsBean.getData().getItems();
-                    if (items.size() > 20) {
-                        String position5PayNums = items.get(7).getView_sales().replace("人付款", "");
-                        if (Integer.parseInt(position5PayNums) > 5) {
-                            String minUrl = "";
-                            String maxUrl = "";
-                            String resultUrl = "";
-                            double minPrice = 10000;
-                            double maxPrice = 0;
-                            for (int i = 0; i < items.size(); i++) {
-                                int positionPayNums = Integer.parseInt(items.get(i).getView_sales().replace("人付款", ""));
-                                int commentCount = Integer.parseInt(items.get(i).getComment_count());
-                                double viewPrice = Double.parseDouble(items.get(i).getView_price());
-                                if (positionPayNums > 10 && commentCount > 2) {
-                                    if (minPrice > viewPrice) {
-                                        minPrice = viewPrice;
-                                        minUrl = "https:" + items.get(i).getDetail_url();
-                                    }
-                                    if (maxPrice < viewPrice) {
-                                        maxPrice = viewPrice;
-                                        maxUrl = "https:" + items.get(i).getDetail_url();
-                                    }
-
-                                }
-
-                            }
-                            if (minPrice * 1.3 < maxPrice) {
-                                resultUrl = minUrl;
-                            }
-                            LogUtils.e("resultUrl:" + resultUrl + "\n" + "maxUrl:" + maxUrl);
-                        }
-                    }
-                    LogUtils.e("before_sleep:");
-                    Thread.sleep(sleepTime);
-                    LogUtils.e("after_sleep:");
-                    listener.complete();
-
-                } catch (final Exception e) {
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtils.showToast(e.toString());
-                        }
-                    });
-                    listener.onFail(url);
                 }
 
             }
-        });
+        }, Constants.DELAY_TIME);
     }
 
+    public void getInitShop(String json) {
+        sameUrlIndex++;
+        String initShop = TaoUtils.getInitShop(json);
+        if (!TextUtils.isEmpty(initShop)) {
+            minUrlList.add(initShop);
+        }
+        if (sameUrlIndex < sameUrlList.size()) {
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
 
-
+                    try {
+                        webView.loadUrl(sameUrlList.get(sameUrlIndex));
+                        LogUtils.e("size:" + sameUrlList.size() + ",progress:" + sameUrlIndex);
+                    } catch (Exception e) {
+                        LogUtils.e("Exception:" + e.toString());
+                    }
+                }
+            }, Constants.DELAY_TIME);
+        }
+    }
 }

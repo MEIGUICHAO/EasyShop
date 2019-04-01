@@ -28,14 +28,20 @@
 
     <string-array name="page_index">
         <item>s=44</item>
-        <!--<item>s=88</item>-->
-        <!--<item>s=132</item>-->
-        <!--<item>s=176</item>-->
-        <!--<item>s=220</item>-->
-        <!--<item>s=264</item>-->
-        <!--<item>s=308</item>-->
-        <!--<item>s=352</item>-->
-        <!--<item>s=396</item>-->
+        <item>s=88</item>
+        <item>s=132</item>
+        <item>s=176</item>
+        <item>s=220</item>
+        <item>s=264</item>
+        <item>s=308</item>
+        <item>s=352</item>
+        <item>s=396</item>
+    </string-array>
+
+    <string-array name="sort_type">
+        <item>sort=suggest</item>
+        <item>sort=sale-desc</item>
+        <item>sort=renqi</item>
     </string-array>
 
 </resources>

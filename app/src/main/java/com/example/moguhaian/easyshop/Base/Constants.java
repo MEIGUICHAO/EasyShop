@@ -32,7 +32,7 @@ public interface Constants {
 //    店查查 词可查关键词
 
 
-    int DELAY_TIME = 2400;
+    int DELAY_TIME = 1200;
 
 
 

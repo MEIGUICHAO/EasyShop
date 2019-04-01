@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
+import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
@@ -22,7 +23,7 @@ import java.util.concurrent.Executors;
 public class BaseBiz {
     public ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
 
-    WebView webView;
+    public WebView webView;
 
     public Activity activity;
 

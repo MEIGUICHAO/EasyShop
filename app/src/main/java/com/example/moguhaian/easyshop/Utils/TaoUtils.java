@@ -227,7 +227,7 @@ public class TaoUtils {
                     }
 
                 }
-                if (minPrice * 1.1 < maxPrice) {
+                if (minPrice * 1.5 < maxPrice) {
                     resultUrl = minUrl;
                 }
                 LogUtils.e("resultUrl:" + resultUrl + "\n" + "maxUrl:" + maxUrl);
