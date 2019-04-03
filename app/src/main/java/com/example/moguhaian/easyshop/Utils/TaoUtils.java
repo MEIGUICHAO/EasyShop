@@ -197,46 +197,48 @@ public class TaoUtils {
 
     public static String getInitShop(String json) {
         String resultUrl = "";
-        String[] sameJson1 = json.split("recitem");
-        String[] sameJson2 = sameJson1[1].split(",\"style\"");
-        String jsonResult = sameJson2[0].replace("\":{\"status\"", "{\"status\"") + "}}";
-        Gson gson = new Gson();
-        SameStyleShopsBean sameStyleShopsBean = gson.fromJson(jsonResult, SameStyleShopsBean.class);
-        List<SameStyleShopsBean.DataBean.ItemsBean> items = sameStyleShopsBean.getData().getItems();
-        if (items.size() > 20) {
-            String position5PayNums = items.get(7).getView_sales().replace("人付款", "");
-            if (Integer.parseInt(position5PayNums) > 5) {
-                String minUrl = "";
-                String maxUrl = "";
-                String shopPhoto = "";
-                String shoptitle = "";
-                double minPrice = 10000;
-                double maxPrice = 0;
-                for (int i = 0; i < items.size(); i++) {
-                    int positionPayNums = Integer.parseInt(items.get(i).getView_sales().replace("人付款", ""));
-                    int commentCount = Integer.parseInt(items.get(i).getComment_count());
-                    double viewPrice = Double.parseDouble(items.get(i).getView_price());
-                    if (positionPayNums > 10 && commentCount > 2) {
-                        if (minPrice > viewPrice) {
-                            minPrice = viewPrice;
-                            minUrl = "https:" + items.get(i).getDetail_url();
-                            shopPhoto = items.get(i).getPic_url();
-                            shoptitle = items.get(i).getTitle();
-                        }
-                        if (maxPrice < viewPrice) {
-                            maxPrice = viewPrice;
-                            maxUrl = "https:" + items.get(i).getDetail_url();
+        if (!TextUtils.isEmpty(json)) {
+            String[] sameJson1 = json.split("recitem");
+            String[] sameJson2 = sameJson1[1].split(",\"style\"");
+            String jsonResult = sameJson2[0].replace("\":{\"status\"", "{\"status\"") + "}}";
+            Gson gson = new Gson();
+            SameStyleShopsBean sameStyleShopsBean = gson.fromJson(jsonResult, SameStyleShopsBean.class);
+            List<SameStyleShopsBean.DataBean.ItemsBean> items = sameStyleShopsBean.getData().getItems();
+            if (items.size() > 20) {
+                String position5PayNums = items.get(7).getView_sales().replace("人付款", "");
+                if (Integer.parseInt(position5PayNums) > 5) {
+                    String minUrl = "";
+                    String maxUrl = "";
+                    String shopPhoto = "";
+                    String shoptitle = "";
+                    double minPrice = 10000;
+                    double maxPrice = 0;
+                    for (int i = 0; i < items.size(); i++) {
+                        int positionPayNums = Integer.parseInt(items.get(i).getView_sales().replace("人付款", ""));
+                        int commentCount = Integer.parseInt(items.get(i).getComment_count());
+                        double viewPrice = Double.parseDouble(items.get(i).getView_price());
+                        if (positionPayNums > 10 && commentCount > 2) {
+                            if (minPrice > viewPrice) {
+                                minPrice = viewPrice;
+                                minUrl = "https:" + items.get(i).getDetail_url();
+                                shopPhoto = items.get(i).getPic_url();
+                                shoptitle = items.get(i).getTitle();
+                            }
+                            if (maxPrice < viewPrice) {
+                                maxPrice = viewPrice;
+                                maxUrl = "https:" + items.get(i).getDetail_url();
+                            }
+
                         }
 
                     }
-
-                }
-                if (minPrice * 1.5 < maxPrice) {
-                    if (!TextUtils.isEmpty(minUrl)) {
-                        resultUrl = minUrl + "###" + shopPhoto + "###" + shoptitle;
+                    if (minPrice * 1.5 < maxPrice) {
+                        if (!TextUtils.isEmpty(minUrl)) {
+                            resultUrl = minUrl + "###" + shopPhoto + "###" + shoptitle;
+                        }
                     }
+                    LogUtils.e("resultUrl:" + resultUrl + "\n" + "maxUrl:" + maxUrl);
                 }
-                LogUtils.e("resultUrl:" + resultUrl + "\n" + "maxUrl:" + maxUrl);
             }
         }
         return resultUrl;
