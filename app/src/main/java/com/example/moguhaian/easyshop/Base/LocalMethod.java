@@ -8,6 +8,7 @@ import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.Bean.SamestyleBean;
 import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
+import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
@@ -51,17 +52,36 @@ public class LocalMethod {
 
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
-    public void slideTouch(final int left, final int width, final int bottom) {
+    public void slideTouch() {
 
-        mContext.runOnUiThread(new Runnable() {
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                GestureTouchUtils.simulateScroll(mWebView, 600, 244, 920, 244, 2000, GestureTouchUtils.HIGH);
-//                for (int i = 3 * bottom/4; i < bottom; i++) {
-//                    GestureTouchUtils.simulateScroll(mWebView, left, i, width * 3, i, 2000, GestureTouchUtils.HIGH);
-//                }
+                GestureTouchUtils.simulateScroll(mWebView, 424, 175, 671, 173, 500, GestureTouchUtils.HIGH);
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        GestureTouchUtils.simulateClick(mWebView, 545, 170);
+                        BaseApplication.getmHandler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mWebView.loadUrl(JsUtils.addJsMethod("getDocument()"));
+                            }
+                        }, 3000);
+
+                    }
+                }, 3000);
             }
-        });
+        }, 3000);
+//        mContext.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+////                for (int i = 3 * bottom/4; i < bottom; i++) {
+////                    GestureTouchUtils.simulateScroll(mWebView, left, i, width * 3, i, 2000, GestureTouchUtils.HIGH);
+////                }
+//            }
+//        });
 
 
     }

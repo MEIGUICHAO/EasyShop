@@ -35,7 +35,7 @@ public class GreenDaoUtils {
 
     public static void insertResultBean(ResultBean bean) {
         initResultBeanDao();
-        resultBeanDao.insert(bean);
+        resultBeanDao.insertInTx(bean);
     }
 
     public static boolean isSearchResultNameExit(String lvResult, String shopName) {
@@ -46,6 +46,7 @@ public class GreenDaoUtils {
 
     public static List<ResultBean> getResultList(String lvResult, String shopName) {
         initResultBeanDao();
+//        return resultBeanDao.queryBuilder().list();
         return resultBeanDao.queryBuilder().where(ResultBeanDao.Properties.LvResult.eq(lvResult), ResultBeanDao.Properties.ShopName.eq(shopName)).list();
     }
 

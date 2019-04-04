@@ -232,7 +232,7 @@ public class TaoUtils {
                         }
 
                     }
-                    if (minPrice * 1.1 < maxPrice) {
+                    if (minPrice * 1.5 < maxPrice) {
                         if (!TextUtils.isEmpty(minUrl)) {
                             resultUrl = minUrl + "###" + shopPhoto + "###" + shoptitle;
                         }

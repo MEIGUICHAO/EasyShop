@@ -7,18 +7,11 @@ import android.webkit.WebView;
 import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseBiz;
 import com.example.moguhaian.easyshop.Base.Constants;
-import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
-import com.example.moguhaian.easyshop.Utils.ToastUtils;
-import com.example.moguhaian.easyshop.listener.JsoupParseListener;
-import com.example.moguhaian.easyshop.weidge.MyWebView;
-import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SameStyleBiz extends BaseBiz {
 
@@ -104,39 +97,9 @@ public class SameStyleBiz extends BaseBiz {
         ArrayList<String> nameSplitResult = TaoUtils.getNameSplitResult(json);
         titleList.addAll(nameSplitResult);
         titleList = TaoUtils.getSingle(titleList);
-//        for (int i = 0; i < nameSplitResult.size(); i++) {
-//            try {
-//                if (!GreenDaoUtils.isTemSameTitleExist(nameSplitResult.get(i))) {
-//                    if (nameSplitResult.get(i).length() < 500) {
-//                        TemTitleBean temTitleBean = new TemTitleBean();
-//                        temTitleBean.setTitle(nameSplitResult.get(i));
-//                        GreenDaoUtils.insertTemTitleBeanDao(temTitleBean);
-//                        LogUtils.e("titleSplit" + i + ":" + nameSplitResult.get(i));
-//
-//                    }
-//                }
-//            } catch (Exception e) {
-//                if (nameSplitResult.get(i).length() < 500) {
-//                    TemTitleBean temTitleBean = new TemTitleBean();
-//                    temTitleBean.setTitle(nameSplitResult.get(i));
-//                    GreenDaoUtils.insertTemTitleBeanDao(temTitleBean);
-//                    LogUtils.e("titleSplit" + i + ":" + nameSplitResult.get(i));
-//
-//                }
-//            }
-//
-//        }
         ArrayList<String> sameStyleUrl = TaoUtils.getSameStyleUrl(json);
         sameUrlList.addAll(sameStyleUrl);
         sameUrlList = TaoUtils.getSingle(sameUrlList);
-//        for (int i = 0; i < sameStyleUrl.size(); i++) {
-//            if (!GreenDaoUtils.isTemSameUrlExist(sameStyleUrl.get(i))) {
-//                TemSameUrlBean temSameUrlBean = new TemSameUrlBean();
-//                temSameUrlBean.setUrl(sameStyleUrl.get(i));
-//                GreenDaoUtils.insertTemSameUrlBean(temSameUrlBean);
-//                LogUtils.e(sameStyleUrl.get(i));
-//            }
-//        }
 
         BaseApplication.getmHandler().postDelayed(new Runnable() {
             @Override
@@ -163,17 +126,16 @@ public class SameStyleBiz extends BaseBiz {
         }, Constants.DELAY_TIME);
     }
 
-    public void getInitShop(String json) {
-        sameUrlIndex++;
-        String initShop = TaoUtils.getInitShop(json);
-        if (!TextUtils.isEmpty(initShop)) {
-            minUrlList.add(initShop);
-        }
-        if (sameUrlIndex < sameUrlList.size()) {
-            BaseApplication.getmHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
+    public void getInitShop(final String json) {
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sameUrlIndex++;
+                String initShop = TaoUtils.getInitShop(json);
+                if (!TextUtils.isEmpty(initShop)) {
+                    minUrlList.add(initShop);
+                }
+                if (sameUrlIndex < sameUrlList.size()) {
                     try {
                         webView.loadUrl(sameUrlList.get(sameUrlIndex));
                         LogUtils.e("size:" + sameUrlList.size() + ",progress:" + sameUrlIndex);
@@ -181,7 +143,7 @@ public class SameStyleBiz extends BaseBiz {
                         LogUtils.e("Exception:" + e.toString());
                     }
                 }
-            }, Constants.DELAY_TIME);
-        }
+            }
+        }, Constants.DELAY_TIME);
     }
 }

@@ -8,25 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Base.Ips;
+import com.example.moguhaian.easyshop.Base.Shops;
 import com.example.moguhaian.easyshop.Bean.ResultBean;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Search.SameStyleBiz;
+import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
-import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.View.SameStyleVu;
-import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -39,10 +37,10 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     MyWebView webView;
     Unbinder unbinder;
 
-    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "小二", "userAgent", "关闭cookie", "下一个"};
+    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新"};
     //    private String shopsUrl = "https://www.taobao.com/?spm=a21bo.2017.201857.1.5c0111d9sMj916";
     private String shopsUrl = "https://s.taobao.com/search?spm=a230r.1.14.107.7396d7b2qjum31&type=samestyle&app=i2i&rec_type=1&uniqpid=-580033393&nid=568968377828&sort=sale-desc";
-//    private String sameUrl = "https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-465089991&nid=569519871896&sort=sale-desc";
+    //    private String sameUrl = "https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-465089991&nid=569519871896&sort=sale-desc";
     private String sameUrl = "https://s.taobao.com/search?type=samestyle&uniqpid=-465089991&sort=sale-desc";
     //        private String url = sameUrl;
     private int index;
@@ -51,7 +49,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     private String[] userAgent;
     private String[] ips;
     private int clickPosition;
-    private String shopName = " 宝宝钓鱼玩具";
+    private String shopName = Shops.shopName;
 
     //    private String url = "https://www.baidu.com/";
 
@@ -107,8 +105,6 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 //                SharedPreferencesUtils.putValue(Constants.Cookies, "");
                 break;
             case 4://母宝贝结果
-//                webView.loadUrl(JsUtils.addJsMethod("test()"));
-//                webView.loadUrl(JsUtils.addJsMethod("login()"));
                 int[] random = TaoUtils.getRandom(0, biz.getTitleList().size() - 1, biz.getMinUrlList().size() * 30);
                 String title = "";
                 String templeTitle = "";
@@ -132,7 +128,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 LogUtils.e("母宝贝结果：\n" + urlResult);
 
                 try {
-                    if (GreenDaoUtils.isSearchResultNameExit("", shopName)) {
+                    if (!GreenDaoUtils.isSearchResultNameExit(Shops.shoplv, shopName)) {
                         insertResultBean(urlResult);
                     }
                 } catch (Exception e) {
@@ -141,24 +137,22 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 
                 break;
             case 5://获取结果
-                List<ResultBean> resultList = GreenDaoUtils.getResultList("",shopName);
+                List<ResultBean> resultList = GreenDaoUtils.getResultList("", shopName);
                 String reslutStr = "";
                 for (int i = 0; i < resultList.size(); i++) {
-                    reslutStr = TextUtils.isEmpty(reslutStr) ? resultList.get(i).getRootResult() : reslutStr + "\n" + resultList.get(i).getRootResult();;
+                    reslutStr = TextUtils.isEmpty(reslutStr) ? resultList.get(i).getRootResult() : reslutStr + "\n" + resultList.get(i).getRootResult();
+                    ;
                 }
                 LogUtils.e("母宝贝结果：\n" + reslutStr);
 //                webView.loadUrl(JsUtils.addJsMethod("getDocument()"));
                 break;
-            case 6://userAgent
-                userAgent = getResources().getStringArray(R.array.user_agent);
-                if (agentIndedx < userAgent.length) {
-                    webView.getSettings().setUserAgentString(Constants.Cookies + userAgent[agentIndedx]);
-                }
-                LogUtils.e("userAgent:" + webView.getSettings().getUserAgentString());
-                webView.loadUrl(Constants.searchUrl1 + shopName + Constants.searchUrl2);
+            case 6://login
+                webView.loadUrl(JsUtils.addJsMethod("login()"));
                 break;
             case 7://关闭cookie
-                BaseApplication.setCookieOpen(false);
+                webView.loadUrl(JsUtils.addJsMethod("getDocument()"));
+//                webView.setNeedDraw(!webView.isNeedDraw());
+//                BaseApplication.setCookieOpen(false);
                 break;
             case 8://下一个
                 biz.getInitShop("");
@@ -167,6 +161,13 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 //                    agentIndedx = 0;
 //                }
 //                LogUtils.e("agentIndedx:" + agentIndedx);
+                break;
+            case 9:
+                GestureTouchUtils.simulateScroll(webView, 424, 175, 671, 173, 2000, GestureTouchUtils.HIGH);
+                break;
+            case 10:
+                GestureTouchUtils.simulateClick(webView, 545, 170);
+
                 break;
 //            try {
 ////                String address = InetAddress.getLocalHost().getHostAddress().toString();
@@ -186,7 +187,27 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
         }
         resultBean.setAdjWord(adjWord);
         resultBean.setRootResult(urlResult);
+        String[] shoplvSplit = Shops.shoplv.split("###");
         resultBean.setRootName("");
+        if (shoplvSplit.length > 0) {
+            resultBean.setLv1(shoplvSplit[0]);
+        }
+        if (shoplvSplit.length > 1) {
+            resultBean.setLv2(shoplvSplit[1]);
+        }
+        if (shoplvSplit.length > 2) {
+            resultBean.setLv3(shoplvSplit[2]);
+        }
+        if (shoplvSplit.length > 3) {
+            resultBean.setLv4(shoplvSplit[3]);
+        }
+        if (shoplvSplit.length > 4) {
+            resultBean.setLv5(shoplvSplit[4]);
+        }
+        resultBean.setLvResult(Shops.shoplv);
+
+        GreenDaoUtils.insertResultBean(resultBean);
+
     }
 
 
@@ -245,7 +266,6 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 break;
         }
     }
-
 
 
 }

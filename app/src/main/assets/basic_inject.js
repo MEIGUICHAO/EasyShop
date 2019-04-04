@@ -64,11 +64,16 @@ function login(){
 function getDocument(){
     var mHtml = document.getElementsByTagName('script');
 
+    var needslide = true;
     for(var i=0;i<mHtml.length;i++){
 //        localMethod.JI_LOG("innerText!!!!!!"+mHtml[i].innerText);
         if(mHtml[i].innerText.indexOf("g_page_config") != -1 ){
+            needslide = false;
             localMethod.getJsonData("script!!!!!!"+mHtml[i].innerText);
         }
+    }
+    if(needslide){
+        localMethod.slideTouch();
     }
 
 }

@@ -40,7 +40,7 @@ public class SelectionFragment extends BaseFragment<SelectionVu, SelectionBiz> i
 
     @Override
     protected void afterOnCreate() {
-        split = Shops.shops.split("\n");
+        split = Shops.shopName.split("\n");
         LogUtils.e("split_length:" + split.length);
         btnForeachTitle.setOnClickListener(this);
         btnGetExchangeTitleResult.setOnClickListener(this);

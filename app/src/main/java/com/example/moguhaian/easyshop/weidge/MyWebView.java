@@ -20,6 +20,15 @@ public class MyWebView extends WebView {
 
     private Paint mPaint;
     private Path mPath;
+
+    public boolean isNeedDraw() {
+        return NeedDraw;
+    }
+
+    public void setNeedDraw(boolean needDraw) {
+        NeedDraw = needDraw;
+    }
+
     private boolean NeedDraw = false;
 
 
