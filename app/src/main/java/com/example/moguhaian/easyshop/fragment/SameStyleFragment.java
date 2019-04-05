@@ -1,13 +1,17 @@
 package com.example.moguhaian.easyshop.fragment;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
+import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Base.Ips;
@@ -37,7 +41,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     MyWebView webView;
     Unbinder unbinder;
 
-    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新"};
+    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新", "清楚cookie"};
     //    private String shopsUrl = "https://www.taobao.com/?spm=a21bo.2017.201857.1.5c0111d9sMj916";
     private String shopsUrl = "https://s.taobao.com/search?spm=a230r.1.14.107.7396d7b2qjum31&type=samestyle&app=i2i&rec_type=1&uniqpid=-580033393&nid=568968377828&sort=sale-desc";
     //    private String sameUrl = "https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-465089991&nid=569519871896&sort=sale-desc";
@@ -97,6 +101,12 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
             case 3://获取母宝贝
                 biz.setFunctionIndex(1);
                 biz.getMinUrlList().clear();
+//                String[] split = Temple.templeUlr.split("\n");
+//                for (int i = 0; i < split.length; i++) {
+//                    String[] split1 = split[i].split("= \"https");
+//                    String replace = split1[1].replace("\"", "");
+//                    biz.getSameUrlList().add("https" + replace);
+//                }
                 if (biz.getSameUrlList().size() > 0) {
                     biz.setSameUrlIndex(0);
                     webView.loadUrl(biz.getSameUrlList().get(biz.getSameUrlIndex()));
@@ -137,7 +147,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 
                 break;
             case 5://获取结果
-                List<ResultBean> resultList = GreenDaoUtils.getResultList("", shopName);
+                List<ResultBean> resultList = GreenDaoUtils.getResultList(Shops.shoplv, shopName);
                 String reslutStr = "";
                 for (int i = 0; i < resultList.size(); i++) {
                     reslutStr = TextUtils.isEmpty(reslutStr) ? resultList.get(i).getRootResult() : reslutStr + "\n" + resultList.get(i).getRootResult();
@@ -167,6 +177,23 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 break;
             case 10:
                 GestureTouchUtils.simulateClick(webView, 545, 170);
+
+                break;
+            case 11:
+
+                CookieSyncManager.createInstance(getActivity().getApplicationContext());
+                CookieManager cookieManager = CookieManager.getInstance();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    cookieManager.removeSessionCookies(null);
+                    cookieManager.removeAllCookie();
+                    cookieManager.flush();
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        cookieManager.removeSessionCookies(null);
+                    }
+                    cookieManager.removeAllCookie();
+                    CookieSyncManager.getInstance().sync();
+                }
 
                 break;
 //            try {
@@ -249,20 +276,35 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 break;
             case 3:
             case 8:
-                webView.loadUrl(JsUtils.addJsMethod("getDocument()"));
+                if (biz.isCanGetJson()) {
+                    biz.setCanGetJson(false);
+                    webView.loadUrl(JsUtils.addJsMethod("getDocument()"));
+                }
                 break;
         }
     }
 
     @Override
-    public void afterGetJson(String json) {
+    public void afterGetJson(final String json) {
         LogUtils.e("afterGetJson!!!");
         switch (biz.getFunctionIndex()) {
             case 0:
                 biz.getSameUrl(json, Constants.searchUrl1 + shopName + Constants.searchUrl2);
                 break;
             case 1:
-                biz.getInitShop(json);
+                BaseApplication.getmHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        biz.getInitShop(json);
+                    }
+                });
+
+
+//            BaseApplication.getmHandler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                }
+//            }, Constants.DELAY_TIME);
                 break;
         }
     }

@@ -18,6 +18,17 @@ public class SameStyleBiz extends BaseBiz {
     private int sleepTime = 5000;
     private String[] sortTypeArray;
 
+    public boolean isCanGetJson() {
+        return canGetJson;
+    }
+
+    public void setCanGetJson(boolean canGetJson) {
+        this.canGetJson = canGetJson;
+    }
+
+    private boolean canGetJson = true;
+
+
     public int getSleepTime() {
         return sleepTime;
     }
@@ -127,23 +138,22 @@ public class SameStyleBiz extends BaseBiz {
     }
 
     public void getInitShop(final String json) {
-        BaseApplication.getmHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                sameUrlIndex++;
-                String initShop = TaoUtils.getInitShop(json);
-                if (!TextUtils.isEmpty(initShop)) {
-                    minUrlList.add(initShop);
-                }
-                if (sameUrlIndex < sameUrlList.size()) {
-                    try {
-                        webView.loadUrl(sameUrlList.get(sameUrlIndex));
-                        LogUtils.e("size:" + sameUrlList.size() + ",progress:" + sameUrlIndex);
-                    } catch (Exception e) {
-                        LogUtils.e("Exception:" + e.toString());
-                    }
-                }
+
+
+        sameUrlIndex++;
+        String initShop = TaoUtils.getInitShop(json);
+        if (!TextUtils.isEmpty(initShop)) {
+            minUrlList.add(initShop);
+        }
+        if (sameUrlIndex < sameUrlList.size()) {
+            try {
+                Thread.sleep(Constants.DELAY_TIME);
+                canGetJson = true;
+                webView.loadUrl(sameUrlList.get(sameUrlIndex));
+                LogUtils.e("size:" + sameUrlList.size() + ",progress:" + sameUrlIndex);
+            } catch (Exception e) {
+                LogUtils.e("Exception:" + e.toString());
             }
-        }, Constants.DELAY_TIME);
+        }
     }
 }

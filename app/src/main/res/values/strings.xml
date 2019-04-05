@@ -27,6 +27,7 @@
     </string-array>
 
     <string-array name="page_index">
+        <item>s=0</item>
         <item>s=44</item>
         <item>s=88</item>
         <item>s=132</item>

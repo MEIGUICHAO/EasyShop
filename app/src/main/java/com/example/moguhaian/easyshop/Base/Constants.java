@@ -12,7 +12,7 @@ public interface Constants {
     public String TaoBaoSearchUrl = "https://s.taobao.com/search?initiative_id=tbindexz_20170306&ie=utf8&spm=a21bo.2017.201856-taobao-item.2&sourceId=tb.index&search_type=item&ssid=s5-e&commend=all&imgfile=&q=" + MY_INDEX + "&suggest=history_1&_input_charset=utf-8&wq=&suggest_query=&source=suggest&sort=" + SORT_TYPE;
     public String SaleDescSort = "&sort=sale-desc";
 //    public String UserAgentString = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36";
-    public String UserAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36";
+    public String UserAgentString = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)";
     //    public String UserAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36";
     String searchUrl1 = "https://s.taobao.com/search?&initiative_id=tbindexz_20170306&ie=utf8&spm=a21bo.2017.201856-taobao-item.2&sourceId=tb.index&search_type=item&ssid=s5-e&commend=all&imgfile=&q=";
     String searchUrl2 = "&suggest=0_1&_input_charset=utf-8&wq=%E7%A7%AF%E6%9C%A8&suggest_query=%E7%A7%AF%E6%9C%A8&source=suggest";
@@ -34,7 +34,7 @@ public interface Constants {
 //    店查查 词可查关键词
 
 
-    int DELAY_TIME = 1400;
+    int DELAY_TIME = 2400;
 
 
 
