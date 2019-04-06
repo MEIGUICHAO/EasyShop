@@ -60,11 +60,23 @@ public class LocalMethod {
             BaseApplication.getmHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    GestureTouchUtils.simulateScroll(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_Y)), 500, GestureTouchUtils.HIGH);
+                    try {
+                        if (!mWebView.isNeedDraw() && mWebView.isSlideRecord()) {
+                            GestureTouchUtils.simulateScroll(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_Y)), 500, GestureTouchUtils.HIGH);
+                        }
+                    } catch (Exception e) {
+                        ToastUtils.showToast("小二来了！！！");
+                    }
                     BaseApplication.getmHandler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
+                            try {
+                                if (!mWebView.isNeedDraw() && mWebView.isClickRecord()) {
+                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
+                                }
+                            } catch (Exception e) {
+                                ToastUtils.showToast("小二来了！！！");
+                            }
                             BaseApplication.getmHandler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {

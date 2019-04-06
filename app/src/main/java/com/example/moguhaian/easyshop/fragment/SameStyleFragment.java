@@ -175,6 +175,12 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 //                LogUtils.e("agentIndedx:" + agentIndedx);
                 break;
             case 9://滑动
+                if (!webView.isSlideRecord()) {
+                    webView.setSlideRecord(true);
+                    webView.setClickRecord(false);
+                    ToastUtils.showToast("滑动记录开启");
+                    return;
+                }
                 SharedPreferencesUtils.putValue(Constants.SLIDE_DOWN_X, webView.getACTION_DOWN_X() + "");
                 SharedPreferencesUtils.putValue(Constants.SLIDE_DOWN_Y, webView.getACTION_DOWN_Y() + "");
                 SharedPreferencesUtils.putValue(Constants.SLIDE_UP_X, webView.getACTION_UP_X() + "");
@@ -187,15 +193,20 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 //                GestureTouchUtils.simulateScroll(webView, Integer.parseInt(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), 175, 671, 173, 2000, GestureTouchUtils.HIGH);
                 break;
             case 10:
-                SharedPreferencesUtils.putValue(Constants.CLICK_DOWN_X, webView.getACTION_DOWN_X() + "");
-                SharedPreferencesUtils.putValue(Constants.CLICK_DOWN_Y, webView.getACTION_DOWN_Y() + "");
+                if (!webView.isClickRecord()) {
+                    webView.setClickRecord(true);
+                    webView.setSlideRecord(false);
+                    ToastUtils.showToast("点击记录开启");
+                    return;
+                }
+                SharedPreferencesUtils.putValue(Constants.CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
+                SharedPreferencesUtils.putValue(Constants.CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
                 LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)));
                 LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
 //                GestureTouchUtils.simulateClick(webView, 545, 170);
 
                 break;
             case 11:
-
                 CookieSyncManager.createInstance(getActivity().getApplicationContext());
                 CookieManager cookieManager = CookieManager.getInstance();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -17,12 +17,51 @@ import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 
 public class MyWebView extends WebView {
 
+    private boolean slideRecord = false;
+
+    public boolean isSlideRecord() {
+        return slideRecord;
+    }
+
+    public void setSlideRecord(boolean slideRecord) {
+        this.slideRecord = slideRecord;
+    }
+
+    public boolean isClickRecord() {
+        return clickRecord;
+    }
+
+    public void setClickRecord(boolean clickRecord) {
+        this.clickRecord = clickRecord;
+    }
+
+    private boolean clickRecord = false;
 
 
     private Paint mPaint;
     private Path mPath;
     private float ACTION_DOWN_X;
     private float ACTION_DOWN_Y;
+
+    private float ACTION_CLICK_DOWN_X;
+
+    public float getACTION_CLICK_DOWN_X() {
+        return ACTION_CLICK_DOWN_X;
+    }
+
+    public void setACTION_CLICK_DOWN_X(float ACTION_CLICK_DOWN_X) {
+        this.ACTION_CLICK_DOWN_X = ACTION_CLICK_DOWN_X;
+    }
+
+    public float getACTION_CLICK_DOWN_Y() {
+        return ACTION_CLICK_DOWN_Y;
+    }
+
+    public void setACTION_CLICK_DOWN_Y(float ACTION_CLICK_DOWN_Y) {
+        this.ACTION_CLICK_DOWN_Y = ACTION_CLICK_DOWN_Y;
+    }
+
+    private float ACTION_CLICK_DOWN_Y;
 
     public float getACTION_DOWN_X() {
         return ACTION_DOWN_X;
@@ -108,8 +147,14 @@ public class MyWebView extends WebView {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mPath.moveTo(event.getX(), event.getY());
-                    ACTION_DOWN_X = event.getX();
-                    ACTION_DOWN_Y = event.getY();
+                    if (slideRecord) {
+                        ACTION_DOWN_X = event.getX();
+                        ACTION_DOWN_Y = event.getY();
+                    }
+                    if (clickRecord) {
+                        ACTION_CLICK_DOWN_X = event.getX();
+                        ACTION_CLICK_DOWN_Y = event.getY();
+                    }
                     LogUtils.e("ACTION_DOWN_X:"+event.getX());
                     LogUtils.e("ACTION_DOWN_Y:" + event.getY());
                     invalidate();
@@ -119,8 +164,10 @@ public class MyWebView extends WebView {
                     invalidate();
                     break;
                 case MotionEvent.ACTION_UP:
-                    ACTION_UP_X = event.getX();
-                    ACTION_UP_Y = event.getY();
+                    if (slideRecord) {
+                        ACTION_UP_X = event.getX();
+                        ACTION_UP_Y = event.getY();
+                    }
                     LogUtils.e("ACTION_UP_X:"+event.getX());
                     LogUtils.e("ACTION_UP_Y:" + event.getY());
                 case MotionEvent.ACTION_CANCEL:
