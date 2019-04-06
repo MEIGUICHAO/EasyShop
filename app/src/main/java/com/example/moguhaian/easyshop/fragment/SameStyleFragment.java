@@ -23,7 +23,9 @@ import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.TaoUtils;
+import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.View.SameStyleVu;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
@@ -41,7 +43,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     MyWebView webView;
     Unbinder unbinder;
 
-    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新", "清楚cookie"};
+    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新", "清楚cookie", "开关滑动记录"};
     //    private String shopsUrl = "https://www.taobao.com/?spm=a21bo.2017.201857.1.5c0111d9sMj916";
     private String shopsUrl = "https://s.taobao.com/search?spm=a230r.1.14.107.7396d7b2qjum31&type=samestyle&app=i2i&rec_type=1&uniqpid=-580033393&nid=568968377828&sort=sale-desc";
     //    private String sameUrl = "https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-465089991&nid=569519871896&sort=sale-desc";
@@ -172,11 +174,24 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 //                }
 //                LogUtils.e("agentIndedx:" + agentIndedx);
                 break;
-            case 9:
-                GestureTouchUtils.simulateScroll(webView, 424, 175, 671, 173, 2000, GestureTouchUtils.HIGH);
+            case 9://滑动
+                SharedPreferencesUtils.putValue(Constants.SLIDE_DOWN_X, webView.getACTION_DOWN_X() + "");
+                SharedPreferencesUtils.putValue(Constants.SLIDE_DOWN_Y, webView.getACTION_DOWN_Y() + "");
+                SharedPreferencesUtils.putValue(Constants.SLIDE_UP_X, webView.getACTION_UP_X() + "");
+                SharedPreferencesUtils.putValue(Constants.SLIDE_UP_Y, webView.getACTION_UP_Y() + "");
+                LogUtils.e("SLIDE_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)));
+                LogUtils.e("SLIDE_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
+                LogUtils.e("SLIDE_UP_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_X)));
+                LogUtils.e("SLIDE_UP_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_Y)));
+
+//                GestureTouchUtils.simulateScroll(webView, Integer.parseInt(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), 175, 671, 173, 2000, GestureTouchUtils.HIGH);
                 break;
             case 10:
-                GestureTouchUtils.simulateClick(webView, 545, 170);
+                SharedPreferencesUtils.putValue(Constants.CLICK_DOWN_X, webView.getACTION_DOWN_X() + "");
+                SharedPreferencesUtils.putValue(Constants.CLICK_DOWN_Y, webView.getACTION_DOWN_Y() + "");
+                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)));
+                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
+//                GestureTouchUtils.simulateClick(webView, 545, 170);
 
                 break;
             case 11:
@@ -195,6 +210,10 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                     CookieSyncManager.getInstance().sync();
                 }
 
+                break;
+            case 12://开启滑动记录:
+                webView.setNeedDraw(!webView.isNeedDraw());
+                ToastUtils.showToast(webView.isNeedDraw() ? "开启" : "关闭");
                 break;
 //            try {
 ////                String address = InetAddress.getLocalHost().getHostAddress().toString();

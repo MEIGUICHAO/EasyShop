@@ -42,4 +42,12 @@ public interface Constants {
     String EASYSHOP = "EASYSHOP";
 
     String Cookies = "Cookies";
+    String SLIDE_DOWN_X = "SLIDE_DOWN_X";
+
+    String SLIDE_DOWN_Y = "SLIDE_DOWN_Y";
+    String SLIDE_UP_X = "SLIDE_UP_X";
+    String SLIDE_UP_Y = "SLIDE_UP_Y";
+    String CLICK_DOWN_X = "CLICK_DOWN_X";
+    String CLICK_DOWN_Y = "CLICK_DOWN_Y";
+
 }

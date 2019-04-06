@@ -134,7 +134,7 @@ public class SameStyleBiz extends BaseBiz {
                 }
 
             }
-        }, Constants.DELAY_TIME);
+        }, Constants.DELAY_TIME/2);
     }
 
     public void getInitShop(final String json) {

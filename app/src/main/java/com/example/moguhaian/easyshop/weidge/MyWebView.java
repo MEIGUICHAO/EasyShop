@@ -12,6 +12,7 @@ import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 
 
 public class MyWebView extends WebView {
@@ -20,6 +21,44 @@ public class MyWebView extends WebView {
 
     private Paint mPaint;
     private Path mPath;
+    private float ACTION_DOWN_X;
+    private float ACTION_DOWN_Y;
+
+    public float getACTION_DOWN_X() {
+        return ACTION_DOWN_X;
+    }
+
+    public float getACTION_DOWN_Y() {
+        return ACTION_DOWN_Y;
+    }
+
+    public float getACTION_UP_X() {
+        return ACTION_UP_X;
+    }
+
+    public float getACTION_UP_Y() {
+        return ACTION_UP_Y;
+    }
+
+    private float ACTION_UP_X;
+
+    public void setACTION_DOWN_X(float ACTION_DOWN_X) {
+        this.ACTION_DOWN_X = ACTION_DOWN_X;
+    }
+
+    public void setACTION_DOWN_Y(float ACTION_DOWN_Y) {
+        this.ACTION_DOWN_Y = ACTION_DOWN_Y;
+    }
+
+    public void setACTION_UP_X(float ACTION_UP_X) {
+        this.ACTION_UP_X = ACTION_UP_X;
+    }
+
+    public void setACTION_UP_Y(float ACTION_UP_Y) {
+        this.ACTION_UP_Y = ACTION_UP_Y;
+    }
+
+    private float ACTION_UP_Y;
 
     public boolean isNeedDraw() {
         return NeedDraw;
@@ -63,9 +102,14 @@ public class MyWebView extends WebView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (NeedDraw) {
+            if (null == mPath) {
+                mPath = new Path();
+            }
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mPath.moveTo(event.getX(), event.getY());
+                    ACTION_DOWN_X = event.getX();
+                    ACTION_DOWN_Y = event.getY();
                     LogUtils.e("ACTION_DOWN_X:"+event.getX());
                     LogUtils.e("ACTION_DOWN_Y:" + event.getY());
                     invalidate();
@@ -75,6 +119,8 @@ public class MyWebView extends WebView {
                     invalidate();
                     break;
                 case MotionEvent.ACTION_UP:
+                    ACTION_UP_X = event.getX();
+                    ACTION_UP_Y = event.getY();
                     LogUtils.e("ACTION_UP_X:"+event.getX());
                     LogUtils.e("ACTION_UP_Y:" + event.getY());
                 case MotionEvent.ACTION_CANCEL:

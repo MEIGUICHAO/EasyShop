@@ -10,6 +10,8 @@ import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
+import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
@@ -54,34 +56,30 @@ public class LocalMethod {
     @JavascriptInterface
     public void slideTouch() {
 
-        BaseApplication.getmHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                GestureTouchUtils.simulateScroll(mWebView, 424, 175, 671, 173, 500, GestureTouchUtils.HIGH);
-                BaseApplication.getmHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        GestureTouchUtils.simulateClick(mWebView, 545, 170);
-                        BaseApplication.getmHandler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mWebView.loadUrl(JsUtils.addJsMethod("getDocument()"));
-                            }
-                        }, 3000);
+        try {
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    GestureTouchUtils.simulateScroll(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_Y)), 500, GestureTouchUtils.HIGH);
+                    BaseApplication.getmHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
+                            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mWebView.loadUrl(JsUtils.addJsMethod("getDocument()"));
+                                }
+                            }, 3000);
 
-                    }
-                }, 3000);
-            }
-        }, 3000);
-//        mContext.runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-////                for (int i = 3 * bottom/4; i < bottom; i++) {
-////                    GestureTouchUtils.simulateScroll(mWebView, left, i, width * 3, i, 2000, GestureTouchUtils.HIGH);
-////                }
-//            }
-//        });
+                        }
+                    }, 3000);
+                }
+            }, 3000);
+
+        } catch (Exception e) {
+            ToastUtils.showToast("小二来了！！！");
+        }
 
 
     }
