@@ -61,7 +61,7 @@ public class LocalMethod {
                 @Override
                 public void run() {
                     try {
-                        if (!mWebView.isNeedDraw() && mWebView.isSlideRecord()) {
+                        if (!mWebView.isNeedDraw()) {
                             GestureTouchUtils.simulateScroll(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_Y)), 500, GestureTouchUtils.HIGH);
                         }
                     } catch (Exception e) {
@@ -71,8 +71,8 @@ public class LocalMethod {
                         @Override
                         public void run() {
                             try {
-                                if (!mWebView.isNeedDraw() && mWebView.isClickRecord()) {
-                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
+                                if (!mWebView.isNeedDraw()) {
+                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.CLICK_DOWN_Y)));
                                 }
                             } catch (Exception e) {
                                 ToastUtils.showToast("小二来了！！！");

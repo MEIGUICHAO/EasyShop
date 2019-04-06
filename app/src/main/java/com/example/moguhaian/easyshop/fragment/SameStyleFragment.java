@@ -19,7 +19,6 @@ import com.example.moguhaian.easyshop.Base.Shops;
 import com.example.moguhaian.easyshop.Bean.ResultBean;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Search.SameStyleBiz;
-import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
@@ -201,8 +200,8 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 }
                 SharedPreferencesUtils.putValue(Constants.CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
                 SharedPreferencesUtils.putValue(Constants.CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
-                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)));
-                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
+                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.CLICK_DOWN_X)));
+                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.CLICK_DOWN_Y)));
 //                GestureTouchUtils.simulateClick(webView, 545, 170);
 
                 break;

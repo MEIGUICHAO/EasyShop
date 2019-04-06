@@ -12,7 +12,6 @@ import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
-import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 
 
 public class MyWebView extends WebView {
@@ -150,13 +149,15 @@ public class MyWebView extends WebView {
                     if (slideRecord) {
                         ACTION_DOWN_X = event.getX();
                         ACTION_DOWN_Y = event.getY();
+                        LogUtils.e("ACTION_DOWN_X:"+ACTION_DOWN_X);
+                        LogUtils.e("ACTION_DOWN_Y:" + ACTION_DOWN_Y);
                     }
                     if (clickRecord) {
                         ACTION_CLICK_DOWN_X = event.getX();
                         ACTION_CLICK_DOWN_Y = event.getY();
+                        LogUtils.e("ACTION_CLICK_DOWN_X:"+ACTION_CLICK_DOWN_X);
+                        LogUtils.e("ACTION_CLICK_DOWN_Y:" + ACTION_CLICK_DOWN_Y);
                     }
-                    LogUtils.e("ACTION_DOWN_X:"+event.getX());
-                    LogUtils.e("ACTION_DOWN_Y:" + event.getY());
                     invalidate();
                     break;
                 case MotionEvent.ACTION_MOVE:
@@ -167,9 +168,9 @@ public class MyWebView extends WebView {
                     if (slideRecord) {
                         ACTION_UP_X = event.getX();
                         ACTION_UP_Y = event.getY();
+                        LogUtils.e("ACTION_UP_X:"+event.getX());
+                        LogUtils.e("ACTION_UP_Y:" + event.getY());
                     }
-                    LogUtils.e("ACTION_UP_X:"+event.getX());
-                    LogUtils.e("ACTION_UP_Y:" + event.getY());
                 case MotionEvent.ACTION_CANCEL:
                     mPath.lineTo(event.getX(), event.getY());
                     invalidate();
