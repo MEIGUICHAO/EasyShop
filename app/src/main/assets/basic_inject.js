@@ -85,7 +85,7 @@ function findElementsByClassName(className){
     var element = document.getElementsByClassName(className);
     localMethod.JI_LOG(className+":"+element.length);
     localMethod.JI_LOG(className+":"+element[0].value);
-    element[0].click();
+//    element[0].click();
 }
 
 

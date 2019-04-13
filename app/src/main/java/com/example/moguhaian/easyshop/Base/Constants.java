@@ -5,7 +5,7 @@ public interface Constants {
 //    public String Top20wUrl = "http://www.taocece.com/ztctop20wmobile";
     public String taosjLoginUrl = "http://login.taosj.com/?redirectURL=http%3A%2F%2Fwww.taosj.com%2Ftool%2Ftool.htm%23%2Foptimize_market%2Ftitle%2F";
     public String SelectionUrl = "https://www.taosj.com/tool/tool.htm#/optimize_market/keyword/";
-    public String Top20wUrl = "https://www.dianchacha.com/keyword/info/?day=2019-02-12&id=46&type=1&num=24";
+    public String Top20wUrl = "https://taodaxiang.com/top20w/view";
     public String MY_INDEX = "###MYINDEX###";
     public String SORT_TYPE = "###SORT_TYPE###";
     public String todaySales = "https://s.taobao.com/search?ie=utf8&tab=vsearch&initiative_id=staobaoz_20180514&js=1&imgfile=&q=%E6%B4%97%E9%9D%A2%E5%A5%B6&suggest=history_2&_input_charset=utf-8&wq=&suggest_query=&source=suggest&sort=renqi-desc&bcoffset=0&p4ppushleft=%2C44&s=0";
