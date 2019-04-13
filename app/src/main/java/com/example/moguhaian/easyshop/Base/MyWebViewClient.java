@@ -1,7 +1,11 @@
 package com.example.moguhaian.easyshop.Base;
 
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.webkit.CookieManager;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -26,6 +30,12 @@ public class MyWebViewClient extends WebViewClient {
     private String userAgent = "";
 
     public MyWebViewClient() {
+    }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        view.loadUrl(request.toString());
+        return true;
     }
 
     public void setOnLoadFinishListener(LoadFinishListener onLoadFinishListener) {
@@ -55,6 +65,23 @@ public class MyWebViewClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
 
+    }
+
+
+    @Override
+    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        super.onReceivedError(view, request, error);
+        LogUtils.e("onReceivedError");
+
+    }
+
+    @Override
+    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+//        handler.proceed();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            view.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+//        }
+//        super.onReceivedSslError(view, handler, error);
     }
 
 

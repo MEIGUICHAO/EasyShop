@@ -2,13 +2,10 @@ package com.example.moguhaian.easyshop;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 
@@ -16,7 +13,6 @@ import com.example.moguhaian.easyshop.Base.BaseActivity;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Search.MainBiz;
 import com.example.moguhaian.easyshop.View.MainVu;
-import com.example.moguhaian.easyshop.fragment.SelectionFragment;
 import com.example.moguhaian.easyshop.listener.AdapterClickListener;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.weidge.NoScrollViewPager;
@@ -44,7 +40,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     @BindView(R.id.rcv_right)
     RecyclerView rcvRight;
 
-    private String[] mainList = {"采集", "同款", "3"};
+    private String[] mainList = {"采集", "同款", "3", "1688"};
     private String[] rightList = {};
     private ArrayList<BaseFragment> fragments;
 

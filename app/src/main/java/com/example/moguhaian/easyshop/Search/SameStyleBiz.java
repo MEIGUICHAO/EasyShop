@@ -141,7 +141,12 @@ public class SameStyleBiz extends BaseBiz {
 
 
         sameUrlIndex++;
-        String initShop = TaoUtils.getInitShop(json);
+        String initShop = "";
+        try {
+            initShop = TaoUtils.getInitShop(json);
+        } catch (Exception e) {
+            LogUtils.e("同款链接gson解析失败");
+        }
         if (!TextUtils.isEmpty(initShop)) {
             minUrlList.add(initShop);
         }

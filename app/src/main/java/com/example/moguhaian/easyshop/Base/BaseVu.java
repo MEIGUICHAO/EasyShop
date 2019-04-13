@@ -37,6 +37,7 @@ public abstract class BaseVu implements Vu {
         webView.setVerticalFadingEdgeEnabled(false);
         webView.setVerticalScrollBarEnabled(false);
         // 支持JS
+        webSetting.setBlockNetworkImage(false);
         webSetting.setJavaScriptEnabled(true);
 //        webView.loadData("", "text/html", "UTF-8");
         webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -85,6 +86,10 @@ public abstract class BaseVu implements Vu {
         localMethod = new LocalMethod(context, webView);
         webView.addJavascriptInterface(localMethod, "localMethod");
         webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webView.getSettings().setMixedContentMode(
+                    WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
 
 
 //        webView.setWebViewClient(new WebViewClient(){

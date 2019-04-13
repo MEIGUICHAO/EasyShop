@@ -56,7 +56,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     private int clickPosition;
     private String shopName = Shops.shopName;
 
-    //    private String url = "https://www.baidu.com/";
+        private String url = "https://tao.1688.com/?spm=a260k.dacugeneral.jdlmjgub.2.6d20436cfPUKUB";
 
     @Override
     protected int getLayoutId() {
@@ -80,7 +80,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
         clickPosition = position;
         switch (position) {
             case 0://同款链接
-                webView.loadUrl(Constants.searchUrl1 + shopName + Constants.searchUrl2);
+                webView.loadUrl(url);
                 break;
             case 1://获取链接
                 biz.getTitleList().clear();
@@ -293,10 +293,10 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 
     @Override
     public void loadFinish(WebView wv, String url) {
-        LogUtils.e("loadFinish!!!!!");
+//        LogUtils.e("loadFinish!!!!!");
         switch (clickPosition) {
             case 0:
-                LogUtils.e("getDocument!!!");
+//                LogUtils.e("getDocument!!!");
                 break;
             case 1:
                 if (biz.isGetSameUrlBegin()) {
