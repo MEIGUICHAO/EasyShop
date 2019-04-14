@@ -45,4 +45,7 @@ dependencies {
     implementation 'com.github.mzule.fantasyslide:library:1.0.4'
     compile project(path: ':jxlhelper-core')
 
+    compile 'com.github.ctiao:ndkbitmap-armv5:0.9.21'
+    compile 'com.github.ctiao:ndkbitmap-x86:0.9.21'
+
 }

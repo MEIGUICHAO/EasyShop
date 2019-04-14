@@ -29,6 +29,15 @@ function findSameStyle(productname){
 }
 
 
+function getAliTao(){
+    localMethod.JI_LOG("getAliTao!!!!!!");
+//    var element = document.getElementsByClassName("sw-layout-1190");
+    var element = document.getElementsByClassName("imgofferresult-mainBlock");
+    localMethod.JI_LOG(element.length);
+    localMethod.JI_LOG(element[0].value);
+}
+
+
 //小二滑动
 function slide(){
     localMethod.JI_LOG("slide!!!!!!");
