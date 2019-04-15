@@ -35,6 +35,22 @@ function getAliTao(){
     var element = document.getElementsByClassName("imgofferresult-mainBlock");
     localMethod.JI_LOG(element.length);
     localMethod.JI_LOG(element[0].value);
+    var tagElement = document.getElementsByClassName("left-tag");
+    var saleElement = document.getElementsByClassName("sm-offer-trade sw-dpl-offer-trade sm-offer-tradeBt");
+    var hrefElement = document.getElementsByClassName("s-widget-offershopwindowtitle sm-offer-title sw-dpl-offer-title sm-widget-offershopwindowtitle-onerow");
+    localMethod.JI_LOG("saleElement:"+saleElement.length);
+
+    for(var i=0;i<tagElement.length;i++){
+        var em = saleElement[i].getElementsByTagName("em")[0].innerText;
+        var hrefUrl = hrefElement[i].getElementsByTagName("a")[0].getAttribute('href');
+        if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
+            localMethod.JI_LOG("em:"+em);
+            localMethod.JI_LOG("tagElement:"+tagElement[i].innerText);
+            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
+        }
+//        localMethod.JI_LOG("hrefStr:"+hrefStr);
+//        localMethod.JI_LOG("hrefUrl:"+hrefUrl.length);
+    }
 }
 
 

@@ -137,6 +137,10 @@ public class MyWebView extends WebView {
         mPath = new Path();
     }
 
+    public int getScrollYRange() {
+        return computeVerticalScrollRange();
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (NeedDraw) {

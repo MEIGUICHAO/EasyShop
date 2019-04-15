@@ -88,6 +88,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     public void loadFinish(WebView wv, String url) {
         switch (clickPosition) {
             case 0:
+                webView.scrollTo(0, webView.getScrollYRange());
+
                 break;
             case 1:
                 break;
