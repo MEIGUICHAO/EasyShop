@@ -12,12 +12,10 @@ import android.webkit.WebViewClient;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
-import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 
 public class MyWebViewClient extends WebViewClient {
 
 
-    LoadFinishListener listener;
 
     public String getUserAgent() {
         return userAgent;
@@ -38,9 +36,6 @@ public class MyWebViewClient extends WebViewClient {
         return true;
     }
 
-    public void setOnLoadFinishListener(LoadFinishListener onLoadFinishListener) {
-        listener = onLoadFinishListener;
-    }
 
     @Override
     public void onPageFinished(WebView view, String url) {
@@ -56,9 +51,6 @@ public class MyWebViewClient extends WebViewClient {
         }
 
         super.onPageFinished(view, url);
-        if (null != listener) {
-            listener.loadFinish(view,url);
-        }
     }
 
     @Override
@@ -77,7 +69,7 @@ public class MyWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-//        handler.proceed();
+        handler.proceed();
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            view.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 //        }

@@ -40,7 +40,8 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     @BindView(R.id.rcv_right)
     RecyclerView rcvRight;
 
-    private String[] mainList = {"采集", "同款", "3", "1688"};
+//    private String[] mainList = {"采集", "同款", "3", "1688"};
+    private String[] mainList = {"1688"};
     private String[] rightList = {};
     private ArrayList<BaseFragment> fragments;
 

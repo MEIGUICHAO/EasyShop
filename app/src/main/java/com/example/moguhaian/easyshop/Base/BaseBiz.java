@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
-import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
 import com.example.moguhaian.easyshop.listener.JsoupParseListener;
-import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -21,6 +19,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class BaseBiz {
+
+    private MyWebChromeClient webChromeClient;
+
     public ExecutorService getSingleThreadExecutor() {
         return singleThreadExecutor;
     }
@@ -31,8 +32,8 @@ public class BaseBiz {
 
     public Activity activity;
 
-    public MyWebViewClient getWebViewClient() {
-        return webViewClient;
+    public MyWebChromeClient getWebViewClient() {
+        return webChromeClient;
     }
 
     private MyWebViewClient webViewClient;
@@ -40,7 +41,9 @@ public class BaseBiz {
     public void initWebView(WebView wv,Activity activity) {
         this.webView = wv;
         webViewClient = new MyWebViewClient();
+        webChromeClient = new MyWebChromeClient();
         webView.setWebViewClient(webViewClient);
+        webView.setWebChromeClient(webChromeClient);
         this.activity = activity;
     }
 

@@ -24,6 +24,13 @@ public class LocalMethod {
     Activity mContext;
     LoalMethodListener listener;
 
+    public int getPagingNum() {
+        return pagingNum;
+    }
+
+
+    private int pagingNum = 0;
+
 
 
     public LocalMethod(Activity c, MyWebView webView) {
@@ -38,7 +45,7 @@ public class LocalMethod {
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void JI_LOG(final String content) {
-        mContext.runOnUiThread(new Runnable() {
+        BaseApplication.getmHandler().post(new Runnable() {
             @Override
             public void run() {
                 LogUtils.e("JI_LOG: " + content);
@@ -48,8 +55,21 @@ public class LocalMethod {
 
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
+    public void setPagingNum(String num) {
+        pagingNum = Integer.parseInt(num);
+    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
     public void getJsonData(final String content) {
-        listener.afterGetJson(content);
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                listener.afterGetJson(content);
+            }
+        });
+
     }
 
     @SuppressLint("JavascriptInterface")

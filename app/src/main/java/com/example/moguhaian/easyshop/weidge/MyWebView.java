@@ -138,6 +138,8 @@ public class MyWebView extends WebView {
     }
 
     public int getScrollYRange() {
+        LogUtils.e("getScrollYRange");
+
         return computeVerticalScrollRange();
     }
 

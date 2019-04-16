@@ -35,22 +35,32 @@ function getAliTao(){
     var element = document.getElementsByClassName("imgofferresult-mainBlock");
     localMethod.JI_LOG(element.length);
     localMethod.JI_LOG(element[0].value);
+    var pagingNum = document.getElementsByClassName("fui-paging-num")[0];
     var tagElement = document.getElementsByClassName("left-tag");
     var saleElement = document.getElementsByClassName("sm-offer-trade sw-dpl-offer-trade sm-offer-tradeBt");
     var hrefElement = document.getElementsByClassName("s-widget-offershopwindowtitle sm-offer-title sw-dpl-offer-title sm-widget-offershopwindowtitle-onerow");
-    localMethod.JI_LOG("saleElement:"+saleElement.length);
+    localMethod.JI_LOG("pagingNum:"+pagingNum.innerText);
+    localMethod.setPagingNum(pagingNum.innerText);
 
+    var urls = "";
     for(var i=0;i<tagElement.length;i++){
         var em = saleElement[i].getElementsByTagName("em")[0].innerText;
         var hrefUrl = hrefElement[i].getElementsByTagName("a")[0].getAttribute('href');
         if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
-            localMethod.JI_LOG("em:"+em);
-            localMethod.JI_LOG("tagElement:"+tagElement[i].innerText);
-            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
+            if(urls.length==0){
+                urls = hrefUrl;
+            } else {
+                urls = urls + "\n" + hrefUrl;
+            }
+            localMethod.JI_LOG("em:"+i);
+//            localMethod.JI_LOG("tagElement:"+tagElement[i].innerText);
+//            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
         }
 //        localMethod.JI_LOG("hrefStr:"+hrefStr);
 //        localMethod.JI_LOG("hrefUrl:"+hrefUrl.length);
     }
+    localMethod.getJsonData(urls+"");
+
 }
 
 
@@ -111,6 +121,15 @@ function findElementsByClassName(className){
     localMethod.JI_LOG(className+":"+element.length);
     localMethod.JI_LOG(className+":"+element[0].value);
 //    element[0].click();
+}
+
+
+function clickElementsByClassName(className){
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    localMethod.JI_LOG(className+":"+element[0].value);
+    element[0].click();
 }
 
 

@@ -9,23 +9,27 @@ import android.webkit.WebView;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
+import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.View.Ali1688Vu;
 import com.example.moguhaian.easyshop.biz.Ali1688Biz;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
+import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> implements LoadFinishListener {
+public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> implements LoadFinishListener,LoalMethodListener {
 
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688","一件代发"};
+    private String[] items = {"1688","一件代发","下一页"};
     private int clickPosition;
+    private int pageIndex = 0;
     private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
+    private String nextUrl;
 
 
     @Override
@@ -38,6 +42,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         vu.initWebViewSetting(webView, getActivity());
         biz.initWebView(webView, getActivity());
         biz.getWebViewClient().setOnLoadFinishListener(Ali1688Fragment.this);
+        vu.getLocalMethod().setLocalMethodListener(this);
         setDataStrs(items);
 
 
@@ -49,12 +54,26 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         clickPosition = position;
         switch (clickPosition) {
             case 0:
+//                biz.getWebViewClient().setNeedListener(true);
+                pageIndex = 1;
+
                 webView.loadUrl(url);
                 break;
             case 1:
                 webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
                 break;
             case 2:
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));
+
+
+
+//                int pagingNum = vu.getLocalMethod().getPagingNum();
+//                if (pageIndex < pagingNum) {
+//                    pageIndex++;
+//                    nextUrl = url + "#beginPage=" + pageIndex + "&offset=0";
+//
+//                }
+//                webView.loadUrl(nextUrl);
                 break;
         }
 
@@ -86,10 +105,24 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void loadFinish(WebView wv, String url) {
+        webView.scrollTo(0, webView.getScrollYRange());
         switch (clickPosition) {
             case 0:
-                webView.scrollTo(0, webView.getScrollYRange());
 
+                break;
+            case 1:
+                webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
+                break;
+            case 2:
+                break;
+        }
+    }
+
+    @Override
+    public void afterGetJson(String json) {
+        LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
+        switch (clickPosition) {
+            case 0:
                 break;
             case 1:
                 break;
