@@ -44,17 +44,26 @@ function getAliTao(){
 
     var urls = "";
     for(var i=0;i<tagElement.length;i++){
-        var em = saleElement[i].getElementsByTagName("em")[0].innerText;
-        var hrefUrl = hrefElement[i].getElementsByTagName("a")[0].getAttribute('href');
-        if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
-            if(urls.length==0){
-                urls = hrefUrl;
-            } else {
-                urls = urls + "\n" + hrefUrl;
+        if(saleElement.length<i){
+            var emTag = saleElement[i].getElementsByTagName("em");
+            if(emTag.length>0){
+                em = emTag[0].innerText;
             }
-            localMethod.JI_LOG("em:"+i);
-//            localMethod.JI_LOG("tagElement:"+tagElement[i].innerText);
-//            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
+            if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
+                var aTag = hrefElement[i].getElementsByTagName("a");
+                if(aTag.length>0){
+                    hrefUrl= aTag[0].getAttribute('href');
+                    localMethod.JI_LOG("placeHolder:0");
+                    if(urls.length==0){
+                        urls = hrefUrl;
+                    } else {
+                        urls = urls + "\n" + hrefUrl;
+                    }
+                    localMethod.JI_LOG("em:"+i);
+                }
+    //            localMethod.JI_LOG("tagElement:"+tagElement[i].innerText);
+    //            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
+            }
         }
 //        localMethod.JI_LOG("hrefStr:"+hrefStr);
 //        localMethod.JI_LOG("hrefUrl:"+hrefUrl.length);
