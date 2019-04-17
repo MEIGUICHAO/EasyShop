@@ -40,34 +40,33 @@ function getAliTao(){
     var saleElement = document.getElementsByClassName("sm-offer-trade sw-dpl-offer-trade sm-offer-tradeBt");
     var hrefElement = document.getElementsByClassName("s-widget-offershopwindowtitle sm-offer-title sw-dpl-offer-title sm-widget-offershopwindowtitle-onerow");
     localMethod.JI_LOG("pagingNum:"+pagingNum.innerText);
+    localMethod.JI_LOG("saleElement:"+saleElement.length);
     localMethod.setPagingNum(pagingNum.innerText);
 
     var urls = "";
-    for(var i=0;i<tagElement.length;i++){
-        if(saleElement.length<i+1){
+    for(var i=0;i<saleElement.length;i++){
 
-            var emTag = saleElement[i].getElementsByTagName("em");
-            if(emTag.length>0){
-                em = emTag[0].innerText;
-            }
-            localMethod.JI_LOG("tagElement:"+i);
-            localMethod.JI_LOG("tagElement[i].innerText:"+tagElement[i].innerText);
-            localMethod.JI_LOG("em:"+em);
-            if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
-                var aTag = hrefElement[i].getElementsByTagName("a");
-                if(aTag.length>0){
-                    hrefUrl= aTag[0].getAttribute('href');
-                    localMethod.JI_LOG("placeHolder:0");
-                    if(urls.length==0){
-                        urls = hrefUrl;
-                    } else {
-                        urls = urls + "\n" + hrefUrl;
-                    }
-                    localMethod.JI_LOG("em:"+i);
+        var emTag = saleElement[i].getElementsByTagName("em");
+        if(emTag.length>0){
+            em = emTag[0].innerText;
+        }
+        localMethod.JI_LOG("tagElement:"+i);
+        localMethod.JI_LOG("tagElement[i].innerText:"+tagElement[i].innerText);
+        localMethod.JI_LOG("em:"+em);
+        if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
+            var aTag = hrefElement[i].getElementsByTagName("a");
+            if(aTag.length>0){
+                hrefUrl= aTag[0].getAttribute('href');
+                localMethod.JI_LOG("placeHolder:0");
+                if(urls.length==0){
+                    urls = hrefUrl;
+                } else {
+                    urls = urls + "\n" + hrefUrl;
                 }
-    //            localMethod.JI_LOG("tagElement:"+tagElement[i].innerText);
-    //            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
+                localMethod.JI_LOG("em:"+i);
             }
+//            localMethod.JI_LOG("tagElement:"+tagElement[i].innerText);
+//            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
         }
       localMethod.JI_LOG("placeHolder:next");
 //        localMethod.JI_LOG("hrefStr:"+hrefStr);
