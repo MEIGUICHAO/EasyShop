@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.R;
@@ -35,8 +33,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int clickPosition;
     private int pageIndex = 0;
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
-//    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
-    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=8&offset=0";
+    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
     private String nextUrl;
     private boolean isInit = false;
     private boolean needGetJson = false;
@@ -172,14 +169,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 0:
                 break;
             case 1:
+                LogUtils.e("afterGetJson_urlJson:" + "pageIndex\n" + json);
                 if (isInit) {
                     isInit = false;
 
                     if (pageIndex < vu.getLocalMethod().getPagingNum()) {
                         pageIndex++;
                         nextUrl = url + "#beginPage=" + pageIndex + "&offset=0";
+                        webView.loadUrl(Constants.BAIDU);
                     }
-                    webView.loadUrl(Constants.BAIDU);
                 }
 //                if (!TextUtils.isEmpty(json)) {
 ////                    webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));

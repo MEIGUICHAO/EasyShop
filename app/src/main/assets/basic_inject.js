@@ -30,17 +30,13 @@ function findSameStyle(productname){
 
 
 function getAliTao(){
-    localMethod.JI_LOG("getAliTao!!!!!!");
 //    var element = document.getElementsByClassName("sw-layout-1190");
     var element = document.getElementsByClassName("imgofferresult-mainBlock");
-    localMethod.JI_LOG(element.length);
-    localMethod.JI_LOG(element[0].value);
+    localMethod.JI_LOG("getAliTao!!!!!!"+element.length);
     var pagingNum = document.getElementsByClassName("fui-paging-num")[0];
     var tagElement = document.getElementsByClassName("left-tag");
     var saleElement = document.getElementsByClassName("sm-offer-trade sw-dpl-offer-trade sm-offer-tradeBt");
     var hrefElement = document.getElementsByClassName("s-widget-offershopwindowtitle sm-offer-title sw-dpl-offer-title sm-widget-offershopwindowtitle-onerow");
-    localMethod.JI_LOG("pagingNum:"+pagingNum.innerText);
-    localMethod.JI_LOG("saleElement:"+saleElement.length);
     localMethod.setPagingNum(pagingNum.innerText);
 
     var urls = "";
@@ -50,33 +46,18 @@ function getAliTao(){
         if(emTag.length>0){
             em = emTag[0].innerText;
         }
-        localMethod.JI_LOG("tagElement:"+i);
-        localMethod.JI_LOG("tagElement[i].innerText:"+tagElement[i].innerText);
-        localMethod.JI_LOG("em:"+em);
         if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
             var aTag = hrefElement[i].getElementsByTagName("a");
             if(aTag.length>0){
                 hrefUrl= aTag[0].getAttribute('href');
-                localMethod.JI_LOG("placeHolder:0");
                 if(urls.length==0){
                     urls = hrefUrl;
                 } else {
                     urls = urls + "\n" + hrefUrl;
                 }
-                localMethod.JI_LOG("em:"+i);
             }
-//            localMethod.JI_LOG("tagElement:"+tagElement[i].innerText);
-//            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
         }
-      localMethod.JI_LOG("placeHolder:next");
-//        localMethod.JI_LOG("hrefStr:"+hrefStr);
-//        localMethod.JI_LOG("hrefUrl:"+hrefUrl.length);
     }
-    localMethod.JI_LOG("placeHolder:1");
-    if(urls.length==0){
-        urls = "placeHolder";
-    }
-    localMethod.JI_LOG("placeHolder:2");
     localMethod.getJsonData(urls+"");
 
 }
