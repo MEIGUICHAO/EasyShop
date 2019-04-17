@@ -1,12 +1,18 @@
 package com.example.moguhaian.easyshop.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
+import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
@@ -28,8 +34,20 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private String[] items = {"1688","一件代发","下一页"};
     private int clickPosition;
     private int pageIndex = 0;
+//    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
     private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
     private String nextUrl;
+    private boolean isInit = false;
+    private boolean needGetJson = false;
+
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
+        }
+    };
+    private String oldUrl = "";
 
 
     @Override
@@ -60,6 +78,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(url);
                 break;
             case 1:
+                isInit = true;
                 webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
                 break;
             case 2:
@@ -105,13 +124,40 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void loadFinish(WebView wv, String url) {
+        if (oldUrl.equals(url)) {
+            return;
+        }
+        oldUrl = url;
         webView.scrollTo(0, webView.getScrollYRange());
         switch (clickPosition) {
             case 0:
 
                 break;
             case 1:
-                webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
+                if (!url.contains(Constants.BAIDU)) {
+                    if (needGetJson) {
+                        needGetJson = false;
+                        isInit = true;
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(4000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                mHandler.sendEmptyMessage(0);
+                            }
+                        }).start();
+                    }
+//                    else {
+//                        webView.loadUrl(Constants.BAIDU);
+//                    }
+                }else {
+                    needGetJson = true;
+                    webView.loadUrl(nextUrl);
+                }
                 break;
             case 2:
                 break;
@@ -125,9 +171,27 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 0:
                 break;
             case 1:
+                if (isInit) {
+                    isInit = false;
+
+                    if (pageIndex < vu.getLocalMethod().getPagingNum()) {
+                        pageIndex++;
+                        nextUrl = url + "#beginPage=" + pageIndex + "&offset=0";
+                    }
+                    webView.loadUrl(Constants.BAIDU);
+                }
+//                if (!TextUtils.isEmpty(json)) {
+////                    webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));
+//                }
                 break;
             case 2:
                 break;
         }
+    }
+
+    @Override
+    public void afterClick() {
+        webView.scrollTo(0, webView.getScrollYRange());
+        webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
     }
 }

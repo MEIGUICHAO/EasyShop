@@ -76,6 +76,11 @@ public class Top20wFragment extends BaseFragment<Top20wVu, Top20wBiz> implements
         LogUtils.e("afterGetJson!!!");
     }
 
+    @Override
+    public void afterClick() {
+
+    }
+
 
     private void onImport() {
         try {

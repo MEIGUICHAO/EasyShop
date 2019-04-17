@@ -23,6 +23,7 @@ public class LocalMethod {
     private final MyWebView mWebView;
     Activity mContext;
     LoalMethodListener listener;
+    private AfterClickRunnable afterClickRunnable;
 
     public int getPagingNum() {
         return pagingNum;
@@ -41,6 +42,26 @@ public class LocalMethod {
     public void setLocalMethodListener(LoalMethodListener localMethodListener) {
         listener = localMethodListener;
     }
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void afterClick() {
+        afterClickRunnable = new AfterClickRunnable();
+        BaseApplication.getmHandler().postDelayed(afterClickRunnable, 3000);
+    }
+
+    class AfterClickRunnable implements Runnable {
+        @Override
+        public void run() {
+            if (null != listener) {
+                LogUtils.e("afterClick:run");
+                listener.afterClick();
+                BaseApplication.getmHandler().removeCallbacks(this);
+            }
+        }
+    }
+
+
 
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface

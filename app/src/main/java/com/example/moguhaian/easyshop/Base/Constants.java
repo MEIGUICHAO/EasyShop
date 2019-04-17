@@ -17,6 +17,8 @@ public interface Constants {
     String searchUrl1 = "https://s.taobao.com/search?&initiative_id=tbindexz_20170306&ie=utf8&spm=a21bo.2017.201856-taobao-item.2&sourceId=tb.index&search_type=item&ssid=s5-e&commend=all&imgfile=&q=";
     String searchUrl2 = "&suggest=0_1&_input_charset=utf-8&wq=%E7%A7%AF%E6%9C%A8&suggest_query=%E7%A7%AF%E6%9C%A8&source=suggest";
 
+    String BAIDU = "https://www.baidu.com";
+
 
 
 //    https://www.taosj.com/tool/tool.htm#/optimize_market/keyword/?keyword=%E5%8F%98%E5%BD%A2&pageNo=1&pageSize=100

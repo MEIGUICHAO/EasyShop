@@ -18,7 +18,7 @@ public class MyWebChromeClient extends WebChromeClient {
 //        this.needListener = needListener;
 //    }
 
-//    private boolean needListener = true;
+    private boolean needListener = true;
 
 
     public void setOnLoadFinishListener(LoadFinishListener onLoadFinishListener) {
@@ -32,12 +32,20 @@ public class MyWebChromeClient extends WebChromeClient {
         view.loadUrl("javascript:" + BaseApplication.getInjectJS());
         super.onProgressChanged(view, newProgress);
         if (newProgress == 100) {
-            if (null != listener) {
+            if (null != listener && needListener) {
+                needListener = false;
                 if (view instanceof MyWebView) {
                     view.scrollTo(0, ((MyWebView) view).getScrollYRange());
                 }
-                listener.loadFinish(view, view.getUrl());
+                BaseApplication.getmHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.loadFinish(view, view.getUrl());
+                    }
+                });
             }
+        } else {
+            needListener = true;
         }
     }
 }
