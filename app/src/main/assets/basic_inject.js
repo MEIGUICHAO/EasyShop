@@ -44,11 +44,15 @@ function getAliTao(){
 
     var urls = "";
     for(var i=0;i<tagElement.length;i++){
-        if(saleElement.length<i){
+        if(saleElement.length<i+1){
+
             var emTag = saleElement[i].getElementsByTagName("em");
             if(emTag.length>0){
                 em = emTag[0].innerText;
             }
+            localMethod.JI_LOG("tagElement:"+i);
+            localMethod.JI_LOG("tagElement[i].innerText:"+tagElement[i].innerText);
+            localMethod.JI_LOG("em:"+em);
             if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
                 var aTag = hrefElement[i].getElementsByTagName("a");
                 if(aTag.length>0){
@@ -65,9 +69,15 @@ function getAliTao(){
     //            localMethod.JI_LOG("hrefUrl:"+hrefUrl);
             }
         }
+      localMethod.JI_LOG("placeHolder:next");
 //        localMethod.JI_LOG("hrefStr:"+hrefStr);
 //        localMethod.JI_LOG("hrefUrl:"+hrefUrl.length);
     }
+    localMethod.JI_LOG("placeHolder:1");
+    if(urls.length==0){
+        urls = "placeHolder";
+    }
+    localMethod.JI_LOG("placeHolder:2");
     localMethod.getJsonData(urls+"");
 
 }
