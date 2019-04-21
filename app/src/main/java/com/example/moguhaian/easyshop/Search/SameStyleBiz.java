@@ -17,6 +17,8 @@ public class SameStyleBiz extends BaseBiz {
 
     private int sleepTime = 5000;
     private String[] sortTypeArray;
+    private String sameStyleUlr;
+    private SameStyleRunnable sameStyleRunnable;
 
     public boolean isCanGetJson() {
         return canGetJson;
@@ -105,37 +107,45 @@ public class SameStyleBiz extends BaseBiz {
 
     public void getSameUrl(String json, final String url) {
         isGetSameUrlBegin = true;
+        sameStyleUlr = url;
         ArrayList<String> nameSplitResult = TaoUtils.getNameSplitResult(json);
         titleList.addAll(nameSplitResult);
         titleList = TaoUtils.getSingle(titleList);
         ArrayList<String> sameStyleUrl = TaoUtils.getSameStyleUrl(json);
         sameUrlList.addAll(sameStyleUrl);
         sameUrlList = TaoUtils.getSingle(sameUrlList);
+        if (null == sameStyleRunnable) {
+            sameStyleRunnable = new SameStyleRunnable();
+        }
 
-        BaseApplication.getmHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (pageIndedx < pageArray.length) {
-                    String loadUrl = url + "&" + sortTypeArray[srotTypeIndex] + "&" + pageArray[pageIndedx];
+        BaseApplication.getmHandler().postDelayed(sameStyleRunnable, Constants.DELAY_TIME);
+    }
+
+    public  class SameStyleRunnable implements Runnable {
+        @Override
+        public void run() {
+
+            if (pageIndedx < pageArray.length && srotTypeIndex < sortTypeArray.length) {
+                String loadUrl = sameStyleUlr + "&" + sortTypeArray[srotTypeIndex] + "&" + pageArray[pageIndedx];
+                LogUtils.e("loadUrl:" + loadUrl);
+                webView.loadUrl(loadUrl);
+                pageIndedx++;
+            } else {
+                pageIndedx = 0;
+                srotTypeIndex++;
+                if (srotTypeIndex < sortTypeArray.length) {
+                    String loadUrl = sameStyleUlr + "&" + sortTypeArray[srotTypeIndex] + "&" + pageArray[pageIndedx];
+                    pageIndedx++;
                     LogUtils.e("loadUrl:" + loadUrl);
                     webView.loadUrl(loadUrl);
-                    pageIndedx++;
                 } else {
-                    pageIndedx = 0;
-                    srotTypeIndex++;
-                    if (srotTypeIndex < sortTypeArray.length) {
-                        String loadUrl = url + "&" + sortTypeArray[srotTypeIndex] + "&" + pageArray[pageIndedx];
-                        pageIndedx++;
-                        LogUtils.e("loadUrl:" + loadUrl);
-                        webView.loadUrl(loadUrl);
-                    } else {
-                        isGetSameUrlBegin = false;
-                    }
+                    isGetSameUrlBegin = false;
                 }
-
             }
-        }, Constants.DELAY_TIME/2);
+            BaseApplication.getmHandler().removeCallbacks(this);
+        }
     }
+
 
     public void getInitShop(final String json) {
 

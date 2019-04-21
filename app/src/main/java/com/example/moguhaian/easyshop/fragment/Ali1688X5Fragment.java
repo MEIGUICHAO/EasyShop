@@ -64,7 +64,7 @@ public class Ali1688X5Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> {
     public void fragmentRightClick(int position) {
         super.fragmentRightClick(position);
 //        wvX5.loadUrl("https://www.1688.com/");
-        mWebView.loadUrl("https://www.1688.com/");
+        mWebView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674");
 
     }
 

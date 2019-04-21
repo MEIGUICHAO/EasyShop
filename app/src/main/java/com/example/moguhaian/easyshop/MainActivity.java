@@ -40,8 +40,8 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     @BindView(R.id.rcv_right)
     RecyclerView rcvRight;
 
-//    private String[] mainList = {"采集", "同款", "3", "1688"};
-    private String[] mainList = {"1688"};
+    //    private String[] mainList = {"采集", "同款", "3", "1688"};
+    private String[] mainList = {"同款标题", "1688"};
     private String[] rightList = {};
     private ArrayList<BaseFragment> fragments;
 
@@ -117,5 +117,14 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     @Override
     public void loadFinish(WebView wv, String url) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragments.get(vu.getLeftPosition()).canGoback()) {
+            fragments.get(vu.getLeftPosition()).webviewGoback();
+            return;
+        }
+        super.onBackPressed();
     }
 }

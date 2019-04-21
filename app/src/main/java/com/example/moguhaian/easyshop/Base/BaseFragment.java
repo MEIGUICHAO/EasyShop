@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -81,5 +80,13 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
 
     public void fragmentRightClick(int position) {
         
+    }
+
+    public boolean canGoback() {
+        return biz.webView.canGoBack();
+    }
+
+    public void webviewGoback() {
+        biz.webView.goBack();
     }
 }

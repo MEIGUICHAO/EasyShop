@@ -95,6 +95,24 @@ function login(){
 }
 
 
+function login1688(){
+    localMethod.JI_LOG("!!!!!!login1688");
+    var html = document.getElementsByTagName("html");
+
+    var loginBox = html[0].getElementsByTagName("body");
+    localMethod.JI_LOG("loginBox:"+loginBox.length);
+    var accounts = loginBox[0].getElementsByClassName("login-box no-longlogin module-static");
+
+//    var accounts = loginBox[0].getElementById("TPL_username_1");
+    localMethod.JI_LOG("accounts:"+accounts.length);
+    var psws = loginBox[0].getElementById("TPL_password_1");
+    localMethod.JI_LOG("psws:"+psws.length);
+
+    accounts.value ="蘑菇海岸梅干菜";
+    psws.value ="025684MGC770706";
+}
+
+
 function getDocument(){
     var mHtml = document.getElementsByTagName('script');
 

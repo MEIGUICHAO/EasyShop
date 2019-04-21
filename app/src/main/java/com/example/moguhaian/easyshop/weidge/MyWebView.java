@@ -18,6 +18,8 @@ public class MyWebView extends WebView {
 
     private boolean slideRecord = false;
 
+    private String loadUrl = "";
+
     public boolean isSlideRecord() {
         return slideRecord;
     }

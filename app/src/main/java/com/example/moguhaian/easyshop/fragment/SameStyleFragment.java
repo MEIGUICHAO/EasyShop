@@ -42,7 +42,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     MyWebView webView;
     Unbinder unbinder;
 
-    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新", "清楚cookie", "开关滑动记录"};
+    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新", "清楚cookie", "开关滑动记录", "获取标题"};
     //    private String shopsUrl = "https://www.taobao.com/?spm=a21bo.2017.201857.1.5c0111d9sMj916";
     private String shopsUrl = "https://s.taobao.com/search?spm=a230r.1.14.107.7396d7b2qjum31&type=samestyle&app=i2i&rec_type=1&uniqpid=-580033393&nid=568968377828&sort=sale-desc";
     //    private String sameUrl = "https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-465089991&nid=569519871896&sort=sale-desc";
@@ -56,7 +56,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     private int clickPosition;
     private String shopName = Shops.shopName;
 
-        private String url = "https://tao.1688.com/?spm=a260k.dacugeneral.jdlmjgub.2.6d20436cfPUKUB";
+        private String url = Constants.searchUrl1;
 
     @Override
     protected int getLayoutId() {
@@ -80,7 +80,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
         clickPosition = position;
         switch (position) {
             case 0://同款链接
-                webView.loadUrl(url);
+                webView.loadUrl(Constants.searchUrl1 + shopName + Constants.searchUrl2);
                 break;
             case 1://获取链接
                 biz.getTitleList().clear();
@@ -92,10 +92,10 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 for (int i = 0; i < biz.getTitleList().size(); i++) {
                     LogUtils.e("titleList" + i + ":" + biz.getTitleList().get(i));
                 }
-                LogUtils.e("=======================================");
-                for (int i = 0; i < biz.getSameUrlList().size(); i++) {
-                    LogUtils.e("sameUrlList" + i + ":" + biz.getSameUrlList().get(i));
-                }
+//                LogUtils.e("=======================================");
+//                for (int i = 0; i < biz.getSameUrlList().size(); i++) {
+//                    LogUtils.e("sameUrlList" + i + ":" + biz.getSameUrlList().get(i));
+//                }
 //                BaseApplication.setCookieOpen(true);
 //                webView.loadUrl(url);
                 break;
@@ -152,7 +152,6 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 String reslutStr = "";
                 for (int i = 0; i < resultList.size(); i++) {
                     reslutStr = TextUtils.isEmpty(reslutStr) ? resultList.get(i).getRootResult() : reslutStr + "\n" + resultList.get(i).getRootResult();
-                    ;
                 }
                 LogUtils.e("母宝贝结果：\n" + reslutStr);
 //                webView.loadUrl(JsUtils.addJsMethod("getDocument()"));
@@ -224,6 +223,22 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
             case 12://开启滑动记录:
                 webView.setNeedDraw(!webView.isNeedDraw());
                 ToastUtils.showToast(webView.isNeedDraw() ? "开启" : "关闭");
+                break;
+            case 13://获取标题:
+                int[] randomTitle = TaoUtils.getRandom(0, biz.getTitleList().size() - 1, 100);
+                String titleOnly = "";
+                String templeTitleOnly = "";
+                for (int i = 0; i < randomTitle.length; i++) {
+                    if (templeTitleOnly.length() > 60) {
+                        titleOnly = TextUtils.isEmpty(titleOnly) ? templeTitleOnly : titleOnly + "\n" + templeTitleOnly;
+                        templeTitleOnly = biz.getTitleList().get(randomTitle[i]);
+                    } else {
+                        if (TaoUtils.levenshtein(biz.getTitleList().get(randomTitle[i]), templeTitleOnly) < 0.2) {
+                            templeTitleOnly = TextUtils.isEmpty(templeTitleOnly) ? biz.getTitleList().get(randomTitle[i]) : templeTitleOnly + biz.getTitleList().get(randomTitle[i]);
+                        }
+                    }
+                }
+                LogUtils.e("标题结果：\n" + titleOnly);
                 break;
 //            try {
 ////                String address = InetAddress.getLocalHost().getHostAddress().toString();

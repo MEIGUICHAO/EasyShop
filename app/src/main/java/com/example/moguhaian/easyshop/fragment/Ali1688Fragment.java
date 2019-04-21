@@ -29,11 +29,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688","一件代发","下一页"};
+    private String[] items = {"1688","一件代发","下一页","一键铺货","登陆"};
     private int clickPosition;
     private int pageIndex = 0;
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
-    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
+//    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
+    private String url = "https://detail.1688.com/offer/539556562483.html?sk=consign";
+//    private String url = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
+    private String loginUrl = "https://login.1688.com/member/signin.htm?tracelog=account_verify";
     private String nextUrl;
     private boolean isInit = false;
     private boolean needGetJson = false;
@@ -81,20 +84,21 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 2:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));
-
-
-
-//                int pagingNum = vu.getLocalMethod().getPagingNum();
-//                if (pageIndex < pagingNum) {
-//                    pageIndex++;
-//                    nextUrl = url + "#beginPage=" + pageIndex + "&offset=0";
-//
-//                }
-//                webView.loadUrl(nextUrl);
+                break;
+            case 3:
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"menu-item-btn  J_ConsignBtn_DistributeToTaobao\")"));
+                break;
+            case 4:
+                if (!oldUrl.contains("login.1688.com")) {
+                    webView.loadUrl(loginUrl);
+                } else {
+                    webView.loadUrl(JsUtils.addJsMethod("login1688()"));
+                }
                 break;
         }
 
     }
+
 
     @Override
     protected Class getVuClass() {
