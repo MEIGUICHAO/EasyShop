@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,14 +30,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688","一件代发","下一页","一键铺货","登陆"};
+    private String[] items = {"1688","一件代发","下一页","一键铺货","登陆","图片空间"};
     private int clickPosition;
     private int pageIndex = 0;
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
-    private String url = "https://detail.1688.com/offer/539556562483.html?sk=consign";
-//    private String url = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
+//    private String url = "https://detail.1688.com/offer/539556562483.html?sk=consign";
+    private String url = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
     private String loginUrl = "https://login.1688.com/member/signin.htm?tracelog=account_verify";
+    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
     private String nextUrl;
     private boolean isInit = false;
     private boolean needGetJson = false;
@@ -95,6 +97,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     webView.loadUrl(JsUtils.addJsMethod("login1688()"));
                 }
                 break;
+            case 5:
+                webView.loadUrl(picSpaceUrl);
+                break;
         }
 
     }
@@ -126,6 +131,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void loadFinish(WebView wv, String url) {
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         if (oldUrl.equals(url)) {
             return;
         }
