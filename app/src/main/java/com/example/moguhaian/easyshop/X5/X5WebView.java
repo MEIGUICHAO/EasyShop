@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.moguhaian.easyshop.Base.Constants;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm;
@@ -57,7 +58,7 @@ public class X5WebView extends WebView {
 		webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
 		// webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
 		webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
-		webSetting.setUserAgent("Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1");
+		webSetting.setUserAgent(Constants.UserAgentString);
 
 		// this.getSettingsExtension().setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);//extension
 		// settings 的设计
