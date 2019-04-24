@@ -132,6 +132,33 @@ function getDocument(){
 
 
 
+function getSrcByClassName(){
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementsByClassName("lis-imgBox-img");
+    var titleElement = document.getElementsByClassName("mid-lis-name");
+    var urls = "";
+    var titles = "";
+    for(var i=0;i<element.length;i++){
+        var hrefUrl= element[i].getAttribute('src');
+        if(urls.length==0){
+            urls = hrefUrl;
+        } else {
+            urls = urls + "\n" + hrefUrl;
+        }
+    }
+    for(var i=0;i<titleElement.length;i++){
+        var title= titleElement[i].getAttribute('title');
+        if(urls.length==0){
+            titles = title;
+        } else {
+            titles = titles + "\n" + title;
+        }
+    }
+    localMethod.JI_LOG(urls);
+    localMethod.JI_LOG(titles);
+}
+
+
 function findElementsByClassName(className){
     localMethod.JI_LOG("!!!!!!");
     var element = document.getElementsByClassName(className);

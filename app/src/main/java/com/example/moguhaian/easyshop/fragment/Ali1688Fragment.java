@@ -15,6 +15,7 @@ import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.TaoUtils;
 import com.example.moguhaian.easyshop.View.Ali1688Vu;
 import com.example.moguhaian.easyshop.biz.Ali1688Biz;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
@@ -30,7 +31,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688","一件代发","下一页","一键铺货","登陆","图片空间"};
+    private String[] items = {"1688","一件代发","下一页","一键铺货","登陆","图片空间","获取图片"};
     private int clickPosition;
     private int pageIndex = 0;
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -38,7 +39,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //    private String url = "https://detail.1688.com/offer/539556562483.html?sk=consign";
     private String url = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
     private String loginUrl = "https://login.1688.com/member/signin.htm?tracelog=account_verify";
-    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
+//    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
+    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.694f139dxs5m9o#/manage/pic?_k=umx2ua";
     private String nextUrl;
     private boolean isInit = false;
     private boolean needGetJson = false;
@@ -99,6 +101,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 5:
                 webView.loadUrl(picSpaceUrl);
+                break;
+            case 6:
+                webView.loadUrl(JsUtils.addJsMethod("getSrcByClassName()"));
                 break;
         }
 
