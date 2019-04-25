@@ -178,6 +178,16 @@ function filterWorld(className){
 
 
 
+function findMoblieImgLength(className){
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    var imgs = element[0].getElementsByTagName("img")
+    localMethod.JI_LOG("imgs:"+imgs.length);
+//    element[0].click();
+}
+
+
 function findElementsByClassName(className){
     localMethod.JI_LOG("!!!!!!");
     var element = document.getElementsByClassName(className);
