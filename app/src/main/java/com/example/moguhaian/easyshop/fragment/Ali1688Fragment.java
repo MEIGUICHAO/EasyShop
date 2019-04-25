@@ -15,7 +15,6 @@ import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
-import com.example.moguhaian.easyshop.Utils.TaoUtils;
 import com.example.moguhaian.easyshop.View.Ali1688Vu;
 import com.example.moguhaian.easyshop.biz.Ali1688Biz;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
@@ -31,7 +30,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688","一件代发","下一页","一键铺货","登陆","图片空间","获取图片"};
+    private String[] items = {"1688","一件代发","下一页","一键铺货","登陆","图片空间","获取图片","发布现场","过滤文字"};
     private int clickPosition;
     private int pageIndex = 0;
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -104,6 +103,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 6:
                 webView.loadUrl(JsUtils.addJsMethod("getSrcByClassName()"));
+                break;
+            case 7:
+                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=50006804&itemId=593005099010");
+                break;
+            case 8:
+                webView.loadUrl(JsUtils.addJsMethod("filterWorld(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
                 break;
         }
 

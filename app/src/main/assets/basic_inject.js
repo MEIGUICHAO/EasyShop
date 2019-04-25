@@ -159,11 +159,46 @@ function getSrcByClassName(){
 }
 
 
+function filterWorld(className){
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    var spans = element[0].getElementsByTagName("span")
+    localMethod.JI_LOG("spans:"+spans.length);
+    for(var i=0;i<spans.length;i++){
+        localMethod.JI_LOG("!!!!!!"+i);
+        spans[i].value="";
+        spans[i].innerText="";
+        localMethod.JI_LOG(className+":"+spans[i].value);
+        localMethod.JI_LOG(className+":"+spans[i].innerText);
+        localMethod.JI_LOG("end"+i);
+    }
+//    element[0].click();
+}
+
+
+
 function findElementsByClassName(className){
     localMethod.JI_LOG("!!!!!!");
     var element = document.getElementsByClassName(className);
     localMethod.JI_LOG(className+":"+element.length);
-    localMethod.JI_LOG(className+":"+element[0].value);
+    for(var i=0;i<element.length;j++){
+        localMethod.JI_LOG(className+":"+element[i].value);
+    }
+//    element[0].click();
+}
+
+function findElementsById(className){
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementById(className);
+    localMethod.JI_LOG(className+":"+element.length);
+
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    for(var i=0;i<element.length;j++){
+        localMethod.JI_LOG(className+":"+element[i].value);
+    }
 //    element[0].click();
 }
 
