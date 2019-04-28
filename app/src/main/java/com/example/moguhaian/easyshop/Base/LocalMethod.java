@@ -2,6 +2,9 @@ package com.example.moguhaian.easyshop.Base;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Instrumentation;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.JavascriptInterface;
 
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
@@ -78,6 +81,61 @@ public class LocalMethod {
     @JavascriptInterface
     public void setPagingNum(String num) {
         pagingNum = Integer.parseInt(num);
+    }
+
+
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void showKeyboardB4Input() {
+        new Thread( new Runnable( ) {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep( 1000 );
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
+                // “旋转”的拼音
+                int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X,KeyEvent.KEYCODE_DEL};
+                for (int i = 0; i < keyCodeArray.length; i++) {
+                    try {
+                        typeIn(keyCodeArray[i]);
+                        Thread.sleep( 1000 );
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start( );
+
+//        BaseApplication.getmHandler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                BaseApplication.getmHandler().removeCallbacks(this);
+//                int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
+//                for (int k = 0; k < keyCodeArray.length; k++) {
+//                    typeIn(keyCodeArray[k]);
+//                    try {
+//                        Thread.sleep( 400 );
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }, 1500);
+    }
+
+
+    public void typeIn( final int KeyCode ){
+        try {
+            Instrumentation inst = new Instrumentation();
+            inst.sendKeyDownUpSync( KeyCode );
+        } catch (Exception e) {
+            Log.e("Exception：", e.toString());
+        }
     }
 
 

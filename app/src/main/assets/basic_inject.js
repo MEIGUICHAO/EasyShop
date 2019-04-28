@@ -225,6 +225,22 @@ function clickElementsByClassName(className){
 }
 
 
+function setInputValue(className,inputvalue){
+
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    if(element.length>0){
+        var tag = element[0].getElementsByTagName("input");
+        localMethod.JI_LOG("tag:"+tag.length);
+        if(tag.length>0){
+            tag[0].value=inputvalue;
+            tag[0].click();
+        }
+    }
+    localMethod.showKeyboardB4Input();
+}
+
+
 
 function foreachTable(tableName,page){
 

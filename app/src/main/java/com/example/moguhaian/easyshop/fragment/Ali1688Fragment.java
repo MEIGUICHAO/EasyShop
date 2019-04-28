@@ -1,10 +1,12 @@
 package com.example.moguhaian.easyshop.fragment;
 
+import android.app.Instrumentation;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,20 +27,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> implements LoadFinishListener,LoalMethodListener {
+public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> implements LoadFinishListener, LoalMethodListener {
 
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688","一件代发","下一页","一键铺货","登陆","图片空间","获取图片","发布现场","过滤文字"};
+    private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片", "发布现场", "过滤文字", "官方传", "新建文件夹"
+            , "文件夹名称"};
     private int clickPosition;
     private int pageIndex = 0;
-//    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
+    //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
-//    private String url = "https://detail.1688.com/offer/539556562483.html?sk=consign";
-    private String url = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
+    private String url = "https://detail.1688.com/offer/539556562483.html?sk=consign";
+    //    private String url = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
     private String loginUrl = "https://login.1688.com/member/signin.htm?tracelog=account_verify";
-//    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
+    //    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
     private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.694f139dxs5m9o#/manage/pic?_k=umx2ua";
     private String nextUrl;
     private boolean isInit = false;
@@ -111,8 +114,52 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("filterWorld(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
                 webView.loadUrl(JsUtils.addJsMethod("findMoblieImgLength(\"m-editor-content-body\")"));
                 break;
+            case 9:
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"btn confirm official-confirm\")"));
+                break;
+            case 10:
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"itemList-head-btn-item\")"));
+                break;
+            case 11:
+                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
+
+//                biz.getSingleThreadExecutor().execute(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
+//                        for (int i = 0; i < keyCodeArray.length; i++) {
+//                            try {
+//                                typeIn(keyCodeArray[i]);
+//                                Thread.sleep(400);
+//
+//                                if (i == keyCodeArray.length - 1) {
+//                                    BaseApplication.getmHandler().post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                        }
+//                                    });
+//                                }
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//                });
+
+                break;
         }
 
+    }
+
+
+    public void typeIn(final int KeyCode) {
+        try {
+            Instrumentation inst = new Instrumentation();
+            inst.sendKeyDownUpSync(KeyCode);
+        } catch (Exception e) {
+            Log.e("Exception：", e.toString());
+        }
     }
 
 
@@ -175,7 +222,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                    else {
 //                        webView.loadUrl(Constants.BAIDU);
 //                    }
-                }else {
+                } else {
                     needGetJson = true;
                     webView.loadUrl(nextUrl);
                 }
