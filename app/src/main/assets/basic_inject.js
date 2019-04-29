@@ -242,6 +242,22 @@ function setInputValue(className,inputvalue){
 
 
 
+function getSrcAttrByTagName(className,attr){
+
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    if(element.length>0){
+        var tag = element[0].getElementsByTagName("img");
+        localMethod.JI_LOG("tag:"+tag.length);
+        for(var j=0;j<tag.length;j++){
+            localMethod.JI_LOG(tag[j].getAttribute("src"));
+            localMethod.JI_LOG(tag[j].getAttribute(attr));
+        }
+    }
+}
+
+
+
 function foreachTable(tableName,page){
 
     setTimeout(function(){

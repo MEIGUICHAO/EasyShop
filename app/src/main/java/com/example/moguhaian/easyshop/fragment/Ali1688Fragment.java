@@ -32,8 +32,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片", "发布现场", "过滤文字", "官方传", "新建文件夹"
-            , "文件夹名称"};
+    private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传", "新建文件夹"
+            , "文件夹名称", "淘管家", "1688详情","获取1688详情图片"};
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -103,11 +103,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 5:
                 webView.loadUrl(picSpaceUrl);
                 break;
-            case 6:
+            case 6://获取图片空间图片
                 webView.loadUrl(JsUtils.addJsMethod("getSrcByClassName()"));
                 break;
-            case 7:
-                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=50006804&itemId=593005099010");
+            case 7://发布现场
+                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794");
                 break;
             case 8:
 //                webView.loadUrl(JsUtils.addJsMethod("filterWorld(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
@@ -121,31 +121,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 11:
                 webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
-
-//                biz.getSingleThreadExecutor().execute(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
-//                        for (int i = 0; i < keyCodeArray.length; i++) {
-//                            try {
-//                                typeIn(keyCodeArray[i]);
-//                                Thread.sleep(400);
-//
-//                                if (i == keyCodeArray.length - 1) {
-//                                    BaseApplication.getmHandler().post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                        }
-//                                    });
-//                                }
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-//                });
-
+                break;
+            case 12://淘管家
+                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
+                break;
+            case 13://1688详情
+                webView.loadUrl("https://detail.1688.com/offer/564583873717.html?spm=a262fr.8351313.0.0.kOvAk8&sk=consignPrivate");
+                break;
+            case 14://1688详情
+                webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
                 break;
         }
 
