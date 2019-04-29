@@ -42,6 +42,9 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
         }
     }
 
+    public int clickPosition;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

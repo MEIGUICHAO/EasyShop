@@ -7,12 +7,14 @@ import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.Bean.SamestyleBean;
 import com.example.moguhaian.easyshop.Bean.TemSameUrlBean;
 import com.example.moguhaian.easyshop.Bean.TemTitleBean;
+import com.example.moguhaian.easyshop.Bean.Top20wRecordBean;
 import com.example.moguhaian.easyshop.ResultBeanDao;
 import com.example.moguhaian.easyshop.SameStyleTitleArrayBeanDao;
 import com.example.moguhaian.easyshop.SameSytleUrlBeanDao;
 import com.example.moguhaian.easyshop.SamestyleBeanDao;
 import com.example.moguhaian.easyshop.TemSameUrlBeanDao;
 import com.example.moguhaian.easyshop.TemTitleBeanDao;
+import com.example.moguhaian.easyshop.Top20wRecordBeanDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,27 @@ public class GreenDaoUtils {
     private static TemSameUrlBeanDao temSameUrlBeanDao;
     private static TemTitleBeanDao temTitleBeanDao;
     private static ResultBeanDao resultBeanDao;
+    private static Top20wRecordBeanDao top20wRecordBeanDao;
+
+
+    public static void initTop20wRecordBean() {
+        if (null == top20wRecordBeanDao) {
+            top20wRecordBeanDao = BaseApplication.getInstances().getDaoSession().getTop20wRecordBeanDao();
+        }
+    }
+
+
+    public static void insertTop20wRecordBean(Top20wRecordBean bean) {
+        initTop20wRecordBean();
+        top20wRecordBeanDao.insert(bean);
+    }
+
+
+    public static List<Top20wRecordBean> getTop20wRecordBeanList() {
+        initTop20wRecordBean();
+        List<Top20wRecordBean> list = top20wRecordBeanDao.queryBuilder().list();
+        return list;
+    }
 
 
     public static void initResultBeanDao() {

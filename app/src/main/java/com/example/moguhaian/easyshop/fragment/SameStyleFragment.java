@@ -53,7 +53,6 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     private int ipsIndedx = 0;
     private String[] userAgent;
     private String[] ips;
-    private int clickPosition;
     private String shopName = Shops.shopName;
 
         private String url = Constants.searchUrl1;
