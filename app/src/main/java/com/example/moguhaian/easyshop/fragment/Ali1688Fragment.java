@@ -100,7 +100,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     webView.loadUrl(JsUtils.addJsMethod("login1688()"));
                 }
                 break;
-            case 5:
+            case 5://图片空间
                 webView.loadUrl(picSpaceUrl);
                 break;
             case 6://获取图片空间图片

@@ -134,24 +134,31 @@ function getDocument(){
 
 function getSrcByClassName(){
     localMethod.JI_LOG("!!!!!!");
-    var element = document.getElementsByClassName("lis-imgBox-img");
-    var titleElement = document.getElementsByClassName("mid-lis-name");
+    var block = document.getElementsByClassName("block-mid-lis ");
+    localMethod.JI_LOG("block:"+block.length);
+
+//    var element = document.getElementsByClassName("lis-imgBox-img");
+//    var titleElement = document.getElementsByClassName("mid-lis-name");
     var urls = "";
     var titles = "";
-    for(var i=0;i<element.length;i++){
-        var hrefUrl= element[i].getAttribute('src');
-        if(urls.length==0){
-            urls = hrefUrl;
-        } else {
-            urls = urls + "\n" + hrefUrl;
-        }
-    }
-    for(var i=0;i<titleElement.length;i++){
-        var title= titleElement[i].getAttribute('title');
-        if(urls.length==0){
-            titles = title;
-        } else {
-            titles = titles + "\n" + title;
+    for(var i=0;i<block.length;i++){
+        var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
+        if(mDocument.length>0){
+            var element = block[i].getElementsByClassName("lis-imgBox-img");
+            var titleElement = block[i].getElementsByClassName("mid-lis-name");
+            var hrefUrl= element[0].getAttribute('src');
+            if(urls.length==0){
+                urls = hrefUrl;
+            } else {
+                urls = urls + "\n" + hrefUrl;
+            }
+
+            var title= titleElement[0].getAttribute('title');
+            if(titles.length==0){
+                titles = title;
+            } else {
+                titles = titles + "\n" + title;
+            }
         }
     }
     localMethod.JI_LOG(urls);
@@ -244,15 +251,34 @@ function setInputValue(className,inputvalue){
 
 function getSrcAttrByTagName(className,attr){
 
+    var sku = document.getElementsByClassName("obj-sku");
+    if(sku.length>0){
+        var expand = sku[0].getElementsByClassName("obj-expand");
+        if(expand.length>0){
+            expand[0].click;
+        }
+    }
+
     var element = document.getElementsByClassName(className);
     localMethod.JI_LOG(className+":"+element.length);
+    var urls = "";
+    var shopName = "";
     if(element.length>0){
         var tag = element[0].getElementsByTagName("img");
         localMethod.JI_LOG("tag:"+tag.length);
         for(var j=0;j<tag.length;j++){
+            if(urls.length==0){
+                urls = tag[j].getAttribute("src");
+                shopName = tag[j].getAttribute(attr);
+            } else {
+                urls = urls + "###" + tag[j].getAttribute("src");
+                shopName = shopName + "###" + tag[j].getAttribute(attr);
+
+            }
             localMethod.JI_LOG(tag[j].getAttribute("src"));
             localMethod.JI_LOG(tag[j].getAttribute(attr));
         }
+        localMethod.get1688details(urls,shopName);
     }
 }
 

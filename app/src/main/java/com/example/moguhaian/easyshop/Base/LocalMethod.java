@@ -27,6 +27,17 @@ public class LocalMethod {
     Activity mContext;
     LoalMethodListener listener;
     private AfterClickRunnable afterClickRunnable;
+    private String[] srcArray;
+
+    public String[] getSrcArray() {
+        return srcArray;
+    }
+
+    public String[] getShopNameArray() {
+        return shopNameArray;
+    }
+
+    private String[] shopNameArray;
 
     public int getPagingNum() {
         return pagingNum;
@@ -64,6 +75,36 @@ public class LocalMethod {
         }
     }
 
+
+
+//    @SuppressLint("JavascriptInterface")
+//    @JavascriptInterface
+//    public void get1688details(final String src,final String shopName) {
+//        BaseApplication.getmHandler().post(new Runnable() {
+//            @Override
+//            public void run() {
+//                srcArray = src.split("###");
+//                shopNameArray = shopName.split("###");
+//                LogUtils.e("src: " + src);
+//                LogUtils.e("shopName: " + shopName);
+//            }
+//        });
+//    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void get1688details(final String src,final String shopName) {
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                srcArray = src.split("###");
+                shopNameArray = shopName.split("###");
+                LogUtils.e("src: " + src);
+                LogUtils.e("shopName: " + shopName);
+            }
+        });
+    }
 
 
     @SuppressLint("JavascriptInterface")
