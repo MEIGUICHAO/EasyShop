@@ -163,6 +163,20 @@ function getSrcByClassName(){
     }
     localMethod.JI_LOG(urls);
     localMethod.JI_LOG(titles);
+    localMethod.addPicSpaceResult(urls,titles);
+    var nextArea = document.getElementsByClassName("itemList-bottom ");
+    if(nextArea.length>0){
+        localMethod.JI_LOG("nextArea:"+nextArea.length);
+        var next = nextArea[0].getElementsByClassName("next");
+        var nextDiasble = nextArea[0].getElementsByClassName("next disable1");
+        if(next.length>0){
+            next[0].click();
+            if(nextDiasble.length<1){
+                localMethod.next();
+            }
+        }
+    }
+
 }
 
 

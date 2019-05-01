@@ -1,15 +1,11 @@
 package com.example.moguhaian.easyshop.biz;
 
 import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.moguhaian.easyshop.Base.BaseBiz;
-import com.example.moguhaian.easyshop.MainActivity;
-import com.example.moguhaian.easyshop.Utils.PicUtils;
 import com.example.moguhaian.easyshop.listener.GlideLoadListener;
 
 public class Ali1688Biz extends BaseBiz {
@@ -36,18 +32,18 @@ public class Ali1688Biz extends BaseBiz {
 //    }
 
 
-//    private void glidePic(String loadurl, final GlideLoadListener glideLoadListener) {
-//        Glide.with(MainActivity.this)
-//                .load(loadurl)
-//                .asBitmap()
-//                .into(new SimpleTarget<Bitmap>() {
-//                    @Override
-//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                        //加载完成后的处理
-//                        glideLoadListener.loadFinish(resource);
-//                    }
-//                });
-//    }
+    private void glidePic(String loadurl, final GlideLoadListener glideLoadListener) {
+        Glide.with(activity)
+                .load(loadurl)
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        //加载完成后的处理
+                        glideLoadListener.loadFinish(resource);
+                    }
+                });
+    }
 
 
 }

@@ -18,6 +18,7 @@ import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint({ "SetJavaScriptEnabled", "JavascriptInterface" })
@@ -28,6 +29,23 @@ public class LocalMethod {
     LoalMethodListener listener;
     private AfterClickRunnable afterClickRunnable;
     private String[] srcArray;
+    private ArrayList<String> picSpaceUrlList = new ArrayList<>();
+
+    public ArrayList<String> getPicSpaceUrlList() {
+        return picSpaceUrlList;
+    }
+
+    public ArrayList<String> getPicSpaceTitleList() {
+        return picSpaceTitleList;
+    }
+
+    private ArrayList<String> picSpaceTitleList = new ArrayList<>();
+
+
+    public void resetPicspaceList() {
+        picSpaceUrlList.clear();
+        picSpaceTitleList.clear();
+    }
 
     public String[] getSrcArray() {
         return srcArray;
@@ -77,19 +95,34 @@ public class LocalMethod {
 
 
 
-//    @SuppressLint("JavascriptInterface")
-//    @JavascriptInterface
-//    public void get1688details(final String src,final String shopName) {
-//        BaseApplication.getmHandler().post(new Runnable() {
-//            @Override
-//            public void run() {
-//                srcArray = src.split("###");
-//                shopNameArray = shopName.split("###");
-//                LogUtils.e("src: " + src);
-//                LogUtils.e("shopName: " + shopName);
-//            }
-//        });
-//    }
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void addPicSpaceResult(final String pics, final String titles) {
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                String[] picsArray = pics.split("\n");
+                String[] titlesArray = titles.split("\n");
+                for (int i = 0; i < picsArray.length; i++) {
+                    picSpaceUrlList.add(picsArray[i]);
+                    picSpaceTitleList.add(titlesArray[i]);
+                }
+            }
+        });
+    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void next() {
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BaseApplication.getmHandler().removeCallbacks(this);
+                mWebView.loadUrl(JsUtils.addJsMethod("getSrcByClassName()"));
+            }
+        }, 1000);
+    }
 
 
     @SuppressLint("JavascriptInterface")
