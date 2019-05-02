@@ -1,7 +1,6 @@
 package com.example.moguhaian.easyshop.Utils;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 public class PicUtils {
 
@@ -95,7 +94,6 @@ public class PicUtils {
                 diffNum++;
             }
         }
-        Log.e("diff:", "diff:" + diffNum);
         return diffNum;
     }
 

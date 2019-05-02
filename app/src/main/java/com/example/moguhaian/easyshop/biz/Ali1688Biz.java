@@ -2,6 +2,7 @@ package com.example.moguhaian.easyshop.biz;
 
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
+import android.text.TextUtils;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -18,10 +19,12 @@ public class Ali1688Biz extends BaseBiz {
     private Bitmap bitmap2;
     private int detailPosition = -1;
     private int picSpacePosition = -1;
+    private String resultUrl = "";
     private String url1;
     private String url2;
 
     public void diffResult(final List<String> list1, final List<String> list2) {
+        LogUtils.e("list1:" + list1.size() + ",list2:" + list2.size());
 
         if (detailPosition == -1) {
             detailPosition = 0;
@@ -29,6 +32,21 @@ public class Ali1688Biz extends BaseBiz {
         }
         url1 = list1.get(detailPosition);
         url2 = list2.get(picSpacePosition);
+        if (resultUrl.contains(url2)) {
+            picSpacePosition++;
+            if (picSpacePosition == list2.size()) {
+                picSpacePosition = 0;
+                detailPosition++;
+            }
+            if (detailPosition < list1.size()) {
+                diffResult(list1, list2);
+            } else {
+                detailPosition = -1;
+                picSpacePosition = -1;
+                resultUrl = "";
+            }
+            return;
+        }
         Glide.with(activity)
                 .load(url1)
                 .asBitmap()
@@ -49,18 +67,24 @@ public class Ali1688Biz extends BaseBiz {
 
                                 int diff = PicUtils.diff(picHexString1, picHexString2);
                                 if (diff < 3) {
-                                    LogUtils.e("相似:" + "\n" + url1 + "\n" + url2);
+                                    LogUtils.e(detailPosition + "---" + picSpacePosition + ",相似:" + diff + "\n" + url1 + "\n" + url2);
                                     detailPosition++;
                                     picSpacePosition = 0;
+                                    resultUrl = TextUtils.isEmpty(resultUrl) ? url2 : resultUrl + "###" + url2;
                                 } else {
                                     picSpacePosition++;
                                 }
 
                                 if (picSpacePosition == list2.size()) {
                                     picSpacePosition = 0;
+                                    detailPosition++;
                                 }
                                 if (detailPosition < list1.size()) {
                                     diffResult(list1, list2);
+                                } else {
+                                    detailPosition = -1;
+                                    picSpacePosition = -1;
+                                    resultUrl = "";
                                 }
 
 

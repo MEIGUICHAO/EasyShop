@@ -144,21 +144,25 @@ function getSrcByClassName(){
     for(var i=0;i<block.length;i++){
         var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
         if(mDocument.length>0){
-            var element = block[i].getElementsByClassName("lis-imgBox-img");
-            var titleElement = block[i].getElementsByClassName("mid-lis-name");
-            var hrefUrl= element[0].getAttribute('src');
-            hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
-            if(urls.length==0){
-                urls = hrefUrl;
-            } else {
-                urls = urls + "\n" + hrefUrl;
-            }
+            var lead = block[i].getElementsByClassName("lis-lead not-dragging");
+            if(lead.length<1){
+                var element = block[i].getElementsByClassName("lis-imgBox-img");
+                var titleElement = block[i].getElementsByClassName("mid-lis-name");
+                var hrefUrl= element[0].getAttribute('src');
+                hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
 
-            var title= titleElement[0].getAttribute('title');
-            if(titles.length==0){
-                titles = title;
-            } else {
-                titles = titles + "\n" + title;
+                if(urls.length==0){
+                    urls = hrefUrl;
+                } else {
+                    urls = urls + "\n" + hrefUrl;
+                }
+
+                var title= titleElement[0].getAttribute('title');
+                if(titles.length==0){
+                    titles = title;
+                } else {
+                    titles = titles + "\n" + title;
+                }
             }
         }
     }
