@@ -133,9 +133,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
                 break;
             case 15://获取上传图片
-                for (int i = 0; i < ; i++) {
-                    
-                }
+                biz.diffResult(vu.getLocalMethod().getSrcDetailList(), vu.getLocalMethod().getPicSpaceUrlList());
                 break;
         }
 

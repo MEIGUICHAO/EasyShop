@@ -28,7 +28,6 @@ public class LocalMethod {
     Activity mContext;
     LoalMethodListener listener;
     private AfterClickRunnable afterClickRunnable;
-    private String[] srcArray;
     private ArrayList<String> picSpaceUrlList = new ArrayList<>();
 
     public ArrayList<String> getPicSpaceUrlList() {
@@ -47,15 +46,17 @@ public class LocalMethod {
         picSpaceTitleList.clear();
     }
 
-    public String[] getSrcArray() {
-        return srcArray;
+
+    public ArrayList<String> getSrcDetailList() {
+        return srcDetailList;
     }
 
-    public String[] getShopNameArray() {
-        return shopNameArray;
+    public ArrayList<String> getShopNameList() {
+        return shopNameList;
     }
 
-    private String[] shopNameArray;
+    private ArrayList<String> srcDetailList = new ArrayList<>();
+    private ArrayList<String> shopNameList = new ArrayList<>();
 
     public int getPagingNum() {
         return pagingNum;
@@ -131,10 +132,16 @@ public class LocalMethod {
         BaseApplication.getmHandler().post(new Runnable() {
             @Override
             public void run() {
-                srcArray = src.split("###");
-                shopNameArray = shopName.split("###");
-                LogUtils.e("src: " + src);
-                LogUtils.e("shopName: " + shopName);
+                srcDetailList.clear();
+                shopNameList.clear();
+                String[] srcArray = src.split("###");
+                String[] shopNameArray = shopName.split("###");
+                for (int i = 0; i < srcArray.length; i++) {
+                    srcDetailList.add(srcArray[i]);
+                }
+                for (int i = 0; i < shopNameArray.length; i++) {
+                    shopNameList.add(shopNameArray[i]);
+                }
             }
         });
     }

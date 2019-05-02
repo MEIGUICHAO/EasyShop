@@ -147,6 +147,7 @@ function getSrcByClassName(){
             var element = block[i].getElementsByClassName("lis-imgBox-img");
             var titleElement = block[i].getElementsByClassName("mid-lis-name");
             var hrefUrl= element[0].getAttribute('src');
+            hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
             if(urls.length==0){
                 urls = hrefUrl;
             } else {
