@@ -33,7 +33,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     MyWebView webView;
     Unbinder unbinder;
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传", "新建文件夹"
-            , "文件夹名称", "淘管家", "1688详情","获取1688详情图片","获取上传图片"};
+            , "文件夹名称", "淘管家", "1688详情","获取1688详情图片","获取上传图片","login"};
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -133,7 +133,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
                 break;
             case 15://获取上传图片
-                biz.diffResult(vu.getLocalMethod().getSrcDetailList(), vu.getLocalMethod().getPicSpaceUrlList());
+                biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList());
+                break;
+            case 16://login
+                webView.loadUrl(JsUtils.addJsMethod("login()"));
                 break;
         }
 

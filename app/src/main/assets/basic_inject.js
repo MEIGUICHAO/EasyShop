@@ -90,8 +90,8 @@ function test(){
 function login(){
     var accounts = document.getElementById("TPL_username_1");
     var psws = document.getElementById("TPL_password_1");
-    accounts.value ="大王派我来巡山23333:鬼鬼";
-    psws.value ="m12345678";
+    accounts.value ="蘑菇海岸梅干菜";
+//    psws.value ="m12345678";
 }
 
 
@@ -146,24 +146,25 @@ function getSrcByClassName(){
         if(mDocument.length>0){
             var lead = block[i].getElementsByClassName("lis-lead not-dragging");
             if(lead.length<1){
-                var element = block[i].getElementsByClassName("lis-imgBox-img");
-                var titleElement = block[i].getElementsByClassName("mid-lis-name");
-                var hrefUrl= element[0].getAttribute('src');
-                hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
 
-                if(urls.length==0){
-                    urls = hrefUrl;
-                } else {
-                    urls = urls + "\n" + hrefUrl;
-                }
-
-                var title= titleElement[0].getAttribute('title');
-                if(titles.length==0){
-                    titles = title;
-                } else {
-                    titles = titles + "\n" + title;
-                }
             }
+             var element = block[i].getElementsByClassName("lis-imgBox-img");
+                            var titleElement = block[i].getElementsByClassName("mid-lis-name");
+                            var hrefUrl= element[0].getAttribute('src');
+                            hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
+
+                            if(urls.length==0){
+                                urls = hrefUrl;
+                            } else {
+                                urls = urls + "\n" + hrefUrl;
+                            }
+
+                            var title= titleElement[0].getAttribute('title');
+                            if(titles.length==0){
+                                titles = title;
+                            } else {
+                                titles = titles + "\n" + title;
+                            }
         }
     }
     localMethod.JI_LOG(urls);

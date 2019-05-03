@@ -94,6 +94,7 @@ public class PicUtils {
                 diffNum++;
             }
         }
+//        LogUtils.e("diffNum:" + diffNum);
         return diffNum;
     }
 

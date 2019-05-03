@@ -34,29 +34,19 @@ public class LocalMethod {
         return picSpaceUrlList;
     }
 
-    public ArrayList<String> getPicSpaceTitleList() {
-        return picSpaceTitleList;
-    }
 
-    private ArrayList<String> picSpaceTitleList = new ArrayList<>();
 
 
     public void resetPicspaceList() {
         picSpaceUrlList.clear();
-        picSpaceTitleList.clear();
     }
 
 
-    public ArrayList<String> getSrcDetailList() {
-        return srcDetailList;
+    public ArrayList<String> getAliDetailDataList() {
+        return aliDetailDataList;
     }
 
-    public ArrayList<String> getShopNameList() {
-        return shopNameList;
-    }
-
-    private ArrayList<String> srcDetailList = new ArrayList<>();
-    private ArrayList<String> shopNameList = new ArrayList<>();
+    private ArrayList<String> aliDetailDataList = new ArrayList<>();
 
     public int getPagingNum() {
         return pagingNum;
@@ -105,8 +95,7 @@ public class LocalMethod {
                 String[] picsArray = pics.split("\n");
                 String[] titlesArray = titles.split("\n");
                 for (int i = 0; i < picsArray.length; i++) {
-                    picSpaceUrlList.add(picsArray[i]);
-                    picSpaceTitleList.add(titlesArray[i]);
+                    picSpaceUrlList.add(picsArray[i] + "\n" + titlesArray[i]);
                 }
             }
         });
@@ -132,15 +121,11 @@ public class LocalMethod {
         BaseApplication.getmHandler().post(new Runnable() {
             @Override
             public void run() {
-                srcDetailList.clear();
-                shopNameList.clear();
+                aliDetailDataList.clear();
                 String[] srcArray = src.split("###");
                 String[] shopNameArray = shopName.split("###");
                 for (int i = 0; i < srcArray.length; i++) {
-                    srcDetailList.add(srcArray[i]);
-                }
-                for (int i = 0; i < shopNameArray.length; i++) {
-                    shopNameList.add(shopNameArray[i]);
+                    aliDetailDataList.add(srcArray[i] + "\n" + shopNameArray[i]);
                 }
             }
         });
