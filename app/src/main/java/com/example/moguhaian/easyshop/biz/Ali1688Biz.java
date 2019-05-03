@@ -52,14 +52,17 @@ public class Ali1688Biz extends BaseBiz {
                     url = list2.get(picSpacePosition).split("\n")[0];
                     diffResult(list1, list2);
                 } else {
+                    String positonStrs = "";
                     for (int i = 0; i < detailsList.size(); i++) {
                         for (int j = 0; j < picSpacelsList.size(); j++) {
                             int diff = PicUtils.diff(detailsList.get(i).split("\n")[2], picSpacelsList.get(j).split("\n")[2]);
-                            if (diff == 0) {
-                                LogUtils.e("相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
+                            if (diff <= 3) {
+                                LogUtils.e(i+",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
+                                positonStrs = positonStrs + "," + i;
                             }
                         }
                     }
+                    LogUtils.e(positonStrs);
                     detailPosition = -1;
                     picSpacePosition = -1;
                 }
