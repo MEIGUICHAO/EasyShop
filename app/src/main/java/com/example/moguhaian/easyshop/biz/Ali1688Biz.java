@@ -56,9 +56,10 @@ public class Ali1688Biz extends BaseBiz {
                     for (int i = 0; i < detailsList.size(); i++) {
                         for (int j = 0; j < picSpacelsList.size(); j++) {
                             int diff = PicUtils.diff(detailsList.get(i).split("\n")[2], picSpacelsList.get(j).split("\n")[2]);
-                            if (diff <= 3) {
+                            if (diff == 0) {
                                 LogUtils.e(i+",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
                                 positonStrs = positonStrs + "," + i;
+                                break;
                             }
                         }
                     }
@@ -68,69 +69,6 @@ public class Ali1688Biz extends BaseBiz {
                 }
             }
         });
-
-//        if (resultUrl.contains(url2)) {
-//            picSpacePosition++;
-//            if (picSpacePosition == list2.size()) {
-//                picSpacePosition = 0;
-//                detailPosition++;
-//            }
-//            if (detailPosition < list1.size()) {
-//                diffResult(list1, list2);
-//            } else {
-//                detailPosition = -1;
-//                picSpacePosition = -1;
-//                resultUrl = "";
-//            }
-//            return;
-//        }
-//        Glide.with(activity)
-//                .load(url)
-//                .asBitmap()
-//                .into(new SimpleTarget<Bitmap>() {
-//
-//
-//                    @Override
-//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                        //加载完成后的处理
-//                        bitmap1 = ThumbnailUtils.extractThumbnail(resource, 8, 8);
-//                        glidePic(url2, new GlideLoadListener() {
-//                            @Override
-//                            public void loadFinish(Bitmap bitmap) {
-//                                bitmap2 = ThumbnailUtils.extractThumbnail(bitmap, 8, 8);
-////                                Toast.makeText(MainActivity.this, urlPosition + "", Toast.LENGTH_SHORT).show();
-//                                String picHexString1 =PicUtils.getPicHexString(bitmap1);
-//                                String picHexString2 = PicUtils.getPicHexString(bitmap2);
-//
-//                                int diff = PicUtils.diff(picHexString1, picHexString2);
-//                                if (diff < 3) {
-//                                    LogUtils.e(detailPosition + "---" + picSpacePosition + ",相似:" + diff + "\n" + url + "\n" + url2);
-//                                    detailPosition++;
-//                                    picSpacePosition = 0;
-//                                    resultUrl = TextUtils.isEmpty(resultUrl) ? url2 : resultUrl + "###" + url2;
-//                                } else {
-//                                    picSpacePosition++;
-//                                }
-//
-//                                if (picSpacePosition == list2.size()) {
-//                                    picSpacePosition = 0;
-//                                    detailPosition++;
-//                                }
-//                                if (detailPosition < list1.size()) {
-//                                    diffResult(list1, list2);
-//                                } else {
-//                                    detailPosition = -1;
-//                                    picSpacePosition = -1;
-//                                    resultUrl = "";
-//                                }
-//
-//
-//                            }
-//                        });
-//
-//                    }
-//                });
-
 
     }
 

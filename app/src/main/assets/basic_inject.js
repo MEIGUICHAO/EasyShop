@@ -191,16 +191,31 @@ function filterWorld(className){
     var element = document.getElementsByClassName(className);
     localMethod.JI_LOG(className+":"+element.length);
     var spans = element[0].getElementsByTagName("span")
-    localMethod.JI_LOG("spans:"+spans.length);
-    for(var i=0;i<spans.length;i++){
-        localMethod.JI_LOG("!!!!!!"+i);
-        spans[i].value="";
-        spans[i].innerText="";
-        localMethod.JI_LOG(className+":"+spans[i].value);
-        localMethod.JI_LOG(className+":"+spans[i].innerText);
-        localMethod.JI_LOG("end"+i);
-    }
+    var divs = element[0].getElementsByTagName("div")
+    var ps = element[0].getElementsByTagName("p")
+    setTagValue(spans);
+    setTagValue(divs);
+    setTagValue(ps);
 //    element[0].click();
+}
+
+
+function setTagValue(tags){
+    localMethod.JI_LOG("tags:"+tags.length);
+    for(var i=0;i<tags.length;i++){
+        var imgs = tags[i].getElementsByTagName("img");
+        if(imgs.length<1){
+            localMethod.JI_LOG("!!!!!!"+i);
+            tags[i].value="";
+            tags[i].innerText="";
+            localMethod.JI_LOG("value:"+tags[i].value);
+            localMethod.JI_LOG("innerText:"+tags[i].innerText);
+            localMethod.JI_LOG("end"+i);
+            tags[i].click();
+        } else {
+            imgs[0].click();
+        }
+    }
 }
 
 
@@ -249,6 +264,19 @@ function clickElementsByClassName(className){
         element[0].click();
         localMethod.afterClick();
     }
+}
+
+
+function showKeyboardAfterClick(className){
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    if(element.length>0){
+        localMethod.JI_LOG(className+":"+element[0].value);
+        element[0].click();
+        element[0].focus();
+    }
+    localMethod.showKeyboardB4Input();
 }
 
 
