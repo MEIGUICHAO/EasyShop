@@ -33,7 +33,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     MyWebView webView;
     Unbinder unbinder;
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传", "新建文件夹"
-            , "文件夹名称", "淘管家", "1688详情","获取1688详情图片","获取上传图片","login","生成手机详情"};
+            , "文件夹名称", "淘管家", "1688详情","获取1688详情图片","获取上传图片","login","生成手机详情","上传图片"};
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -140,6 +140,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 17://生成手机详情
                 webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
+                break;
+            case 18://上传图片
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-btn next-btn-normal next-btn-medium upload-img-btn\")"));
                 break;
         }
 
@@ -257,5 +260,13 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     public void afterClick() {
         webView.scrollTo(0, webView.getScrollYRange());
         webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
+        switch (clickPosition) {
+            case 18://上传图片
+//
+                webView.loadUrl(JsUtils.addJsMethod("getPicFromSpaces(\"7d09bb68-a732-4c3c-bde2-07c9ce1a9358\")"));
+
+                break;
+
+        }
     }
 }
