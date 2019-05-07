@@ -268,8 +268,11 @@ function clickElementsByClassName(className){
 
 
 function getPicFromSpaces(inputvalue){
-
-    localMethod.JI_LOG("!!!!!!");
+//    var doc = window.frames;
+    var divs = document.getElementsByTagName("div");
+    localMethod.JI_LOG("divs!!!!!!"+divs.length);
+    var parents = window.parent.document.getElementsByTagName("div");
+    localMethod.JI_LOG("parents!!!!!!"+parents.length);
     var overlay = document.getElementsByClassName("next-overlay-inner sell-o-simple-dialog next-position-cc");
         localMethod.JI_LOG("overlay!!!!!!"+overlay.length);
     var element1 = overlay[0].getElementsByClassName("sell-o-simple-dialog-inner o-sell-media-dialog");
