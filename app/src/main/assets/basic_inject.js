@@ -268,11 +268,6 @@ function clickElementsByClassName(className){
 
 
 function getPicFromSpaces(inputvalue){
-//    var doc = window.frames;
-    var divs = document.getElementsByTagName("div");
-    localMethod.JI_LOG("divs!!!!!!"+divs.length);
-    var parents = window.parent.document.getElementsByTagName("div");
-    localMethod.JI_LOG("parents!!!!!!"+parents.length);
     var overlay = document.getElementsByClassName("next-overlay-inner sell-o-simple-dialog next-position-cc");
         localMethod.JI_LOG("overlay!!!!!!"+overlay.length);
     var element1 = overlay[0].getElementsByClassName("sell-o-simple-dialog-inner o-sell-media-dialog");
@@ -282,20 +277,18 @@ function getPicFromSpaces(inputvalue){
     var element = element2[0].getElementsByClassName("media-img-plug");
         localMethod.JI_LOG("element!!!!!!"+element.length);
 //    var element = element3[0].getElementsByClassName("no-js");
-//        localMethod.JI_LOG("element!!!!!!"+element.length);
     var iframe = element[0].getElementsByTagName("iframe");
         localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
-    var bar = iframe[0].contentWindow.document.getElementsByTagName("div");
-    localMethod.JI_LOG("bar!!!!!!"+bar.length);
-    var nojs = iframe[0].contentWindow.document.getElementsByClassName("no-js");
-    localMethod.JI_LOG("nojs!!!!!!"+nojs.length);
-    tags[0].value=inputvalue;
-    tags[0].click();
-    tags[0].focus();
-    var btns = document.getElementsByClassName("key-btn");
-    btns[0].click
+
+        localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
+        localMethod.picSpaceInputClick();
+        localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
+        iframe.focus();
+
 
 }
+
+
 
 
 function showKeyboardAfterClick(className){

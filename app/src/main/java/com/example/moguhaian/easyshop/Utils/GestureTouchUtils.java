@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.moguhaian.easyshop.Base.BaseApplication;
+
 import java.lang.ref.WeakReference;
 
 /**
@@ -40,6 +42,15 @@ public class GestureTouchUtils {
      */
     public static void simulateClick(View view, float x, float y) {
         dealSimulateClick(view, x, y);
+    }
+
+    /**
+     * 模拟手指触摸操作
+     *
+     * @param view 一般为 ViewGroup
+     */
+    public static void simulateLongClick(View view, float x, float y, View.OnClickListener listener) {
+        dealSimulateLongClick(view, x, y, listener);
     }
 
     /**
@@ -174,6 +185,35 @@ public class GestureTouchUtils {
         }
         downEvent.recycle();
         upEvent.recycle();
+    }
+
+
+    private static void dealSimulateLongClick(final Object object, final float x, final float y, final View.OnClickListener listener) {
+        final MotionEvent downEvent = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, x, y, 0);
+        if (object instanceof View) {
+            ((View) object).onTouchEvent(downEvent);
+        } else if (object instanceof Activity) {
+            ((Activity) object).dispatchTouchEvent(downEvent);
+        }
+        downEvent.recycle();
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BaseApplication.getmHandler().removeCallbacks(this);
+                MotionEvent upEvent = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, x, y, 0);
+                if (object instanceof View) {
+                    ((View) object).onTouchEvent(upEvent);
+                } else if (object instanceof Activity) {
+                    ((Activity) object).dispatchTouchEvent(upEvent);
+                }
+
+                upEvent.recycle();
+                if (object instanceof View) {
+                    listener.onClick((View) object);
+                }
+
+            }
+        }, 3000);
     }
 
     static class ViewHandler extends Handler {

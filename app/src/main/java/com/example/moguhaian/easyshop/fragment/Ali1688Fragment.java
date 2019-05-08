@@ -15,8 +15,11 @@ import android.webkit.WebView;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.R;
+import com.example.moguhaian.easyshop.Utils.CommonUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
+import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.View.Ali1688Vu;
 import com.example.moguhaian.easyshop.biz.Ali1688Biz;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
@@ -33,7 +36,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     MyWebView webView;
     Unbinder unbinder;
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传", "新建文件夹"
-            , "文件夹名称", "淘管家", "1688详情","获取1688详情图片","获取上传图片","login","生成手机详情","上传图片"};
+            , "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关", "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录"};
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -142,7 +145,68 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
                 break;
             case 18://上传图片
+                CommonUtils.copyText("f871d1bb-3b5f-4206-8b64-7d9f8788bc57");
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-btn next-btn-normal next-btn-medium upload-img-btn\")"));
+                break;
+            case 19://开关活动记录
+                webView.setNeedDraw(!webView.isNeedDraw());
+                ToastUtils.showToast(webView.isNeedDraw() ? "开启" : "关闭");
+                break;
+            case 20://图片输入框点击记录
+                if (!webView.isClickRecord()) {
+                    webView.setClickRecord(true);
+                    webView.setSlideRecord(false);
+                    ToastUtils.showToast("点击记录开启");
+                    return;
+                }
+                if (webView.isNeedDraw()) {
+                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
+                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
+                }
+                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)));
+                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)));
+                break;
+            case 21://图片选择点击记录
+                if (!webView.isClickRecord()) {
+                    webView.setClickRecord(true);
+                    webView.setSlideRecord(false);
+                    ToastUtils.showToast("点击记录开启");
+                    return;
+                }
+                if (webView.isNeedDraw()){
+                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
+                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
+                }
+                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)));
+                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
+                break;
+            case 22://图片搜索
+                if (!webView.isClickRecord()) {
+                    webView.setClickRecord(true);
+                    webView.setSlideRecord(false);
+                    ToastUtils.showToast("点击记录开启");
+                    return;
+                }
+                if (webView.isNeedDraw()){
+                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
+                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
+                }
+                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)));
+                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
+                break;
+            case 23://粘贴点击记录
+                if (!webView.isClickRecord()) {
+                    webView.setClickRecord(true);
+                    webView.setSlideRecord(false);
+                    ToastUtils.showToast("点击记录开启");
+                    return;
+                }
+                if (webView.isNeedDraw()){
+                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
+                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
+                }
+                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X)));
+                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y)));
                 break;
         }
 
@@ -185,6 +249,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void loadFinish(WebView wv, String url) {
+        LogUtils.e("url:\n" + url);
+
         if (TextUtils.isEmpty(url)) {
             return;
         }

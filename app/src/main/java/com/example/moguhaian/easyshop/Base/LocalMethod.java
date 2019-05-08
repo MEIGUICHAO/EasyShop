@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.Bean.SamestyleBean;
+import com.example.moguhaian.easyshop.Utils.CommonUtils;
 import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
@@ -294,6 +296,52 @@ public class LocalMethod {
     @JavascriptInterface
     public void JsLog(String string) {
         LogUtils.e(string);
+    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void picSpaceInputClick() {
+
+
+        LogUtils.e("picSpaceInputClick");
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                GestureTouchUtils.simulateLongClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        String str = CommonUtils.pasteToResult();
+                        LogUtils.e(str);
+
+//                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X))) {
+//                            GestureTouchUtils.simulateClick(v, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y)));
+//                        }
+                    }
+                });
+//                CommonUtils.pasteToResult();
+//                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X))) {
+//                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X))) {
+//                        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
+//                        BaseApplication.getmHandler().postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+////                                picSelectClick();
+//                                BaseApplication.getmHandler().removeCallbacks(this);
+//                            }
+//                        }, 1500);
+//                    }
+//                }
+//                BaseApplication.getmHandler().removeCallbacks(this);
+            }
+        }, 1000);
+
+    }
+
+    private void picSelectClick() {
+        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
+
     }
 
 }
