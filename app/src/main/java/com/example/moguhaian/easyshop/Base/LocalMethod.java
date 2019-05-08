@@ -3,6 +3,7 @@ package com.example.moguhaian.easyshop.Base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -312,8 +313,29 @@ public class LocalMethod {
                     @Override
                     public void onClick(View v) {
 
-                        String str = CommonUtils.pasteToResult();
-                        LogUtils.e(str);
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String str = CommonUtils.pasteToResult();
+                                Instrumentation inst = new Instrumentation();
+                                inst.sendStringSync(str);
+                                LogUtils.e(str);
+
+                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X))) {
+                                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X))) {
+                                        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
+                                        BaseApplication.getmHandler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                picSelectClick();
+                                                BaseApplication.getmHandler().removeCallbacks(this);
+                                            }
+                                        }, 1500);
+                                    }
+                                }
+                            }
+                        }).start();
 
 //                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X))) {
 //                            GestureTouchUtils.simulateClick(v, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y)));
@@ -321,19 +343,8 @@ public class LocalMethod {
                     }
                 });
 //                CommonUtils.pasteToResult();
-//                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X))) {
-//                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X))) {
-//                        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
-//                        BaseApplication.getmHandler().postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-////                                picSelectClick();
-//                                BaseApplication.getmHandler().removeCallbacks(this);
-//                            }
-//                        }, 1500);
-//                    }
-//                }
-//                BaseApplication.getmHandler().removeCallbacks(this);
+                BaseApplication.getmHandler().removeCallbacks(this);
+
             }
         }, 1000);
 

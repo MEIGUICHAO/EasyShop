@@ -213,7 +213,7 @@ public class GestureTouchUtils {
                 }
 
             }
-        }, 3000);
+        }, 200);
     }
 
     static class ViewHandler extends Handler {
