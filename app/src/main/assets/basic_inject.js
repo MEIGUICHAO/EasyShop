@@ -267,6 +267,24 @@ function clickElementsByClassName(className){
 }
 
 
+function editSKu(position,inputvalue){
+    localMethod.JI_LOG("!!!!!!");
+    var skuSpans = document.getElementsByClassName("next-input next-input-single next-input-medium clear color-dropdown-input");
+    localMethod.JI_LOG("skuSpans:"+skuSpans.length);
+    var skuInputs = skuSpans[position].getElementsByTagName("input");
+    localMethod.JI_LOG("skuInputs:"+skuInputs.length);
+    skuInputs[0].click();
+    skuInputs[0].focus();
+    var clears = skuSpans[position].getElementsByClassName("next-icon next-icon-delete-filling next-icon-medium");
+    localMethod.JI_LOG("clears:"+clears.length);
+    if(clears.length>0){
+        clears[0].click();
+    }
+    localMethod.getJsonData(inputvalue);
+
+}
+
+
 function getPicFromSpaces(inputvalue){
     var overlay = document.getElementsByClassName("next-overlay-inner sell-o-simple-dialog next-position-cc");
         localMethod.JI_LOG("overlay!!!!!!"+overlay.length);

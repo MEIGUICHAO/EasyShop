@@ -26,6 +26,8 @@ import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -36,7 +38,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     MyWebView webView;
     Unbinder unbinder;
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传", "新建文件夹"
-            , "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关", "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录"};
+            , "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关", "图片输入框点击记录",
+            "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录","编辑sku"};
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -57,6 +60,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
     };
     private String oldUrl = "";
+    private ArrayList<String> skuInfo;
+    private int skuEditPos;
 
 
     @Override
@@ -208,6 +213,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X)));
                 LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y)));
                 break;
+            case 24://编辑sku
+                skuEditPos = 0;
+                skuInfo = new ArrayList<>();
+                for (int i = 0; i < 20; i++) {
+                    skuInfo.add("sku" + i);
+                }
+                webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
+                break;
         }
 
     }
@@ -297,7 +310,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     }
 
     @Override
-    public void afterGetJson(String json) {
+    public void afterGetJson(final String json) {
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
             case 0:
@@ -317,7 +330,26 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 ////                    webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));
 //                }
                 break;
-            case 2:
+            case 24:
+
+                biz.getSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Instrumentation inst = new Instrumentation();
+                        inst.sendStringSync(json);
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                skuEditPos++;
+                                if (skuEditPos < skuInfo.size()) {
+                                    webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
+
+                                }
+                            }
+                        });
+                    }
+                });
                 break;
         }
     }
