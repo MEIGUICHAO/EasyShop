@@ -267,6 +267,7 @@ function clickElementsByClassName(className){
 }
 
 
+
 function editSKu(position,inputvalue){
     localMethod.JI_LOG("!!!!!!");
     var skuSpans = document.getElementsByClassName("next-input next-input-single next-input-medium clear color-dropdown-input");
@@ -281,6 +282,22 @@ function editSKu(position,inputvalue){
         clears[0].click();
     }
     localMethod.getJsonData(inputvalue);
+
+}
+
+
+
+function editSKuPic(position){
+    localMethod.JI_LOG("!!!!!!");
+    var images = document.getElementsByClassName("color-image-upload");
+    var imageupload = images[position].getElementsByClassName("remove-link");
+    localMethod.JI_LOG("imageupload:"+imageupload.length);
+    if(imageupload.length>0){
+        imageupload[0].click();
+        editSKuPic(position);
+    } else {
+        clickElementsByClassName("next-btn next-btn-normal next-btn-medium upload-img-btn");
+    }
 
 }
 

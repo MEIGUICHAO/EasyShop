@@ -352,7 +352,13 @@ public class LocalMethod {
 
     private void picSelectClick() {
         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
-
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listener.afterGetJson("");
+                BaseApplication.getmHandler().removeCallbacks(this);
+            }
+        }, 1000);
     }
 
 }

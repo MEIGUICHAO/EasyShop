@@ -61,7 +61,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     };
     private String oldUrl = "";
     private ArrayList<String> skuInfo;
+    private ArrayList<String> skuPicInfo;
     private int skuEditPos;
+    private int skuEditPicPos;
 
 
     @Override
@@ -151,7 +153,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 18://上传图片
                 CommonUtils.copyText("f871d1bb-3b5f-4206-8b64-7d9f8788bc57");
-                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-btn next-btn-normal next-btn-medium upload-img-btn\")"));
+                skuPicInfo = new ArrayList<>();
+                for (int i = 0; i < 10; i++) {
+                    skuPicInfo.add("f871d1bb-3b5f-4206-8b64-7d9f8788bc57");
+                }
+                skuEditPicPos = 0;
+                webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
                 break;
             case 19://开关活动记录
                 webView.setNeedDraw(!webView.isNeedDraw());
@@ -329,6 +336,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                if (!TextUtils.isEmpty(json)) {
 ////                    webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));
 //                }
+                break;
+            case 18:
+
+                skuEditPicPos++;
+                if (skuEditPicPos < skuPicInfo.size()) {
+                    webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\",\"" + skuPicInfo.get(skuEditPicPos) + "\")"));
+
+                }
+
                 break;
             case 24:
 
