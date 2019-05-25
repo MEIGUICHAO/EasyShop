@@ -9,6 +9,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.moguhaian.easyshop.Base.BaseBiz;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.PicUtils;
+import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.listener.GlideLoadListener;
 
 import java.util.ArrayList;
@@ -24,6 +25,12 @@ public class Ali1688Biz extends BaseBiz {
     private ArrayList<String> detailsList;
     private ArrayList<String> picSpacelsList;
 
+    public ArrayList<String> getCompareResultList() {
+        return compareResultList;
+    }
+
+    private ArrayList<String> compareResultList = new ArrayList<>();
+
     public void diffResult(final List<String> list1, final List<String> list2) {
 //        LogUtils.e("list1:" + list1.size() + ",list2:" + list2.size());
 
@@ -32,6 +39,7 @@ public class Ali1688Biz extends BaseBiz {
             picSpacePosition = 0;
             detailsList = new ArrayList<>();
             picSpacelsList = new ArrayList<>();
+            compareResultList.clear();
             url = list1.get(detailPosition).split("\n")[0];
         } else if (detailPosition == list1.size() - 1) {
             url = list2.get(picSpacePosition).split("\n")[0];
@@ -58,11 +66,13 @@ public class Ali1688Biz extends BaseBiz {
                             int diff = PicUtils.diff(detailsList.get(i).split("\n")[2], picSpacelsList.get(j).split("\n")[2]);
                             if (diff == 0) {
                                 LogUtils.e(i+",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
+                                compareResultList.add(detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", ""));
                                 positonStrs = positonStrs + "," + i;
                                 break;
                             }
                         }
                     }
+                    ToastUtils.showToast("对比结束");
                     LogUtils.e(positonStrs);
                     detailPosition = -1;
                     picSpacePosition = -1;

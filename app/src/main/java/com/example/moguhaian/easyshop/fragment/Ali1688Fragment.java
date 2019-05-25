@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +38,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传", "新建文件夹"
-            , "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关", "图片输入框点击记录",
-            "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录","编辑sku"};
+    private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传",
+            "新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",
+            "图片输入框点击记录","图片选择点击记录", "图片搜索点击记录", "粘贴点击记录","编辑sku"};
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -63,7 +64,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private ArrayList<String> skuInfo;
     private ArrayList<String> skuPicInfo;
     private int skuEditPos;
-    private int skuEditPicPos;
+    private int skuEditPicPos = 0;
 
 
     @Override
@@ -143,6 +144,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
                 break;
             case 15://获取上传图片
+                ToastUtils.showToast("对比开始");
                 biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList());
                 break;
             case 16://login
@@ -152,13 +154,36 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
                 break;
             case 18://上传图片
-                CommonUtils.copyText("f871d1bb-3b5f-4206-8b64-7d9f8788bc57");
-                skuPicInfo = new ArrayList<>();
-                for (int i = 0; i < 10; i++) {
-                    skuPicInfo.add("f871d1bb-3b5f-4206-8b64-7d9f8788bc57");
-                }
+
+//                CommonUtils.copyText("f871d1bb-3b5f-4206-8b64-7d9f8788bc57");
+//                skuPicInfo = new ArrayList<>();
+//                for (int i = 0; i < 10; i++) {
+//                    skuPicInfo.add("f871d1bb-3b5f-4206-8b64-7d9f8788bc57");
+//                }
+//                skuEditPicPos = 0;
+//                webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
+
+                //=========================================================
+
                 skuEditPicPos = 0;
+                ArrayList<String> compareResultPicList = biz.getCompareResultList();
+
+                LogUtils.e("上传数量:" + compareResultPicList.size());
+                if (compareResultPicList.size() < 1) {
+                    ToastUtils.showToast("请选择上传图片");
+                    return;
+                }
+
+                CommonUtils.copyText(compareResultPicList.get(skuEditPicPos));
+                skuPicInfo = new ArrayList<>();
+                for (int i = 0; i < compareResultPicList.size(); i++) {
+                    skuPicInfo.add(compareResultPicList.get(i).split("\n")[1]);
+                }
                 webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
+//                if (skuEditPicPos < compareResultPicList.size()) {
+//                } else {
+//                    skuEditPicPos = 0;
+//                }
                 break;
             case 19://开关活动记录
                 webView.setNeedDraw(!webView.isNeedDraw());
@@ -223,10 +248,21 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 24://编辑sku
                 skuEditPos = 0;
                 skuInfo = new ArrayList<>();
-                for (int i = 0; i < 20; i++) {
-                    skuInfo.add("sku" + i);
+                ArrayList<String> compareResultList = biz.getCompareResultList();
+                LogUtils.e("上传数量:" + compareResultList.size());
+                for (int i = 0; i < compareResultList.size(); i++) {
+                    skuInfo.add(compareResultList.get(i).split("\n")[0]);
                 }
-                webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
+                if (skuInfo.size() > 0) {
+                    webView.loadUrl(JsUtils.addJsMethod("clearSku(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
+                }
+
+//                skuEditPos = 0;
+//                skuInfo = new ArrayList<>();
+//                for (int i = 0; i < 10; i++) {
+//                    skuInfo.add("哥莫拉" + i);
+//                }
+//                webView.loadUrl(JsUtils.addJsMethod("clearSku(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
                 break;
         }
 
@@ -341,8 +377,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
                 skuEditPicPos++;
                 if (skuEditPicPos < skuPicInfo.size()) {
-                    webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\",\"" + skuPicInfo.get(skuEditPicPos) + "\")"));
-
+                    webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
                 }
 
                 break;
@@ -352,8 +387,16 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     @Override
                     public void run() {
 
-                        Instrumentation inst = new Instrumentation();
-                        inst.sendStringSync(json);
+
+                        int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X,KeyEvent.KEYCODE_DEL};
+                        for (int i = 0; i < keyCodeArray.length; i++) {
+                            try {
+                                typeIn(keyCodeArray[i]);
+                                Thread.sleep( 500 );
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -376,8 +419,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
         switch (clickPosition) {
             case 18://上传图片
-//
-                webView.loadUrl(JsUtils.addJsMethod("getPicFromSpaces(\"7d09bb68-a732-4c3c-bde2-07c9ce1a9358\")"));
+                CommonUtils.copyText(skuPicInfo.get(skuEditPicPos));
+                webView.loadUrl(JsUtils.addJsMethod("getPicFromSpaces()"));
 
                 break;
 

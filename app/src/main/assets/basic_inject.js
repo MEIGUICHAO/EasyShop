@@ -267,15 +267,31 @@ function clickElementsByClassName(className){
 }
 
 
+function clearSku(position,inputvalue){
+    var skuCheckbox = document.getElementsByClassName("sell-color-checkbox-check-wrap");
+        localMethod.JI_LOG("skuCheckbox:"+skuCheckbox.length);
+    if(skuCheckbox.length>1){
+            localMethod.JI_LOG("skuCheckbox!:"+skuCheckbox.length);
+         var cleanrBtn = skuCheckbox[0].getElementsByClassName("next-icon next-icon-select next-icon-xs");
+        cleanrBtn[0].click();
+                localMethod.JI_LOG("cleanrBtn!!:"+cleanrBtn.length);
+        clearSku(position,inputvalue);
+    } else {
+        editSKu(position,inputvalue);
+    }
+}
+
 
 function editSKu(position,inputvalue){
     localMethod.JI_LOG("!!!!!!");
+
     var skuSpans = document.getElementsByClassName("next-input next-input-single next-input-medium clear color-dropdown-input");
     localMethod.JI_LOG("skuSpans:"+skuSpans.length);
     var skuInputs = skuSpans[position].getElementsByTagName("input");
     localMethod.JI_LOG("skuInputs:"+skuInputs.length);
     skuInputs[0].click();
     skuInputs[0].focus();
+    skuInputs[0].value = inputvalue;
     var clears = skuSpans[position].getElementsByClassName("next-icon next-icon-delete-filling next-icon-medium");
     localMethod.JI_LOG("clears:"+clears.length);
     if(clears.length>0){
@@ -302,7 +318,7 @@ function editSKuPic(position){
 }
 
 
-function getPicFromSpaces(inputvalue){
+function getPicFromSpaces(){
     var overlay = document.getElementsByClassName("next-overlay-inner sell-o-simple-dialog next-position-cc");
         localMethod.JI_LOG("overlay!!!!!!"+overlay.length);
     var element1 = overlay[0].getElementsByClassName("sell-o-simple-dialog-inner o-sell-media-dialog");

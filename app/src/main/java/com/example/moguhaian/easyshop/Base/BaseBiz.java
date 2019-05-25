@@ -1,6 +1,7 @@
 package com.example.moguhaian.easyshop.Base;
 
 import android.app.Activity;
+import android.view.View;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
@@ -12,6 +13,7 @@ import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -38,12 +40,71 @@ public class BaseBiz {
 
     private MyWebViewClient webViewClient;
 
-    public void initWebView(WebView wv,Activity activity) {
+    public void initWebView(WebView wv, Activity activity) {
         this.webView = wv;
         webViewClient = new MyWebViewClient();
         webChromeClient = new MyWebChromeClient();
         webView.setWebViewClient(webViewClient);
         webView.setWebChromeClient(webChromeClient);
+        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    try {
+                        Field defaultScale = WebView.class
+                                .getDeclaredField("mDefaultScale");
+                        defaultScale.setAccessible(true);
+                        float sv = defaultScale.getFloat(webView);
+                        defaultScale.setFloat(webView, 1.0f);
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                        try {
+                            Field zoomManager;
+                            zoomManager = WebView.class.getDeclaredField("mZoomManager");
+                            zoomManager.setAccessible(true);
+                            Object zoomValue = zoomManager.get(webView);
+                            Field defaultScale = zoomManager.getType().getDeclaredField("mDefaultScale");
+                            defaultScale.setAccessible(true);
+                            float sv = defaultScale.getFloat(zoomValue);
+                            defaultScale.setFloat(zoomValue, 1.0f);
+                        } catch (SecurityException e1) {
+                            e1.printStackTrace();
+                        } catch (IllegalArgumentException e1) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e1) {
+                            e.printStackTrace();
+                        } catch (NoSuchFieldException e1) {
+                            e1.printStackTrace();
+
+                            try {
+                                Field mProviderField = WebView.class.getDeclaredField("mProvider");
+                                mProviderField.setAccessible(true);
+                                //mProviderField.getClass()
+                                Object webviewclassic = mProviderField.get(webView);
+
+                                Field zoomManager = webviewclassic.getClass().getDeclaredField("mZoomManager");
+                                zoomManager.setAccessible(true);
+                                Object zoomValue = zoomManager.get(webviewclassic);
+                                Field defaultScale = zoomManager.getType().getDeclaredField("mDefaultScale");
+                                defaultScale.setAccessible(true);
+                                float sv = defaultScale.getFloat(zoomValue);
+                                defaultScale.setFloat(zoomValue, 1.0f);
+                            }catch(Exception e2)
+                            {
+                                e2.printStackTrace();
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
         this.activity = activity;
     }
 
@@ -61,7 +122,7 @@ public class BaseBiz {
                     Connection.Response execute = connect.execute();
                     Map<String, String> cookies = execute.cookies();
                     String cookie = cookies.toString();
-                    cookie = cookie.substring(cookie.indexOf("{")+1, cookie.lastIndexOf("}"));
+                    cookie = cookie.substring(cookie.indexOf("{") + 1, cookie.lastIndexOf("}"));
                     cookie = cookie.replaceAll(",", ";");
                     SharedPreferencesUtils.putValue(Constants.Cookies, cookie);
                     LogUtils.e("login success");
@@ -76,7 +137,7 @@ public class BaseBiz {
 
     }
 
-    public void quickLogin(final String loginUrl, final String loginAccount, final String loginAccountValue, final String loginPSw, final String loginPSwValue, final String cacheName,final JsoupParseListener listener) {
+    public void quickLogin(final String loginUrl, final String loginAccount, final String loginAccountValue, final String loginPSw, final String loginPSwValue, final String cacheName, final JsoupParseListener listener) {
 
         singleThreadExecutor.execute(new Runnable() {
             @Override
@@ -96,7 +157,7 @@ public class BaseBiz {
                     Connection.Response execute = connect.execute();
                     Map<String, String> cookies = execute.cookies();
                     String cookie = cookies.toString();
-                    cookie = cookie.substring(cookie.indexOf("{")+1, cookie.lastIndexOf("}"));
+                    cookie = cookie.substring(cookie.indexOf("{") + 1, cookie.lastIndexOf("}"));
                     cookie = cookie.replaceAll(",", ";");
                     SharedPreferencesUtils.putValue(cacheName, cookie);
                     LogUtils.e("login success");
@@ -113,7 +174,6 @@ public class BaseBiz {
     }
 
 
-
     public void loadTBSearchUrlByName(String name) {
         webView.loadUrl(UrlUtils.setQueryWord(name));
     }
@@ -126,8 +186,8 @@ public class BaseBiz {
 
     public void bubbleSort(List<SameStyleShopsBean.DataBean.ItemsBean> items) {
         SameStyleShopsBean.DataBean.ItemsBean[] itemsBeans = new SameStyleShopsBean.DataBean.ItemsBean[items.size()];
-        for(int i=0;i<itemsBeans.length-1;i++){
-            for(int j=0;j<itemsBeans.length-1-i;j++){
+        for (int i = 0; i < itemsBeans.length - 1; i++) {
+            for (int j = 0; j < itemsBeans.length - 1 - i; j++) {
                 if (Double.parseDouble(itemsBeans[j].getView_price()) > Double.parseDouble(itemsBeans[j + 1].getView_price())) {
                     SameStyleShopsBean.DataBean.ItemsBean tmp = itemsBeans[j + 1];
                     itemsBeans[j + 1] = itemsBeans[j];

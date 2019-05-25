@@ -1,9 +1,11 @@
 package com.example.moguhaian.easyshop.Utils;
 
+import android.app.Instrumentation;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.example.moguhaian.easyshop.Base.BaseApplication;
@@ -72,5 +74,21 @@ public class CommonUtils {
 
         }
         return resultString;
+    }
+
+    public static void keySync() {
+        int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X,KeyEvent.KEYCODE_DEL};
+        for (int i = 0; i < keyCodeArray.length; i++) {
+            typeIn(keyCodeArray[i]);
+        }
+    }
+
+    public static void typeIn( final int KeyCode ){
+        try {
+            Instrumentation inst = new Instrumentation();
+            inst.sendKeyDownUpSync( KeyCode );
+        } catch (Exception e) {
+            Log.e("Exception：", e.toString());
+        }
     }
 }
