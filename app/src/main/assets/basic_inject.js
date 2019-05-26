@@ -179,6 +179,8 @@ function getSrcByClassName(){
             next[0].click();
             if(nextDiasble.length<1){
                 localMethod.next();
+            } else {
+                localMethod.getJsonData("获取图片空间图片完成");
             }
         }
     }
@@ -386,9 +388,12 @@ function getSrcAttrByTagName(className,attr){
     localMethod.JI_LOG(className+":"+element.length);
     var urls = "";
     var shopName = "";
+    var shopPrice = "";
     if(element.length>0){
         var tag = element[0].getElementsByTagName("img");
+        var priceTag = element[0].getElementsByClassName("price");
         localMethod.JI_LOG("tag:"+tag.length);
+        localMethod.JI_LOG("priceTag:"+priceTag.length);
         for(var j=0;j<tag.length;j++){
             if(urls.length==0){
                 urls = tag[j].getAttribute("src");
@@ -401,7 +406,15 @@ function getSrcAttrByTagName(className,attr){
             localMethod.JI_LOG(tag[j].getAttribute("src"));
             localMethod.JI_LOG(tag[j].getAttribute(attr));
         }
-        localMethod.get1688details(urls,shopName);
+        for(var j=0;j<priceTag.length;j++){
+            if(shopPrice.length==0){
+                shopPrice = priceTag[j].getElementsByClassName("value")[0].innerText;
+            } else {
+                shopPrice = shopPrice + "###" + priceTag[j].getElementsByClassName("value")[0].innerText;
+            }
+            localMethod.JI_LOG(priceTag[j].getElementsByClassName("value")[0].innerText);
+        }
+        localMethod.get1688details(urls,shopName,shopPrice);
     }
 }
 

@@ -31,7 +31,12 @@ public class Ali1688Biz extends BaseBiz {
 
     private ArrayList<String> compareResultList = new ArrayList<>();
 
-    public void diffResult(final List<String> list1, final List<String> list2) {
+    public interface DiffProgressListener {
+        void diffFinish();
+    }
+
+
+    public void diffResult(final List<String> list1, final List<String> list2, final DiffProgressListener listener) {
 //        LogUtils.e("list1:" + list1.size() + ",list2:" + list2.size());
 
         if (detailPosition == -1 && picSpacePosition == -1) {
@@ -53,12 +58,12 @@ public class Ali1688Biz extends BaseBiz {
                     detailsList.add(list1.get(detailPosition) + "\n" + picHexString);
                     detailPosition++;
                     url = list1.get(detailPosition).split("\n")[0];
-                    diffResult(list1, list2);
+                    diffResult(list1, list2,listener);
                 } else if (picSpacePosition < list2.size() - 1) {
                     picSpacelsList.add(list2.get(picSpacePosition) + "\n" + picHexString);
                     picSpacePosition++;
                     url = list2.get(picSpacePosition).split("\n")[0];
-                    diffResult(list1, list2);
+                    diffResult(list1, list2,listener);
                 } else {
                     String positonStrs = "";
                     for (int i = 0; i < detailsList.size(); i++) {
@@ -73,6 +78,7 @@ public class Ali1688Biz extends BaseBiz {
                         }
                     }
                     ToastUtils.showToast("对比结束");
+                    listener.diffFinish();
                     LogUtils.e(positonStrs);
                     detailPosition = -1;
                     picSpacePosition = -1;

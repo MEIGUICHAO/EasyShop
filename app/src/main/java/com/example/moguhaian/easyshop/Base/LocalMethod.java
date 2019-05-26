@@ -120,16 +120,18 @@ public class LocalMethod {
 
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
-    public void get1688details(final String src,final String shopName) {
+    public void get1688details(final String src,final String shopName,final String shopPrice) {
         BaseApplication.getmHandler().post(new Runnable() {
             @Override
             public void run() {
                 aliDetailDataList.clear();
                 String[] srcArray = src.split("###");
                 String[] shopNameArray = shopName.split("###");
+                String[] shopPriceArray = shopPrice.split("###");
                 for (int i = 0; i < srcArray.length; i++) {
-                    aliDetailDataList.add(srcArray[i] + "\n" + shopNameArray[i]);
+                    aliDetailDataList.add(srcArray[i] + "\n" + shopNameArray[i]+"\n"+shopPriceArray[i]);
                 }
+                listener.afterGetJson("");
             }
         });
     }

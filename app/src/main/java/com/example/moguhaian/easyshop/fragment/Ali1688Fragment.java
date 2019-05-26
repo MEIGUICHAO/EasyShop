@@ -40,7 +40,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     Unbinder unbinder;
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传",
             "新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",
-            "图片输入框点击记录","图片选择点击记录", "图片搜索点击记录", "粘贴点击记录","编辑sku"};
+            "图片输入框点击记录","图片选择点击记录", "图片搜索点击记录", "粘贴点击记录","编辑sku","编辑价格","一键发布"};
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -65,6 +65,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private ArrayList<String> skuPicInfo;
     private int skuEditPos;
     private int skuEditPicPos = 0;
+    private boolean aliOneKeyPublish = false;
 
 
     @Override
@@ -145,7 +146,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 15://获取上传图片
                 ToastUtils.showToast("对比开始");
-                biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList());
+                biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
+                    @Override
+                    public void diffFinish() {
+                        fragmentRightClick(7);
+                    }
+                });
                 break;
             case 16://login
                 webView.loadUrl(JsUtils.addJsMethod("login()"));
@@ -264,6 +270,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                }
 //                webView.loadUrl(JsUtils.addJsMethod("clearSku(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
                 break;
+            case 25://编辑价格:
+                //TODO
+
+                 break;
+            case 26://一键发布
+//                13-->14-->5-->6-->15-->7-->24-->18
+                aliOneKeyPublish = true;
+                fragmentRightClick(13);
+                 break;
         }
 
     }
@@ -347,7 +362,17 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 2:
                 break;
-            case 6:
+            case 5://加载图片空间
+                fragmentRightClick(6);
+                break;
+            case 7://发布现场
+                fragmentRightClick(24);
+                break;
+            case 13:
+                if (aliOneKeyPublish) {
+                    fragmentRightClick(14);
+
+                }
                 break;
         }
     }
@@ -373,11 +398,21 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 ////                    webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));
 //                }
                 break;
+            case 6:
+                fragmentRightClick(15);
+                break;
+            case 14:
+                if (aliOneKeyPublish) {
+                    fragmentRightClick(5);
+                }
+                break;
             case 18:
 
                 skuEditPicPos++;
                 if (skuEditPicPos < skuPicInfo.size()) {
                     webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
+                } else {
+                    ToastUtils.showToast("图片sku结束");
                 }
 
                 break;
@@ -403,7 +438,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                 skuEditPos++;
                                 if (skuEditPos < skuInfo.size()) {
                                     webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
-
+                                } else {
+                                    ToastUtils.showToast("文字sku结束");
+                                    webView.scrollTo(0, webView.getScrollYRange());
+                                    fragmentRightClick(18);
                                 }
                             }
                         });
