@@ -449,6 +449,23 @@ function foreachTable(tableName,page){
 }
 
 
+function setSkuPrice(position,price){
+//    sell-sku-table-wrap
+    var table = document.getElementsByClassName("sell-sku-table-wrap");
+    localMethod.JI_LOG("table:"+table.length);
+    var skuRow = table[0].getElementsByClassName("sku-table-row");
+    localMethod.JI_LOG("skuRow:"+skuRow.length);
+    var skuPrice = skuRow[position].getElementsByClassName("sell-sku-cell sell-sku-cell-money");
+    localMethod.JI_LOG("skuPrice:"+skuPrice.length);
+    var inputPrice = skuPrice[0].getElementsByTagName("input");
+    localMethod.JI_LOG("inputPrice:"+inputPrice.length);
+    inputPrice[0].click();
+    inputPrice[0].focus();
+//    inputPrice[0].value = price;
+    localMethod.getJsonData(price);
+}
+
+
 
 //乘法
 function accMul(arg1,arg2){

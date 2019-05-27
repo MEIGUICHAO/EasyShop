@@ -62,10 +62,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     };
     private String oldUrl = "";
     private ArrayList<String> skuInfo;
+    private ArrayList<String> skuEditPricesList;
     private ArrayList<String> skuPicInfo;
     private int skuEditPos;
     private int skuEditPicPos = 0;
     private boolean aliOneKeyPublish = false;
+    private int skuEditPricesPos;
 
 
     @Override
@@ -272,10 +274,21 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 25://编辑价格:
                 //TODO
-
+                skuEditPricesPos = 0;
+                skuEditPricesList = new ArrayList<>();
+//
+                ArrayList<String> compareResultPriceList = biz.getCompareResultList();
+                LogUtils.e("上传数量:" + compareResultPriceList.size());
+                for (int i = 0; i < compareResultPriceList.size(); i++) {
+                    skuEditPricesList.add(compareResultPriceList.get(i).split("\n")[2]);
+                }
+                double prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) * 2 + 10;
+                LogUtils.e("origin_prices:" + skuEditPricesList.get(skuEditPricesPos));
+                webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
+//                webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + 0 + "\",\"" + 88.88 + "\")"));
                  break;
             case 26://一键发布
-//                13-->14-->5-->6-->15-->7-->24-->18
+//                13-->14-->5-->6-->15-->7-->24-->18-->25
                 aliOneKeyPublish = true;
                 fragmentRightClick(13);
                  break;
@@ -413,6 +426,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
                 } else {
                     ToastUtils.showToast("图片sku结束");
+                    fragmentRightClick(25);
+
                 }
 
                 break;
@@ -421,7 +436,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 biz.getSingleThreadExecutor().execute(new Runnable() {
                     @Override
                     public void run() {
-
 
                         int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X,KeyEvent.KEYCODE_DEL};
                         for (int i = 0; i < keyCodeArray.length; i++) {
@@ -441,12 +455,43 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                 } else {
                                     ToastUtils.showToast("文字sku结束");
                                     webView.scrollTo(0, webView.getScrollYRange());
-                                    fragmentRightClick(18);
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mHandler.removeCallbacks(this);
+                                            fragmentRightClick(18);
+
+                                        }
+                                    }, 1000);
                                 }
                             }
                         });
                     }
                 });
+                break;
+            case 25://
+                biz.getSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Instrumentation inst = new Instrumentation();
+                        inst.sendStringSync(json);
+                        LogUtils.e(json);
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                skuEditPricesPos++;
+                                if (skuEditPricesPos < skuEditPricesList.size()) {
+                                    double prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) * 2 + 10;
+                                    LogUtils.e("origin_prices:" + skuEditPricesList.get(skuEditPricesPos));
+                                    webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
+                                } else {
+                                    ToastUtils.showToast("价格sku结束");
+                                }
+                            }
+                        });
+                    }
+                });
+
                 break;
         }
     }

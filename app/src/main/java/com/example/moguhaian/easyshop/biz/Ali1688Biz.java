@@ -68,10 +68,10 @@ public class Ali1688Biz extends BaseBiz {
                     String positonStrs = "";
                     for (int i = 0; i < detailsList.size(); i++) {
                         for (int j = 0; j < picSpacelsList.size(); j++) {
-                            int diff = PicUtils.diff(detailsList.get(i).split("\n")[2], picSpacelsList.get(j).split("\n")[2]);
+                            int diff = PicUtils.diff(detailsList.get(i).split("\n")[3], picSpacelsList.get(j).split("\n")[2]);
                             if (diff == 0) {
                                 LogUtils.e(i+",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
-                                compareResultList.add(detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", ""));
+                                compareResultList.add(detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2]);
                                 positonStrs = positonStrs + "," + i;
                                 break;
                             }
