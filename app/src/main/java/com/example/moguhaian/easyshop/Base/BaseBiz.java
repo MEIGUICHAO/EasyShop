@@ -1,7 +1,9 @@
 package com.example.moguhaian.easyshop.Base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
@@ -40,7 +42,7 @@ public class BaseBiz {
 
     private MyWebViewClient webViewClient;
 
-    public void initWebView(WebView wv, Activity activity) {
+    public void initWebView(WebView wv, final Activity activity) {
         this.webView = wv;
         webViewClient = new MyWebViewClient();
         webChromeClient = new MyWebChromeClient();
@@ -50,6 +52,9 @@ public class BaseBiz {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
+
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     try {
                         Field defaultScale = WebView.class
                                 .getDeclaredField("mDefaultScale");

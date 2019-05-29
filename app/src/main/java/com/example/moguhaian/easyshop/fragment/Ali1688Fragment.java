@@ -422,7 +422,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 18:
 
                 skuEditPicPos++;
-                if (skuEditPicPos < skuPicInfo.size()) {
+                if (skuEditPicPos < (skuPicInfo.size() < 20 ? skuPicInfo.size() : 20)) {
                     webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
                 } else {
                     ToastUtils.showToast("图片sku结束");
@@ -450,7 +450,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                             @Override
                             public void run() {
                                 skuEditPos++;
-                                if (skuEditPos < skuInfo.size()) {
+                                if (skuEditPos < (skuInfo.size() < 20 ? skuInfo.size() : 20)) {
                                     webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
                                 } else {
                                     ToastUtils.showToast("文字sku结束");
@@ -480,7 +480,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                             @Override
                             public void run() {
                                 skuEditPricesPos++;
-                                if (skuEditPricesPos < skuEditPricesList.size()) {
+                                if (skuEditPricesPos < (skuEditPricesList.size() < 20 ? skuEditPricesList.size() : 20)) {
                                     double prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) * 2 + 10;
                                     LogUtils.e("origin_prices:" + skuEditPricesList.get(skuEditPricesPos));
                                     webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
