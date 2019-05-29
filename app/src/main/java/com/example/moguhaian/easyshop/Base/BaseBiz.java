@@ -1,9 +1,7 @@
 package com.example.moguhaian.easyshop.Base;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
@@ -47,66 +45,13 @@ public class BaseBiz {
         webViewClient = new MyWebViewClient();
         webChromeClient = new MyWebChromeClient();
         webView.setWebViewClient(webViewClient);
+        webView.setInitialScale(25);
         webView.setWebChromeClient(webChromeClient);
         webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-
-                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    try {
-                        Field defaultScale = WebView.class
-                                .getDeclaredField("mDefaultScale");
-                        defaultScale.setAccessible(true);
-                        float sv = defaultScale.getFloat(webView);
-                        defaultScale.setFloat(webView, 1.0f);
-                    } catch (SecurityException e) {
-                        e.printStackTrace();
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchFieldException e) {
-                        e.printStackTrace();
-                        try {
-                            Field zoomManager;
-                            zoomManager = WebView.class.getDeclaredField("mZoomManager");
-                            zoomManager.setAccessible(true);
-                            Object zoomValue = zoomManager.get(webView);
-                            Field defaultScale = zoomManager.getType().getDeclaredField("mDefaultScale");
-                            defaultScale.setAccessible(true);
-                            float sv = defaultScale.getFloat(zoomValue);
-                            defaultScale.setFloat(zoomValue, 1.0f);
-                        } catch (SecurityException e1) {
-                            e1.printStackTrace();
-                        } catch (IllegalArgumentException e1) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e1) {
-                            e.printStackTrace();
-                        } catch (NoSuchFieldException e1) {
-                            e1.printStackTrace();
-
-                            try {
-                                Field mProviderField = WebView.class.getDeclaredField("mProvider");
-                                mProviderField.setAccessible(true);
-                                //mProviderField.getClass()
-                                Object webviewclassic = mProviderField.get(webView);
-
-                                Field zoomManager = webviewclassic.getClass().getDeclaredField("mZoomManager");
-                                zoomManager.setAccessible(true);
-                                Object zoomValue = zoomManager.get(webviewclassic);
-                                Field defaultScale = zoomManager.getType().getDeclaredField("mDefaultScale");
-                                defaultScale.setAccessible(true);
-                                float sv = defaultScale.getFloat(zoomValue);
-                                defaultScale.setFloat(zoomValue, 1.0f);
-                            }catch(Exception e2)
-                            {
-                                e2.printStackTrace();
-                            }
-                        }
-                    }
-
+                    setDefaultScale();
                 }
             }
         });
@@ -197,6 +142,60 @@ public class BaseBiz {
                     SameStyleShopsBean.DataBean.ItemsBean tmp = itemsBeans[j + 1];
                     itemsBeans[j + 1] = itemsBeans[j];
                     itemsBeans[j] = tmp;
+                }
+            }
+        }
+    }
+
+    private void setDefaultScale() {
+        try {
+            Field defaultScale = WebView.class.getDeclaredField("mDefaultScale");
+            defaultScale.setAccessible(true);
+            // Object zoomValue = defaultScale.get(wv);
+            // float sv = defaultScale.getFloat(zoomValue);
+            defaultScale.setFloat(activity, 2.0f);// 0.7f根据手机分辨率自行计算设置
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            System.out.println("1、mDefaultScale");
+            try {
+                Field zoomManager;
+                zoomManager = WebView.class.getDeclaredField("mZoomManager");
+                zoomManager.setAccessible(true);
+                Object zoomValue = zoomManager.get(webView);
+                Field defaultScale = zoomManager.getType().getDeclaredField("mDefaultScale");
+                defaultScale.setAccessible(true);
+                float sv = defaultScale.getFloat(zoomValue);
+                defaultScale.setFloat(zoomValue, 2.0f);
+            } catch (SecurityException e1) {
+                e1.printStackTrace();
+            } catch (IllegalArgumentException e1) {
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            } catch (NoSuchFieldException e1) {
+                e1.printStackTrace();
+                System.out.println("2、mZoomManager");
+                try {
+                    Field mProviderField = WebView.class.getDeclaredField("mProvider");
+                    mProviderField.setAccessible(true);
+                    // mProviderField.getClass()
+                    Object webviewclassic = mProviderField.get(webView);
+                    Field zoomManager = webviewclassic.getClass().getDeclaredField("mZoomManager");
+                    zoomManager.setAccessible(true);
+                    Object zoomValue = zoomManager.get(webviewclassic);
+                    Field defaultScale = zoomManager.getType().getDeclaredField("mDefaultScale");
+                    defaultScale.setAccessible(true);
+                    float sv = defaultScale.getFloat(zoomValue);
+                    defaultScale.setFloat(zoomValue, 2.0f);
+                } catch (Exception e2) {
+                    System.out.println("3、mProvider");
+                    e2.printStackTrace();
                 }
             }
         }
