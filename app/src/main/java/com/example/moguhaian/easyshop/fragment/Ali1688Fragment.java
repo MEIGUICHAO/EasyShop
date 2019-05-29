@@ -68,6 +68,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int skuEditPicPos = 0;
     private boolean aliOneKeyPublish = false;
     private int skuEditPricesPos;
+    private int skuLimit = 19;
 
 
     @Override
@@ -422,7 +423,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 18:
 
                 skuEditPicPos++;
-                if (skuEditPicPos < (skuPicInfo.size() < 20 ? skuPicInfo.size() : 20)) {
+                if (skuEditPicPos < (skuPicInfo.size() < skuLimit ? skuPicInfo.size() : skuLimit)) {
                     webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
                 } else {
                     ToastUtils.showToast("图片sku结束");
@@ -450,7 +451,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                             @Override
                             public void run() {
                                 skuEditPos++;
-                                if (skuEditPos < (skuInfo.size() < 20 ? skuInfo.size() : 20)) {
+                                if (skuEditPos < (skuInfo.size() < skuLimit ? skuInfo.size() : skuLimit)) {
                                     webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
                                 } else {
                                     ToastUtils.showToast("文字sku结束");
@@ -480,7 +481,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                             @Override
                             public void run() {
                                 skuEditPricesPos++;
-                                if (skuEditPricesPos < (skuEditPricesList.size() < 20 ? skuEditPricesList.size() : 20)) {
+                                if (skuEditPricesPos < (skuEditPricesList.size() < skuLimit ? skuEditPricesList.size() : skuLimit)) {
                                     double prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) * 2 + 10;
                                     LogUtils.e("origin_prices:" + skuEditPricesList.get(skuEditPricesPos));
                                     webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
