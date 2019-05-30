@@ -6,12 +6,21 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.webkit.WebView;
 
+import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class MyWebView extends WebView {
@@ -208,6 +217,100 @@ public class MyWebView extends WebView {
             }
             canvas.drawPath(mPath, mPaint);
         }
+    }
+
+
+
+    public static String mDefaultEncoding = "UTF-8";
+
+    public String mCss;
+    String mHtml = null;
+
+    public void loadMyUrl(String url, String css) {
+        this.mCss = css;
+        process(url);
+    }
+
+    @Override
+    public void loadUrl(String url) {
+        super.loadUrl(url);
+    }
+
+    private String injectCss(String html, String css) {
+        int headEnd = html.indexOf("</head>");
+        String res = "";
+        if (headEnd > 0) {
+            res = html.substring(0, headEnd) + css + html.substring(headEnd, html.length());
+        } else {
+            res = "<head>" + css + "</head>" + html;
+        }
+        return res;
+    }
+
+    private void process(String url) {
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute(url);
+    }
+
+    private String buildCss() {
+        StringBuilder sb = new StringBuilder();
+
+        InputStreamReader reader;
+        try {
+            reader = new InputStreamReader(BaseApplication.getInstances().getAssets().open(mCss), mDefaultEncoding);
+            BufferedReader br = new BufferedReader(reader);
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return sb.toString().trim().replace("\n", "");
+
+    }
+
+    private class MyAsyncTask extends AsyncTask<String, Integer, String> {
+
+        private URL mUrl;
+
+        @Override
+        protected String doInBackground(String... params) {
+            StringBuilder total = new StringBuilder();
+            try {
+                mUrl = new URL(params[0]);
+                HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
+
+                InputStream is = connection.getInputStream();
+
+                String encoding = connection.getContentEncoding();
+
+                if (encoding == null) {
+                    encoding = mDefaultEncoding;
+                }
+                BufferedReader br = new BufferedReader(new InputStreamReader(is, encoding));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    total.append(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return total.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            mHtml = s;
+            String css = buildCss();
+            mHtml = injectCss(mHtml, css);
+            loadDataWithBaseURL(String.valueOf(mUrl), mHtml, null, mDefaultEncoding, null);
+        }
+
     }
 
 }

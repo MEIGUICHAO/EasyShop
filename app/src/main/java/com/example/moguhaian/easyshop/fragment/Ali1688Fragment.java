@@ -94,9 +94,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         switch (clickPosition) {
             case 0:
 //                biz.getWebViewClient().setNeedListener(true);
-                pageIndex = 1;
+//                pageIndex = 1;
+//
+//                webView.loadUrl(url);
+                webView.loadMyUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794",Constants.CSS_FILE_NAME);
 
-                webView.loadUrl(url);
                 break;
             case 1:
                 isInit = true;
