@@ -59,6 +59,16 @@ public class MyWebViewClient extends WebViewClient {
 
     }
 
+    @Override
+    public void onScaleChanged(WebView view, float oldScale, float newScale) {
+        super.onScaleChanged(view, oldScale, newScale);
+        LogUtils.e("oldScale" + oldScale);
+        LogUtils.e("newScale" + newScale);
+        if (newScale > 1.05) {
+            view.zoomOut();
+        }
+
+    }
 
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {

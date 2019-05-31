@@ -97,7 +97,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                pageIndex = 1;
 //
 //                webView.loadUrl(url);
-                webView.loadMyUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794",Constants.CSS_FILE_NAME);
+                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794");
+//                webView.loadMyUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794",Constants.CSS_FILE_NAME);
 
                 break;
             case 1:

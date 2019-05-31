@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Base.BaseApplication;
+import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 
@@ -282,7 +283,7 @@ public class MyWebView extends WebView {
             try {
                 mUrl = new URL(params[0]);
                 HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
-
+                connection.setRequestProperty("User-Agent", Constants.UserAgentString);
                 InputStream is = connection.getInputStream();
 
                 String encoding = connection.getContentEncoding();
