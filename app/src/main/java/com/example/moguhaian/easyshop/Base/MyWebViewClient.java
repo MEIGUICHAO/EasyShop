@@ -27,6 +27,7 @@ public class MyWebViewClient extends WebViewClient {
 
     private String userAgent = "";
 
+    private float indexScale = -1;
     public MyWebViewClient() {
     }
 
@@ -64,7 +65,13 @@ public class MyWebViewClient extends WebViewClient {
         super.onScaleChanged(view, oldScale, newScale);
         LogUtils.e("oldScale" + oldScale);
         LogUtils.e("newScale" + newScale);
-        if (newScale > 1.05) {
+        if (indexScale == -1) {
+            indexScale = oldScale;
+        }
+//        if (newScale < indexScale) {
+//
+//        }
+        if (newScale > indexScale + 0.2) {
             view.zoomOut();
         }
 
