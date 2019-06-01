@@ -40,7 +40,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     Unbinder unbinder;
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传",
             "新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",
-            "图片输入框点击记录","图片选择点击记录", "图片搜索点击记录", "粘贴点击记录","编辑sku","编辑价格","一键发布"};
+            "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关"};
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -69,6 +69,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private boolean aliOneKeyPublish = false;
     private int skuEditPricesPos;
     private int skuLimit = 19;
+    private boolean deBug = false;
+
 
 
     @Override
@@ -296,6 +298,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 aliOneKeyPublish = true;
                 fragmentRightClick(13);
                  break;
+            case 27://调试开关
+                deBug = !deBug;
+                ToastUtils.showToast(deBug ? "调试开启" : "调试关闭");
+                 break;
         }
 
     }
@@ -337,6 +343,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void loadFinish(WebView wv, String url) {
+        if (deBug) {
+            return;
+        }
         LogUtils.e("url:\n" + url);
 
         if (TextUtils.isEmpty(url)) {
@@ -396,6 +405,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void afterGetJson(final String json) {
+        if (deBug) {
+            return;
+        }
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
             case 0:
@@ -502,6 +514,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void afterClick() {
+        if (deBug) {
+            return;
+        }
         webView.scrollTo(0, webView.getScrollYRange());
         webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
         switch (clickPosition) {

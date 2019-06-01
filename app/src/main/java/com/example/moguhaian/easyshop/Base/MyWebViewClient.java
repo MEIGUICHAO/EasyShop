@@ -71,7 +71,7 @@ public class MyWebViewClient extends WebViewClient {
 //        if (newScale < indexScale) {
 //
 //        }
-        if (newScale > indexScale + 0.2) {
+        while (newScale > 0.63 + 0.2) {
             view.zoomOut();
         }
 
