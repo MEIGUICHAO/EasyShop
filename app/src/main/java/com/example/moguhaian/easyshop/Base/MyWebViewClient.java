@@ -61,7 +61,7 @@ public class MyWebViewClient extends WebViewClient {
     }
 
     @Override
-    public void onScaleChanged(WebView view, float oldScale, float newScale) {
+    public void onScaleChanged(final WebView view, float oldScale, final float newScale) {
         super.onScaleChanged(view, oldScale, newScale);
         LogUtils.e("oldScale" + oldScale);
         LogUtils.e("newScale" + newScale);
@@ -71,8 +71,20 @@ public class MyWebViewClient extends WebViewClient {
 //        if (newScale < indexScale) {
 //
 //        }
-        while (newScale > 0.63 + 0.2) {
+        if (newScale > 0.65) {
             view.zoomOut();
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (newScale > 0.65) {
+                        view.zoomOut();
+                    } else {
+                        BaseApplication.getmHandler().removeCallbacks(this);
+                    }
+                }
+            }, 50);
+
         }
 
     }
