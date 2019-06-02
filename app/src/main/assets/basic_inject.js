@@ -198,6 +198,7 @@ function filterWorld(className){
     setTagValue(spans);
     setTagValue(divs);
     setTagValue(ps);
+    localMethod.getJsonData("filterWorld");
 //    element[0].click();
 }
 
@@ -264,6 +265,21 @@ function clickElementsByClassName(className){
     if(element.length>0){
         localMethod.JI_LOG(className+":"+element[0].value);
         element[0].click();
+        localMethod.afterClick();
+    }
+}
+
+
+function comfirMobileDetail(){
+    localMethod.JI_LOG("!!!!!!");
+    var head = document.getElementsByClassName("m-editor-head-left");
+    localMethod.JI_LOG("head"+":"+head.length);
+    var element = head[0].getElementsByClassName("next-btn next-btn-normal next-btn-medium");
+    localMethod.JI_LOG("element"+":"+element.length);
+    if(element.length>0){
+        element[0].click();
+        element[0].focus();
+        localMethod.JI_LOG("element"+":"+element[0].value);
         localMethod.afterClick();
     }
 }
@@ -354,6 +370,18 @@ function showKeyboardAfterClick(className){
         element[0].focus();
     }
     localMethod.showKeyboardB4Input();
+}
+
+
+function getMoblieDetail(){
+    var element = document.getElementsByClassName("m-editor-head-left");
+    localMethod.JI_LOG("!!!!!!"+element.length);
+    if(element.length>0){
+        localMethod.JI_LOG("element"+":"+element[0].value);
+        element[0].click();
+        element[0].focus();
+    }
+    localMethod.getJsonData("getMoblieDetail");
 }
 
 

@@ -70,7 +70,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int skuEditPicPos = 0;
     private boolean aliOneKeyPublish = false;
     private int skuEditPricesPos;
-    private int skuLimit = 18;
+    private int skuLimit = 2;
     private boolean deBug = false;
     private ArrayList<Object> skuEditCountList;
     private int skuEditCountPos;
@@ -135,6 +135,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 8://过滤文字
                 webView.loadUrl(JsUtils.addJsMethod("filterWorld(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
+
 //                webView.loadUrl(JsUtils.addJsMethod("findMoblieImgLength(\"m-editor-content-body\")"));
                 break;
             case 9:
@@ -169,7 +170,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("login()"));
                 break;
             case 17://生成手机详情
-                webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
+                webView.loadUrl(JsUtils.addJsMethod("comfirMobileDetail()"));
                 break;
             case 18://上传图片
 
@@ -451,10 +452,23 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 6:
                 fragmentRightClick(15);
                 break;
+            case 8:
+                webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
+                break;
             case 14:
                 if (aliOneKeyPublish) {
                     fragmentRightClick(5);
                 }
+                break;
+            case 17:
+//                生成手机详情
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mHandler.removeCallbacks(this);
+                        webView.loadUrl(JsUtils.addJsMethod("comfirMobileDetail()"));
+                    }
+                }, 1000);
                 break;
             case 18:
 
