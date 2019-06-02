@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.R;
@@ -40,7 +41,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     Unbinder unbinder;
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传",
             "新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",
-            "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关"};
+            "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关", "sku数量"};
+
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
@@ -68,9 +70,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int skuEditPicPos = 0;
     private boolean aliOneKeyPublish = false;
     private int skuEditPricesPos;
-    private int skuLimit = 19;
+    private int skuLimit = 18;
     private boolean deBug = false;
-
+    private ArrayList<Object> skuEditCountList;
+    private int skuEditCountPos;
 
 
     @Override
@@ -153,6 +156,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
                 break;
             case 15://获取上传图片
+
                 ToastUtils.showToast("对比开始");
                 biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
                     @Override
@@ -178,26 +182,29 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
 
                 //=========================================================
+                webView.scrollTo(0, webView.getScrollYRange());
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        BaseApplication.getmHandler().removeCallbacks(this);
+                        skuEditPicPos = 0;
+                        ArrayList<String> compareResultPicList = biz.getCompareResultList();
 
-                skuEditPicPos = 0;
-                ArrayList<String> compareResultPicList = biz.getCompareResultList();
+                        LogUtils.e("上传数量:" + compareResultPicList.size());
+                        if (compareResultPicList.size() < 1) {
+                            ToastUtils.showToast("请选择上传图片");
+                            return;
+                        }
 
-                LogUtils.e("上传数量:" + compareResultPicList.size());
-                if (compareResultPicList.size() < 1) {
-                    ToastUtils.showToast("请选择上传图片");
-                    return;
-                }
+                        CommonUtils.copyText(compareResultPicList.get(skuEditPicPos));
+                        skuPicInfo = new ArrayList<>();
+                        for (int i = 0; i < compareResultPicList.size(); i++) {
+                            skuPicInfo.add(compareResultPicList.get(i).split("\n")[1]);
+                        }
+                        webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
+                    }
+                }, 1000);
 
-                CommonUtils.copyText(compareResultPicList.get(skuEditPicPos));
-                skuPicInfo = new ArrayList<>();
-                for (int i = 0; i < compareResultPicList.size(); i++) {
-                    skuPicInfo.add(compareResultPicList.get(i).split("\n")[1]);
-                }
-                webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
-//                if (skuEditPicPos < compareResultPicList.size()) {
-//                } else {
-//                    skuEditPicPos = 0;
-//                }
                 break;
             case 19://开关活动记录
                 webView.setNeedDraw(!webView.isNeedDraw());
@@ -301,6 +308,20 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 27://调试开关
                 deBug = !deBug;
                 ToastUtils.showToast(deBug ? "调试开启" : "调试关闭");
+                 break;
+            case 28://sku数量:
+
+                skuEditCountPos = 0;
+                skuEditCountList = new ArrayList<>();
+//
+                ArrayList<String> compareResultCountList = biz.getCompareResultList();
+                LogUtils.e("上传数量:" + compareResultCountList.size());
+                for (int i = 0; i < compareResultCountList.size(); i++) {
+                    skuEditCountList.add(compareResultCountList.get(i).split("\n")[3]);
+                }
+                LogUtils.e("origin_prices:" + skuEditCountList.get(skuEditCountPos));
+                webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + skuEditCountList.get(skuEditCountPos) + "\")"));
+
                  break;
         }
 
@@ -502,6 +523,30 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                     webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
                                 } else {
                                     ToastUtils.showToast("价格sku结束");
+                                    fragmentRightClick(28);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                break;
+            case 28://
+                biz.getSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Instrumentation inst = new Instrumentation();
+                        inst.sendStringSync(json);
+                        LogUtils.e(json);
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                skuEditCountPos++;
+                                if (skuEditCountPos < (skuEditCountList.size() < skuLimit ? skuEditCountList.size() : skuLimit)) {
+                                    LogUtils.e("origin_prices:" + skuEditCountList.get(skuEditCountPos));
+                                    webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + skuEditCountList.get(skuEditCountPos) + "\")"));
+                                } else {
+                                    ToastUtils.showToast("sku库存结束");
                                 }
                             }
                         });

@@ -389,9 +389,11 @@ function getSrcAttrByTagName(className,attr){
     var urls = "";
     var shopName = "";
     var shopPrice = "";
+    var shopCount = "";
     if(element.length>0){
         var tag = element[0].getElementsByTagName("img");
         var priceTag = element[0].getElementsByClassName("price");
+        var countTag = element[0].getElementsByClassName("count");
         localMethod.JI_LOG("tag:"+tag.length);
         localMethod.JI_LOG("priceTag:"+priceTag.length);
         for(var j=0;j<tag.length;j++){
@@ -414,7 +416,15 @@ function getSrcAttrByTagName(className,attr){
             }
             localMethod.JI_LOG(priceTag[j].getElementsByClassName("value")[0].innerText);
         }
-        localMethod.get1688details(urls,shopName,shopPrice);
+        for(var j=0;j<countTag.length;j++){
+            if(shopCount.length==0){
+                shopCount = countTag[j].getElementsByClassName("value")[0].innerText;
+            } else {
+                shopCount = shopCount + "###" + countTag[j].getElementsByClassName("value")[0].innerText;
+            }
+            localMethod.JI_LOG(priceTag[j].getElementsByClassName("value")[0].innerText);
+        }
+        localMethod.get1688details(urls,shopName,shopPrice,shopCount);
     }
 }
 
@@ -463,6 +473,23 @@ function setSkuPrice(position,price){
     inputPrice[0].focus();
 //    inputPrice[0].value = price;
     localMethod.getJsonData(price);
+}
+
+
+function setSkuCount(position,count){
+//    sell-sku-table-wrap
+    var table = document.getElementsByClassName("sell-sku-table-wrap");
+    localMethod.JI_LOG("table:"+table.length);
+    var skuRow = table[0].getElementsByClassName("sku-table-row");
+    localMethod.JI_LOG("skuRow:"+skuRow.length);
+    var skuPrice = skuRow[position].getElementsByClassName("sell-sku-cell sell-sku-cell-positiveNumber");
+    localMethod.JI_LOG("skuPrice:"+skuPrice.length);
+    var inputPrice = skuPrice[0].getElementsByTagName("input");
+    localMethod.JI_LOG("inputPrice:"+inputPrice.length);
+    inputPrice[0].click();
+    inputPrice[0].focus();
+//    inputPrice[0].value = price;
+    localMethod.getJsonData(count);
 }
 
 
