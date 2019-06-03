@@ -576,7 +576,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         if (deBug) {
             return;
         }
-        webView.scrollTo(0, webView.getScrollYRange());
+//        webView.scrollTo(0, webView.getScrollYRange());
         webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
         switch (clickPosition) {
             case 18://上传图片
