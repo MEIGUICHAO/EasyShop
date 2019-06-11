@@ -203,6 +203,13 @@ function filterWorld(className){
 }
 
 
+function setChildInputValueByClassName(parentName,parentPosition,position,inputvalue){
+    var parentElement = document.getElementsByClassName(parentName);
+    localMethod.JI_LOG(parentName+":"+parentElement.length);
+    var childElement = parentElement[parentPosition].getElementsByTagName("input");
+    childElement[position].value = inputvalue;
+}
+
 function setTagValue(tags){
     localMethod.JI_LOG("tags:"+tags.length);
     for(var i=0;i<tags.length;i++){
@@ -220,6 +227,8 @@ function setTagValue(tags){
         }
     }
 }
+
+
 
 
 
@@ -265,6 +274,19 @@ function clickElementsByClassName(className){
     if(element.length>0){
         localMethod.JI_LOG(className+":"+element[0].value);
         element[0].click();
+        localMethod.afterClick();
+    }
+}
+
+
+function clickChildElementByTagName(parentName,parentPosition,childTagName,position){
+    localMethod.JI_LOG("!!!!!!");
+    var parentElement = document.getElementsByClassName(parentName);
+    localMethod.JI_LOG(parentName+":"+parentElement.length);
+    if(parentElement.length>0){
+        var childElement = parentElement[parentPosition].getElementsByTagName(childTagName);
+        localMethod.JI_LOG(childTagName+":"+childElement[position].value);
+        childElement[position].click();
         localMethod.afterClick();
     }
 }
