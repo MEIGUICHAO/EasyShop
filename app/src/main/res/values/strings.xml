@@ -4,6 +4,10 @@
     <string name="open">打开</string>
     <string name="close">关闭</string>
 
+
+
+
+
     <string-array name="user_agent">
         <item>Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50</item>
         <item>Mozilla/5.0 (Windows; U; Windows NT 6.1; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50</item>
@@ -44,5 +48,35 @@
         <item>sort=sale-desc</item>
         <item>sort=renqi</item>
     </string-array>
+
+
+    <string name="go1688">1688</string>
+    <string name="one_piece_send">一件代发</string>
+    <string name="nextpage">下一页</string>
+    <string name="one_click_shop">一键铺货</string>
+    <string name="login">登陆</string>
+    <string name="pics_space">图片空间</string>
+    <string name="get_pics_space_pic">获取图片空间图片</string>
+    <string name="publish_scene">发布现场</string>
+    <string name="filter_word">过滤文字</string>
+    <string name="office_publish">官方传</string>
+    <string name="new_floder">新建文件夹</string>
+    <string name="floder_name">文件夹名称</string>
+    <string name="tao_keepworker">淘管家</string>
+    <string name="detail_1688">1688详情</string>
+    <string name="get_detail_1688">获取1688详情图片</string>
+    <string name="get_upload_pic">获取上传图片</string>
+    <string name="login_name">login</string>
+    <string name="get_mobile_detail">生成手机详情</string>
+    <string name="upload_pic">上传图片</string>
+    <string name="slide_record_switch">滑动记录开关</string>
+    <string name="pic_input_click_record">图片输入框点击记录</string>
+    <string name="pic_select_click_record">图片选择点击记录</string>
+    <string name="pic_search_click_record">图片搜索点击记录</string>
+    <string name="paste_click_record">粘贴点击记录</string>
+    <string name="edit_sku">编辑sku</string>
+    <string name="edit_price">编辑价格</string>
+    <string name="one_key_publish">一键发布</string>
+    <string name="sku_count">sku数量</string>
 
 </resources>
