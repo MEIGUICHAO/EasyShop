@@ -24,7 +24,7 @@ import com.example.moguhaian.easyshop.weidge.MyWebView;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressLint({ "SetJavaScriptEnabled", "JavascriptInterface" })
+@SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
 public class LocalMethod {
 
     private final MyWebView mWebView;
@@ -36,8 +36,6 @@ public class LocalMethod {
     public ArrayList<String> getPicSpaceUrlList() {
         return picSpaceUrlList;
     }
-
-
 
 
     public void resetPicspaceList() {
@@ -57,7 +55,6 @@ public class LocalMethod {
 
 
     private int pagingNum = 0;
-
 
 
     public LocalMethod(Activity c, MyWebView webView) {
@@ -86,7 +83,6 @@ public class LocalMethod {
             }
         }
     }
-
 
 
     @SuppressLint("JavascriptInterface")
@@ -120,7 +116,7 @@ public class LocalMethod {
 
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
-    public void get1688details(final String src,final String shopName,final String shopPrice,final String shopCount) {
+    public void get1688details(final String src, final String shopName, final String shopPrice, final String shopCount) {
         BaseApplication.getmHandler().post(new Runnable() {
             @Override
             public void run() {
@@ -131,7 +127,7 @@ public class LocalMethod {
                 String[] shopPriceArray = shopPrice.split("###");
                 String[] shopCountArray = shopCount.split("###");
                 for (int i = 0; i < srcArray.length; i++) {
-                    aliDetailDataList.add(srcArray[i] + "\n" + shopNameArray[i]+"\n"+shopPriceArray[i]+"\n"+shopCountArray[i]);
+                    aliDetailDataList.add(srcArray[i] + "\n" + shopNameArray[i] + "\n" + shopPriceArray[i] + "\n" + shopCountArray[i]);
                 }
                 listener.afterGetJson("");
             }
@@ -157,32 +153,30 @@ public class LocalMethod {
     }
 
 
-
-
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void showKeyboardB4Input() {
-        new Thread( new Runnable( ) {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep( 1000 );
+                    Thread.sleep(1000);
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
 
                 // “旋转”的拼音
-                int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X,KeyEvent.KEYCODE_DEL};
+                int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
                 for (int i = 0; i < keyCodeArray.length; i++) {
                     try {
                         typeIn(keyCodeArray[i]);
-                        Thread.sleep( 1000 );
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
-        }).start( );
+        }).start();
 
 //        BaseApplication.getmHandler().postDelayed(new Runnable() {
 //            @Override
@@ -202,10 +196,10 @@ public class LocalMethod {
     }
 
 
-    public void typeIn( final int KeyCode ){
+    public void typeIn(final int KeyCode) {
         try {
             Instrumentation inst = new Instrumentation();
-            inst.sendKeyDownUpSync( KeyCode );
+            inst.sendKeyDownUpSync(KeyCode);
         } catch (Exception e) {
             Log.e("Exception：", e.toString());
         }
@@ -288,7 +282,7 @@ public class LocalMethod {
 
     private void insertSameStyleUrlBean(String name, String url) {
         SamestyleBean samestyleBean = GreenDaoUtils.getSameStyleBeanByProductName(name).get(0);
-        if (!GreenDaoUtils.isUrlExist(url,samestyleBean.getId())) {
+        if (!GreenDaoUtils.isUrlExist(url, samestyleBean.getId())) {
             SameSytleUrlBean sameSytleUrlBean = new SameSytleUrlBean();
             sameSytleUrlBean.setProductId(samestyleBean.getId());
             sameSytleUrlBean.setSameStyleUrl(url);
@@ -351,6 +345,62 @@ public class LocalMethod {
 
             }
         }, 1000);
+
+    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void generateMoblieDetail() {
+
+        LogUtils.e("generateMoblieDetail");
+        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y))) {
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)));
+            LogUtils.e("PUBLISH_MOBILE_DETAIL_X:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X));
+            LogUtils.e("PUBLISH_MOBILE_DETAIL_Y:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y));
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X))) {
+                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y))) {
+                            LogUtils.e("PUBLISH_MOBILE_COMFIR_X:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X));
+                            LogUtils.e("PUBLISH_MOBILE_COMFIR_Y:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y));
+                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y)));
+                        }
+                    }
+                }
+            }, 1000);
+//            BaseApplication.getmHandler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    LogUtils.e("PUBLISH_MOBILE_DETAIL_X:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X));
+//                    LogUtils.e("PUBLISH_MOBILE_DETAIL_Y:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y));
+//
+//                    for (int i = 0; i < 10; i++) {
+//                        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)));
+//                    }
+//                    GestureTouchUtils.simulateLongClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)), new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            for (int i = 0; i < 10; i++) {
+//                                GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)));
+//                            }
+//
+//                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X))) {
+//                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y))) {
+//                                    LogUtils.e("PUBLISH_MOBILE_DETAIL_X:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X));
+//                                    LogUtils.e("PUBLISH_MOBILE_DETAIL_Y:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y));
+//                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y)));
+//                                }
+//                            }
+//                        }
+//                    });
+//                    BaseApplication.getmHandler().removeCallbacks(this);
+//
+//                }
+//            }, 1000);
+        }
 
     }
 

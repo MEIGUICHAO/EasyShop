@@ -41,7 +41,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     Unbinder unbinder;
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传",
             "新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",
-            "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关", "sku数量"};
+            "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关", "sku数量", "点击生成手机详情", "确认生成手机详情"};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -134,6 +134,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794");
                 break;
             case 8://过滤文字
+                webView.scrollTo(0, webView.getScrollY());
                 webView.loadUrl(JsUtils.addJsMethod("filterWorld(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
 
 //                webView.loadUrl(JsUtils.addJsMethod("findMoblieImgLength(\"m-editor-content-body\")"));
@@ -212,60 +213,16 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 ToastUtils.showToast(webView.isNeedDraw() ? "开启" : "关闭");
                 break;
             case 20://图片输入框点击记录
-                if (!webView.isClickRecord()) {
-                    webView.setClickRecord(true);
-                    webView.setSlideRecord(false);
-                    ToastUtils.showToast("点击记录开启");
-                    return;
-                }
-                if (webView.isNeedDraw()) {
-                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
-                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
-                }
-                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)));
-                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)));
+                clickRecord(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y);
                 break;
             case 21://图片选择点击记录
-                if (!webView.isClickRecord()) {
-                    webView.setClickRecord(true);
-                    webView.setSlideRecord(false);
-                    ToastUtils.showToast("点击记录开启");
-                    return;
-                }
-                if (webView.isNeedDraw()){
-                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
-                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
-                }
-                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)));
-                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
+                clickRecord(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X, Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y);
                 break;
             case 22://图片搜索
-                if (!webView.isClickRecord()) {
-                    webView.setClickRecord(true);
-                    webView.setSlideRecord(false);
-                    ToastUtils.showToast("点击记录开启");
-                    return;
-                }
-                if (webView.isNeedDraw()){
-                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
-                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
-                }
-                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)));
-                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
+                clickRecord(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X, Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y);
                 break;
             case 23://粘贴点击记录
-                if (!webView.isClickRecord()) {
-                    webView.setClickRecord(true);
-                    webView.setSlideRecord(false);
-                    ToastUtils.showToast("点击记录开启");
-                    return;
-                }
-                if (webView.isNeedDraw()){
-                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X, webView.getACTION_CLICK_DOWN_X() + "");
-                    SharedPreferencesUtils.putValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y, webView.getACTION_CLICK_DOWN_Y() + "");
-                }
-                LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X)));
-                LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y)));
+                clickRecord(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X, Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y);
                 break;
             case 24://编辑sku
                 skuEditPos = 0;
@@ -324,8 +281,30 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + skuEditCountList.get(skuEditCountPos) + "\")"));
 
                  break;
+            case 29:
+                clickRecord(Constants.PUBLISH_MOBILE_DETAIL_X, Constants.PUBLISH_MOBILE_DETAIL_Y);
+                break;
+            case 30:
+                clickRecord(Constants.PUBLISH_MOBILE_COMFIR_X, Constants.PUBLISH_MOBILE_COMFIR_Y);
+                break;
+
         }
 
+    }
+
+    private void clickRecord(String picSpacePasteClickDownX, String picSpacePasteClickDownY) {
+        if (!webView.isClickRecord()) {
+            webView.setClickRecord(true);
+            webView.setSlideRecord(false);
+            ToastUtils.showToast("点击记录开启");
+            return;
+        }
+        if (webView.isNeedDraw()) {
+            SharedPreferencesUtils.putValue(picSpacePasteClickDownX, webView.getACTION_CLICK_DOWN_X() + "");
+            SharedPreferencesUtils.putValue(picSpacePasteClickDownY, webView.getACTION_CLICK_DOWN_Y() + "");
+        }
+        LogUtils.e("CLICK_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(picSpacePasteClickDownX)));
+        LogUtils.e("CLICK_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(picSpacePasteClickDownY)));
     }
 
 
@@ -454,6 +433,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 8:
                 webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mHandler.removeCallbacks(this);
+                        vu.getLocalMethod().generateMoblieDetail();
+
+                    }
+                }, 1000);
                 break;
             case 14:
                 if (aliOneKeyPublish) {
