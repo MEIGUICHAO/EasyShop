@@ -371,35 +371,65 @@ public class LocalMethod {
                     }
                 }
             }, 1000);
-//            BaseApplication.getmHandler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    LogUtils.e("PUBLISH_MOBILE_DETAIL_X:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X));
-//                    LogUtils.e("PUBLISH_MOBILE_DETAIL_Y:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y));
-//
-//                    for (int i = 0; i < 10; i++) {
-//                        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)));
-//                    }
-//                    GestureTouchUtils.simulateLongClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)), new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            for (int i = 0; i < 10; i++) {
-//                                GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)));
-//                            }
-//
-//                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X))) {
-//                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y))) {
-//                                    LogUtils.e("PUBLISH_MOBILE_DETAIL_X:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X));
-//                                    LogUtils.e("PUBLISH_MOBILE_DETAIL_Y:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y));
-//                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y)));
-//                                }
-//                            }
-//                        }
-//                    });
-//                    BaseApplication.getmHandler().removeCallbacks(this);
-//
-//                }
-//            }, 1000);
+        }
+
+    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void clickPublishTime(final String ymd, final String hmm) {
+        final Instrumentation instrumentation = new Instrumentation();
+
+        LogUtils.e("generateMoblieDetail");
+        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y))) {
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y)));
+            LogUtils.e("TIME_CLICK_YMD_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X));
+            LogUtils.e("TIME_CLICK_YMD_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X));
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < 15; i++) {
+                        try {
+                            typeIn(KeyEvent.KEYCODE_DEL);
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    instrumentation.sendStringSync(ymd);
+                    BaseApplication.getmHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
+                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
+                                    LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
+                                    LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
+                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+                                }
+                            }
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (int i = 0; i < 15; i++) {
+                                        try {
+                                            typeIn(KeyEvent.KEYCODE_DEL);
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    instrumentation.sendStringSync(hmm);
+                                }
+                            }).start();
+
+                        }
+                    }, 100);
+
+                }
+            }).start();
+
         }
 
     }

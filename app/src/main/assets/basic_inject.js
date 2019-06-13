@@ -205,6 +205,8 @@ function filterWorld(className){
 
 function setChildInputValueByClassName(parentName,parentPosition,position,inputvalue){
     var parentElement = document.getElementsByClassName(parentName);
+    parentElement[parentPosition].click();
+
     localMethod.JI_LOG(parentName+":"+parentElement.length);
     var childElement = parentElement[parentPosition].getElementsByTagName("input");
     childElement[position].value = inputvalue;
