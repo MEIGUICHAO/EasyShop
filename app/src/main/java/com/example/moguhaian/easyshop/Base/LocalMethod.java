@@ -385,7 +385,7 @@ public class LocalMethod {
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y))) {
             GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y)));
             LogUtils.e("TIME_CLICK_YMD_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X));
-            LogUtils.e("TIME_CLICK_YMD_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X));
+            LogUtils.e("TIME_CLICK_YMD_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y));
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -429,6 +429,18 @@ public class LocalMethod {
 
                 }
             }).start();
+
+        }
+
+    }
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void clickPublishTimeComfir() {
+        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y))) {
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y)));
+            LogUtils.e("TIME_CLICK_COMFIR_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X));
+            LogUtils.e("TIME_CLICK_COMFIR_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y));
 
         }
 

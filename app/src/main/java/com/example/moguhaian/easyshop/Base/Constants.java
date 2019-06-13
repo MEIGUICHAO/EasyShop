@@ -73,5 +73,8 @@ public interface Constants {
 
     String TIME_CLICK_HMM_X = "TIME_CLICK_HMM_X";
     String TIME_CLICK_HMM_Y = "TIME_CLICK_HMM_Y";
+
+    String TIME_CLICK_COMFIR_X = "TIME_CLICK_COMFIR_X";
+    String TIME_CLICK_COMFIR_Y = "TIME_CLICK_COMFIR_Y";
     String CSS_FILE_NAME = "MyCSS.css";
 }
