@@ -109,7 +109,6 @@ function login1688(){
     localMethod.JI_LOG("psws:"+psws.length);
 
     accounts.value ="蘑菇海岸梅干菜";
-    psws.value ="025684MGC770706";
 }
 
 
@@ -144,6 +143,7 @@ function getSrcByClassName(){
     for(var i=0;i<block.length;i++){
         var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
         if(mDocument.length>0){
+            localMethod.JI_LOG(i+"mDocument:"+mDocument.length);
             var lead = block[i].getElementsByClassName("lis-lead not-dragging");
             if(lead.length<1){
 
@@ -182,6 +182,32 @@ function getSrcByClassName(){
             } else {
                 localMethod.getJsonData("获取图片空间图片完成");
             }
+        }
+    }
+
+}
+
+
+function selectAllPic(){
+    localMethod.JI_LOG("!!!!!!");
+
+    var allChoose = document.getElementsByClassName("allChoose not-dragging");
+    allChoose[0].click();
+    var block = document.getElementsByClassName("block-mid-lis ");
+    for(var i=0;i<block.length;i++){
+        var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
+        if(mDocument.length<1){
+    //        lis-img-sele doing-sele not-dragging lis-all-shift
+            var shift = block[i].getElementsByClassName("lis-img-sele doing-sele not-dragging lis-all-shift");
+            localMethod.JI_LOG("shift:"+shift.length);
+            var choose = shift[0].getElementsByClassName("Check iconfont");
+            localMethod.JI_LOG("choose:"+choose.length);
+            var hover = block[i].getElementsByClassName("mid-lis-img ");
+            localMethod.JI_LOG("hover:"+choose.length);
+            hover[0].click();
+            choose[0].click();
+            shift[0].click();
+            block[i].click();
         }
     }
 
