@@ -73,6 +73,8 @@ public class LocalMethod {
         BaseApplication.getmHandler().postDelayed(afterClickRunnable, 3000);
     }
 
+
+
     class AfterClickRunnable implements Runnable {
         @Override
         public void run() {
@@ -446,6 +448,23 @@ public class LocalMethod {
 
     }
 
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void picSpaceFirstClick() {
+        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y))) {
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y)));
+            LogUtils.e("PIC_SPACE_FIRST_CLICK_X:" + SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X));
+            LogUtils.e("PIC_SPACE_FIRST_CLICK_Y:" + SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y));
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mWebView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"sele-button move\")"));
+                }
+            }, 1000);
+        }
+
+    }
+
     private void picSelectClick() {
         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
         BaseApplication.getmHandler().postDelayed(new Runnable() {
@@ -455,6 +474,30 @@ public class LocalMethod {
                 BaseApplication.getmHandler().removeCallbacks(this);
             }
         }, 1000);
+    }
+
+    public void folderMoveClick() {
+
+        LogUtils.e("folderMoveClick");
+        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_Y))) {
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_Y)));
+            LogUtils.e("FOLDER_SELECT_CLICK_X:" + SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_X));
+            LogUtils.e("FOLDER_SELECT_CLICK_Y:" + SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_Y));
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_X))) {
+                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y))) {
+                            LogUtils.e("FOLDER_COMFIR_CLICK_X:" + SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_X));
+                            LogUtils.e("FOLDER_COMFIR_CLICK_Y:" + SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y));
+                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y)));
+                        }
+                    }
+                }
+            }, 1000);
+        }
+
     }
 
 }

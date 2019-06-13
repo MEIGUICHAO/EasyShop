@@ -42,7 +42,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传",
             "新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",
             "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关", "sku数量", "点击生成手机详情",
-            "确认生成手机详情", "定时上架", "年月日点击记录", "时分秒点击记录", "定时发布点击", "确定发布点击记录", "确定发布点击","图片空间全选图片"};
+            "确认生成手机详情", "定时上架", "年月日点击记录", "时分秒点击记录", "定时发布点击", "确定发布点击记录", "确定发布点击", "图片空间全选图片", "图片空间点击记录", "图片空间点击",
+            "文件夹选择点击记录", "文件夹确认点击记录", "移动文件"};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -308,6 +309,21 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case 37:
                 webView.loadUrl(JsUtils.addJsMethod("selectAllPic()"));
+                break;
+            case 38:
+                clickRecord(Constants.PIC_SPACE_FIRST_CLICK_X, Constants.PIC_SPACE_FIRST_CLICK_Y);
+                break;
+            case 39:
+                vu.getLocalMethod().picSpaceFirstClick();
+                break;
+            case 40:
+                clickRecord(Constants.FOLDER_SELECT_CLICK_X, Constants.FOLDER_SELECT_CLICK_Y);
+                break;
+            case 41:
+                clickRecord(Constants.FOLDER_COMFIR_CLICK_X, Constants.FOLDER_COMFIR_CLICK_Y);
+                break;
+            case 42:
+                vu.getLocalMethod().folderMoveClick();
                 break;
         }
 
