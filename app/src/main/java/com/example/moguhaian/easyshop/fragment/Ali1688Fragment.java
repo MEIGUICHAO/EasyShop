@@ -47,9 +47,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
-//    private String url = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
-    private String url = "https://detail.1688.com/offer/539556562483.html?sk=consign";
-    //    private String url = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
+    private String urlOrigin = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
+//    private String urlOrigin = "https://detail.1688.com/offer/539556562483.html?sk=consign";
+    //    private String urlOrigin = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
     private String loginUrl = "https://login.1688.com/member/signin.htm?tracelog=account_verify";
     //    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
     private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.694f139dxs5m9o#/manage/pic?_k=umx2ua";
@@ -103,8 +103,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                biz.getWebViewClient().setNeedListener(true);
 //                pageIndex = 1;
 //
-//                webView.loadUrl(url);
-                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794");
+                webView.loadUrl(urlOrigin);
+//                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794");
 //                webView.loadMyUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794",Constants.CSS_FILE_NAME);
 
                 break;
@@ -384,7 +384,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         if (deBug) {
             return;
         }
-        LogUtils.e("url:\n" + url);
+        LogUtils.e("urlOrigin:\n" + url);
 
         if (TextUtils.isEmpty(url)) {
             return;
@@ -443,12 +443,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void afterGetJson(final String json) {
+        LogUtils.e("afterGetJson_urlJson:" + json);
         if (deBug) {
             return;
         }
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
             case 0:
+
                 break;
             case 1:
                 LogUtils.e("afterGetJson_urlJson:" + "pageIndex\n" + json);
@@ -457,7 +459,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
                     if (pageIndex < vu.getLocalMethod().getPagingNum()) {
                         pageIndex++;
-                        nextUrl = url + "#beginPage=" + pageIndex + "&offset=0";
+                        nextUrl = urlOrigin + "#beginPage=" + pageIndex + "&offset=0";
                         webView.loadUrl(Constants.BAIDU);
                     }
                 }
