@@ -186,6 +186,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 SharedPreferencesUtils.putValue(Constants.SLIDE_DOWN_Y, webView.getACTION_DOWN_Y() + "");
                 SharedPreferencesUtils.putValue(Constants.SLIDE_UP_X, webView.getACTION_UP_X() + "");
                 SharedPreferencesUtils.putValue(Constants.SLIDE_UP_Y, webView.getACTION_UP_Y() + "");
+
                 LogUtils.e("SLIDE_DOWN_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)));
                 LogUtils.e("SLIDE_DOWN_Y:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)));
                 LogUtils.e("SLIDE_UP_X:" + (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_X)));
