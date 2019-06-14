@@ -3,6 +3,7 @@ package com.example.moguhaian.easyshop.fragment;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Base.Ips;
 import com.example.moguhaian.easyshop.Base.Shops;
 import com.example.moguhaian.easyshop.Bean.ResultBean;
+import com.example.moguhaian.easyshop.MainActivity;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Search.SameStyleBiz;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
@@ -56,6 +58,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     private String shopName = Shops.shopName;
 
         private String url = Constants.searchUrl1;
+    private MainActivity activity;
 
     @Override
     protected int getLayoutId() {
@@ -65,6 +68,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     @Override
     protected void afterOnCreate() {
         setDataStrs(items);
+        activity = (MainActivity) getActivity();
         vu.initWebViewSetting(webView, getActivity());
         biz.initWebView(webView, getActivity());
         ips = Ips.ips_dianxin.split("\n");
@@ -227,19 +231,30 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 break;
             case 13://获取标题:
                 int[] randomTitle = TaoUtils.getRandom(0, biz.getTitleList().size() - 1, 100);
+                LogUtils.e("biz.getTitleList().size():" + biz.getTitleList().size());
+                activity.setTitleList(biz.getTitleList());
+                String titleOrigin = "";
+                for (int i = 0; i < biz.getTitleList().size(); i++) {
+                    titleOrigin = TextUtils.isEmpty(titleOrigin) ? biz.getTitleList().get(i) : titleOrigin + "\n" + biz.getTitleList().get(i);
+                }
+                LogUtils.e("titleOrigin:\n" + titleOrigin);
                 String titleOnly = "";
                 String templeTitleOnly = "";
-                for (int i = 0; i < randomTitle.length; i++) {
-                    if (templeTitleOnly.length() > 60) {
-                        titleOnly = TextUtils.isEmpty(titleOnly) ? templeTitleOnly : titleOnly + "\n" + templeTitleOnly;
-                        templeTitleOnly = biz.getTitleList().get(randomTitle[i]);
-                    } else {
-                        if (TaoUtils.levenshtein(biz.getTitleList().get(randomTitle[i]), templeTitleOnly) < 0.2) {
-                            templeTitleOnly = TextUtils.isEmpty(templeTitleOnly) ? biz.getTitleList().get(randomTitle[i]) : templeTitleOnly + biz.getTitleList().get(randomTitle[i]);
+                for (int j = 0; j < 20; j++) {
+                    for (int i = 0; i < randomTitle.length; i++) {
+                        if (templeTitleOnly.length() > 60) {
+                            titleOnly = TextUtils.isEmpty(titleOnly) ? templeTitleOnly : titleOnly + "\n" + templeTitleOnly;
+                            templeTitleOnly = biz.getTitleList().get(randomTitle[i]);
+                        } else {
+                            if (TaoUtils.levenshtein(biz.getTitleList().get(randomTitle[i]), templeTitleOnly) < 0.2) {
+                                templeTitleOnly = TextUtils.isEmpty(templeTitleOnly) ? biz.getTitleList().get(randomTitle[i]) : templeTitleOnly + biz.getTitleList().get(randomTitle[i]);
+                            }
                         }
                     }
                 }
+                LogUtils.e("标题长度：" + titleOnly.split("\n").length);
                 LogUtils.e("标题结果：\n" + titleOnly);
+                activity.setTitleResult(titleOnly);
                 break;
 //            try {
 ////                String address = InetAddress.getLocalHost().getHostAddress().toString();

@@ -453,6 +453,7 @@ function setInputValue(className,inputvalue){
 
 
 
+
 function getSrcAttrByTagName(className,attr){
 
     var sku = document.getElementsByClassName("obj-sku");

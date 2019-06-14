@@ -43,7 +43,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             "新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",
             "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关", "sku数量", "点击生成手机详情",
             "确认生成手机详情", "定时上架", "年月日点击记录", "时分秒点击记录", "定时发布点击", "确定发布点击记录", "确定发布点击", "图片空间全选图片", "图片空间点击记录", "图片空间点击",
-            "文件夹选择点击记录", "文件夹确认点击记录", "移动文件"};
+            "文件夹选择点击记录", "文件夹确认点击记录", "移动文件", "设置title"};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -325,6 +325,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case 42:
                 vu.getLocalMethod().folderMoveClick();
                 break;
+            case 43:
+                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fusion-input\",\"test\")"));
+                break;
         }
 
     }
@@ -381,9 +384,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void loadFinish(WebView wv, String url) {
-        if (deBug) {
-            return;
-        }
         LogUtils.e("urlOrigin:\n" + url);
 
         if (TextUtils.isEmpty(url)) {
@@ -394,6 +394,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
         oldUrl = url;
         webView.scrollTo(0, webView.getScrollYRange());
+
+        if (deBug) {
+            return;
+        }
         switch (clickPosition) {
             case 0:
 

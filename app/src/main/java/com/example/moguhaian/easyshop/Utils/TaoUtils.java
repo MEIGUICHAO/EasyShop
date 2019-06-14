@@ -187,7 +187,12 @@ public class TaoUtils {
         while (it.hasNext()) {                                    //3,遍历老集合
             Object obj = it.next();                                //记录住每一个元素
             if (!tempList.contains(obj)) {                        //如果新集合中不包含老集合中的元素
-                tempList.add(obj);                                //将该元素添加
+                if (obj instanceof String) {
+                    if (!((String) obj).contains("classu003")&&!((String) obj).contains("�")) {
+                        tempList.add(obj);                                //将该元素添加
+
+                    }
+                }
             }
         }
 

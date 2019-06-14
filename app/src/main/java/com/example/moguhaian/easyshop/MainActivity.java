@@ -44,6 +44,8 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     private String[] mainList = {"top20w","同款标题", "1688", "1688 x5"};
     private String[] rightList = {};
     private ArrayList<BaseFragment> fragments;
+    private ArrayList<String> mTitleList;
+    private String titleResult;
 
 
     @Override
@@ -126,5 +128,13 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
             return;
         }
         super.onBackPressed();
+    }
+
+    public void setTitleList(ArrayList<String> titleList) {
+        mTitleList = titleList;
+    }
+
+    public void setTitleResult(String titleOnly) {
+        titleResult = titleOnly;
     }
 }
