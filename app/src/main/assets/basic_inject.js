@@ -62,7 +62,7 @@ function getAliTao(){
                 hrefUrl= aTag[0].getAttribute('href');
                 if(urls.length==0){
                     urls = hrefUrl;
-                } else {
+                } else if(hrefUrl.indexOf("sk=consign") != -1&&hrefUrl.length>0){
                     urls = urls + "\n" + hrefUrl;
                 }
             }

@@ -20,7 +20,6 @@ import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.CommonUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
-import com.example.moguhaian.easyshop.Utils.ResUtil;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.View.Ali1688Vu;
@@ -34,8 +33,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
-import static com.example.moguhaian.easyshop.Utils.ResUtil.*;
 
 public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> implements LoadFinishListener, LoalMethodListener {
 
@@ -59,6 +56,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private String loginUrl = "https://login.1688.com/member/signin.htm?tracelog=account_verify";
     //    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
     private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.694f139dxs5m9o#/manage/pic?_k=umx2ua";
+    private String taoGuanjiaUrl = "https://guanjia.1688.com/page/consignoffer.htm?menuCode=consignoffer";
     private String nextUrl;
     private String aliResult = "";
     private boolean isInit = false;
@@ -83,9 +81,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int skuLimit = 2;
     private int aliCurrentPage = -1;
     private int aliMaxPage = -1;
-    private boolean deBug = true;
+    private boolean notAuto = true;
+    private boolean debug = true;
     private ArrayList<Object> skuEditCountList;
     private int skuEditCountPos;
+    private String[] aliResutlArray;
 
 
     @Override
@@ -105,7 +105,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     }
 
     public void autoFragmentClick(int position) {
-        if (!deBug) {
+        if (!notAuto) {
             clickPosition = items[position];
             rightClickSwitch(position);
         }
@@ -175,10 +175,13 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
                 break;
             case R.string.tao_keepworker://淘管家
-                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
+                webView.loadUrl(taoGuanjiaUrl);
+//                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
                 break;
             case R.string.detail_1688://1688详情
-                webView.loadUrl("https://detail.1688.com/offer/564583873717.html?spm=a262fr.8351313.0.0.kOvAk8&sk=consignPrivate");
+                aliResutlArray = aliResult.split("\n");
+                aliCurrentPage = 0;
+                webView.loadUrl(aliResutlArray[aliCurrentPage]);
                 break;
             case R.string.get_detail_1688://获取1688详情图片
                 webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
@@ -290,8 +293,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.detail_1688);
                  break;
             case R.string.debug_switch://调试开关
-                deBug = !deBug;
-                ToastUtils.showToast(deBug ? "调试开启" : "调试关闭");
+                notAuto = !notAuto;
+                ToastUtils.showToast(notAuto ? "调试开启" : "调试关闭");
                  break;
             case R.string.sku_count://sku数量:
 
@@ -460,8 +463,18 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.detail_1688:
                 if (aliOneKeyPublish) {
                     autoFragmentClick(R.string.get_detail_1688);
-
                 }
+                break;
+            case R.string.tao_keepworker:
+//                next-search-lt-input
+                if (null == aliResutlArray) {
+                    aliResutlArray = aliResult.split("\n");
+                }
+                if (aliCurrentPage == -1) {
+                    aliCurrentPage = 0;
+                }
+                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-search-lt-input\"\"" + aliResutlArray[aliCurrentPage] + "\")"));
+
                 break;
         }
     }
@@ -480,7 +493,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 if (isInit) {
                     isInit = false;
 
-                    if (pageIndex < vu.getLocalMethod().getPagingNum()) {
+                    if (pageIndex < (debug ? 1 : vu.getLocalMethod().getPagingNum())) {
                         pageIndex++;
                         nextUrl = urlOrigin + "#beginPage=" + pageIndex + "&offset=0";
                         webView.loadUrl(Constants.BAIDU);
@@ -491,16 +504,16 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                }
                 break;
             case R.string.nextpage:
-                if (aliCurrentPage == -1) {
-                    aliCurrentPage = 1;
-                    aliMaxPage = Integer.parseInt(json);
-                } else if (aliCurrentPage == aliMaxPage) {
-                    aliCurrentPage = -1;
-                    aliMaxPage = -1;
-                } else {
-                    aliCurrentPage++;
-                    webView.loadUrl(urlOrigin + aliPageTag.replace("placeTag", aliCurrentPage + ""));
-                }
+//                if (aliCurrentPage == -1) {
+//                    aliCurrentPage = 1;
+//                    aliMaxPage = Integer.parseInt(json);
+//                } else if (aliCurrentPage == aliMaxPage) {
+//                    aliCurrentPage = -1;
+//                    aliMaxPage = -1;
+//                } else {
+//                    aliCurrentPage++;
+//                    webView.loadUrl(urlOrigin + aliPageTag.replace("placeTag", aliCurrentPage + ""));
+//                }
                 break;
             case R.string.get_pics_space_pic:
                 autoFragmentClick(R.string.get_upload_pic);

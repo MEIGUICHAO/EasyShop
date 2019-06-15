@@ -34,6 +34,10 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
         this.dataStrs = strings;
     }
 
+    public void setDataStrs(String[] dataStrs) {
+        this.dataStrs = dataStrs;
+    }
+
     private String[] dataStrs;
     private ArrayList<String> items = new ArrayList<>();
 
