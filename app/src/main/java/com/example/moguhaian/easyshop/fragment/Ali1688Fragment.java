@@ -106,6 +106,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     public void autoFragmentClick(int position) {
         if (!deBug) {
+            clickPosition = items[position];
             rightClickSwitch(position);
         }
     }
