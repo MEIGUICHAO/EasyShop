@@ -189,7 +189,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
                     @Override
                     public void diffFinish() {
-                        autoFragmentClick(7);
+                        autoFragmentClick(R.string.publish_scene);
                     }
                 });
                 break;
