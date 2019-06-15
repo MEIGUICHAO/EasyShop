@@ -20,6 +20,7 @@ import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.CommonUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.ResUtil;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.View.Ali1688Vu;
@@ -34,26 +35,32 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.example.moguhaian.easyshop.Utils.ResUtil.*;
+
 public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> implements LoadFinishListener, LoalMethodListener {
 
     @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
-    private String[] items = {"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传",
-            "新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",
-            "图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关", "sku数量", "点击生成手机详情",
-            "确认生成手机详情", "定时上架", "年月日点击记录", "时分秒点击记录", "定时发布点击", "确定发布点击记录", "确定发布点击", "图片空间全选图片", "图片空间点击记录", "图片空间点击",
-            "文件夹选择点击记录", "文件夹确认点击记录", "移动文件", "设置title"};
+    private int[] items = {R.string.go1688, R.string.one_piece_send, R.string.nextpage, R.string.one_click_shop, R.string.login, R.string.pics_space, R.string.get_pics_space_pic, R.string.publish_scene, R.string.filter_word, R.string.office_publish
+            , R.string.new_floder, R.string.floder_name, R.string.tao_keepworker, R.string.detail_1688, R.string.get_detail_1688, R.string.get_upload_pic, R.string.login_name, R.string.get_mobile_detail, R.string.upload_pic, R.string.slide_record_switch
+            , R.string.pic_input_click_record, R.string.pic_select_click_record, R.string.pic_search_click_record, R.string.paste_click_record, R.string.edit_sku, R.string.edit_price, R.string.one_key_publish, R.string.sku_count, R.string.click_moblie_detail, R.string.comfir_moblie_detail
+            , R.string.timing_publish, R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.pic_space_select_all, R.string.pic_space_click_record, R.string.pic_space_click, R.string.folder_select_click_record
+            , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
+//    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
+//    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=4&offset=0
     private String urlOrigin = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
+    private String aliPageTag = "#beginPage=" + "placeTag" + "&offset=0";
 //    private String urlOrigin = "https://detail.1688.com/offer/539556562483.html?sk=consign";
     //    private String urlOrigin = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
     private String loginUrl = "https://login.1688.com/member/signin.htm?tracelog=account_verify";
     //    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
     private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.694f139dxs5m9o#/manage/pic?_k=umx2ua";
     private String nextUrl;
+    private String aliResult = "";
     private boolean isInit = false;
     private boolean needGetJson = false;
 
@@ -65,6 +72,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
     };
     private String oldUrl = "";
+    private String clickStr = "";
     private ArrayList<String> skuInfo;
     private ArrayList<String> skuEditPricesList;
     private ArrayList<String> skuPicInfo;
@@ -73,6 +81,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private boolean aliOneKeyPublish = false;
     private int skuEditPricesPos;
     private int skuLimit = 2;
+    private int aliCurrentPage = -1;
+    private int aliMaxPage = -1;
     private boolean deBug = true;
     private ArrayList<Object> skuEditCountList;
     private int skuEditCountPos;
@@ -94,12 +104,23 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     }
 
+    public void autoFragmentClick(int position) {
+        if (!deBug) {
+            rightClickSwitch(position);
+        }
+    }
+
     @Override
     public void fragmentRightClick(int position) {
         super.fragmentRightClick(position);
-        clickPosition = position;
-        switch (clickPosition) {
-            case 0:
+        clickPosition = items[position];
+        rightClickSwitch(items[position]);
+
+    }
+
+    private void rightClickSwitch(int item) {
+        switch (item) {
+            case R.string.go1688:
 //                biz.getWebViewClient().setNeedListener(true);
 //                pageIndex = 1;
 //
@@ -108,74 +129,76 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadMyUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794",Constants.CSS_FILE_NAME);
 
                 break;
-            case 1:
+            case R.string.one_piece_send:
+                aliResult = "";
                 isInit = true;
                 webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
                 break;
-            case 2:
-                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));
+            case R.string.nextpage:
+                LogUtils.e("aliResult:" + aliResult);
+//                webView.loadUrl(JsUtils.addJsMethod("getAliPageCount()"));
                 break;
-            case 3:
+            case R.string.one_click_shop:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"menu-item-btn  J_ConsignBtn_DistributeToTaobao\")"));
                 break;
-            case 4:
+            case R.string.login:
                 if (!oldUrl.contains("login.1688.com")) {
                     webView.loadUrl(loginUrl);
                 } else {
                     webView.loadUrl(JsUtils.addJsMethod("login1688()"));
                 }
                 break;
-            case 5://图片空间
+            case R.string.pics_space://图片空间
                 webView.loadUrl(picSpaceUrl);
                 break;
-            case 6://获取图片空间图片
+            case R.string.get_pics_space_pic://获取图片空间图片
                 vu.getLocalMethod().resetPicspaceList();
                 webView.loadUrl(JsUtils.addJsMethod("getSrcByClassName()"));
                 break;
-            case 7://发布现场
+            case R.string.publish_scene://发布现场
                 webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794");
                 break;
-            case 8://过滤文字
+            case R.string.filter_word://过滤文字
                 webView.scrollTo(0, webView.getScrollY());
                 webView.loadUrl(JsUtils.addJsMethod("filterWorld(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
 
 //                webView.loadUrl(JsUtils.addJsMethod("findMoblieImgLength(\"m-editor-content-body\")"));
                 break;
-            case 9:
+            case R.string.office_publish:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"btn confirm official-confirm\")"));
                 break;
-            case 10:
+            case R.string.new_floder:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"itemList-head-btn-item\")"));
                 break;
-            case 11://文件夹名称
+            case R.string.floder_name://文件夹名称
                 webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
                 break;
-            case 12://淘管家
+            case R.string.tao_keepworker://淘管家
                 webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
                 break;
-            case 13://1688详情
+            case R.string.detail_1688://1688详情
                 webView.loadUrl("https://detail.1688.com/offer/564583873717.html?spm=a262fr.8351313.0.0.kOvAk8&sk=consignPrivate");
                 break;
-            case 14://获取1688详情图片
+            case R.string.get_detail_1688://获取1688详情图片
                 webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
                 break;
-            case 15://获取上传图片
+            case R.string.get_upload_pic://获取上传图片
 
                 ToastUtils.showToast("对比开始");
                 biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
                     @Override
                     public void diffFinish() {
-                        fragmentRightClick(7);
+                        autoFragmentClick(7);
                     }
                 });
                 break;
-            case 16://login
+            case R.string.login_name://login
                 webView.loadUrl(JsUtils.addJsMethod("login()"));
                 break;
-            case 17://生成手机详情
+            case R.string.get_mobile_detail://生成手机详情
                 webView.loadUrl(JsUtils.addJsMethod("comfirMobileDetail()"));
                 break;
-            case 18://上传图片
+            case R.string.upload_pic://上传图片
 
 //                CommonUtils.copyText("f871d1bb-3b5f-4206-8b64-7d9f8788bc57");
 //                skuPicInfo = new ArrayList<>();
@@ -210,23 +233,23 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 }, 1000);
 
                 break;
-            case 19://开关活动记录
+            case R.string.slide_record_switch://开关活动记录
                 webView.setNeedDraw(!webView.isNeedDraw());
                 ToastUtils.showToast(webView.isNeedDraw() ? "开启" : "关闭");
                 break;
-            case 20://图片输入框点击记录
+            case R.string.pic_input_click_record://图片输入框点击记录
                 clickRecord(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y);
                 break;
-            case 21://图片选择点击记录
+            case R.string.pic_select_click_record://图片选择点击记录
                 clickRecord(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X, Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y);
                 break;
-            case 22://图片搜索
+            case R.string.pic_search_click_record://图片搜索
                 clickRecord(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X, Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y);
                 break;
-            case 23://粘贴点击记录
+            case R.string.paste_click_record://粘贴点击记录
                 clickRecord(Constants.PIC_SPACE_PASTE_CLICK_DOWN_X, Constants.PIC_SPACE_PASTE_CLICK_DOWN_Y);
                 break;
-            case 24://编辑sku
+            case R.string.edit_sku://编辑sku
                 skuEditPos = 0;
                 skuInfo = new ArrayList<>();
                 ArrayList<String> compareResultList = biz.getCompareResultList();
@@ -245,7 +268,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                }
 //                webView.loadUrl(JsUtils.addJsMethod("clearSku(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\")"));
                 break;
-            case 25://编辑价格:
+            case R.string.edit_price://编辑价格:
                 //TODO
                 skuEditPricesPos = 0;
                 skuEditPricesList = new ArrayList<>();
@@ -260,16 +283,16 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
 //                webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + 0 + "\",\"" + 88.88 + "\")"));
                  break;
-            case 26://一键发布
+            case R.string.one_key_publish://一键发布
 //                13-->14-->5-->6-->15-->7-->24-->18-->25
                 aliOneKeyPublish = true;
-                fragmentRightClick(13);
+                autoFragmentClick(R.string.detail_1688);
                  break;
-            case 27://调试开关
+            case R.string.debug_switch://调试开关
                 deBug = !deBug;
                 ToastUtils.showToast(deBug ? "调试开启" : "调试关闭");
                  break;
-            case 28://sku数量:
+            case R.string.sku_count://sku数量:
 
                 skuEditCountPos = 0;
                 skuEditCountList = new ArrayList<>();
@@ -283,53 +306,52 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + skuEditCountList.get(skuEditCountPos) + "\")"));
 
                  break;
-            case 29:
+            case R.string.click_moblie_detail:
                 clickRecord(Constants.PUBLISH_MOBILE_DETAIL_X, Constants.PUBLISH_MOBILE_DETAIL_Y);
                 break;
-            case 30:
+            case R.string.comfir_moblie_detail:
                 clickRecord(Constants.PUBLISH_MOBILE_COMFIR_X, Constants.PUBLISH_MOBILE_COMFIR_Y);
                 break;
-            case 31:
+            case R.string.timing_publish:
                 webView.loadUrl(JsUtils.addJsMethod("clickChildElementByTagName(\"sell-o-radio\",\"7\",\"input\",\"1\")"));
                 break;
-            case 32:
+            case R.string.ymd_click_record:
                 clickRecord(Constants.TIME_CLICK_YMD_X, Constants.TIME_CLICK_YMD_Y);
                 break;
-            case 33:
+            case R.string.hmm_click_record:
                 clickRecord(Constants.TIME_CLICK_HMM_X, Constants.TIME_CLICK_HMM_Y);
                 break;
-            case 34:
+            case R.string.timing_publish_click:
                 vu.getLocalMethod().clickPublishTime("2019-06-28", "07:07:07");
                 break;
-            case 35:
+            case R.string.comfir_publish_click_record:
                 clickRecord(Constants.TIME_CLICK_COMFIR_X, Constants.TIME_CLICK_COMFIR_Y);
                 break;
-            case 36:
+            case R.string.comfir_publish_click:
                 vu.getLocalMethod().clickPublishTimeComfir();
                 break;
-            case 37:
+            case R.string.pic_space_select_all:
                 webView.loadUrl(JsUtils.addJsMethod("selectAllPic()"));
                 break;
-            case 38:
+            case R.string.pic_space_click_record:
                 clickRecord(Constants.PIC_SPACE_FIRST_CLICK_X, Constants.PIC_SPACE_FIRST_CLICK_Y);
                 break;
-            case 39:
+            case R.string.pic_space_click:
                 vu.getLocalMethod().picSpaceFirstClick();
                 break;
-            case 40:
+            case R.string.folder_select_click_record:
                 clickRecord(Constants.FOLDER_SELECT_CLICK_X, Constants.FOLDER_SELECT_CLICK_Y);
                 break;
-            case 41:
+            case R.string.folder_comfir_click_record:
                 clickRecord(Constants.FOLDER_COMFIR_CLICK_X, Constants.FOLDER_COMFIR_CLICK_Y);
                 break;
-            case 42:
+            case R.string.move_folder:
                 vu.getLocalMethod().folderMoveClick();
                 break;
-            case 43:
+            case R.string.set_title:
                 webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fusion-input\",\"test\")"));
                 break;
         }
-
     }
 
     private void clickRecord(String picSpacePasteClickDownX, String picSpacePasteClickDownY) {
@@ -395,14 +417,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         oldUrl = url;
         webView.scrollTo(0, webView.getScrollYRange());
 
-        if (deBug) {
-            return;
-        }
         switch (clickPosition) {
-            case 0:
+            case R.string.go1688:
 
                 break;
-            case 1:
+            case R.string.one_piece_send:
                 if (!url.contains(Constants.BAIDU)) {
                     if (needGetJson) {
                         needGetJson = false;
@@ -428,17 +447,18 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     webView.loadUrl(nextUrl);
                 }
                 break;
-            case 2:
+            case R.string.nextpage:
+                webView.loadUrl(JsUtils.addJsMethod("getAliPageCount()"));
                 break;
-            case 5://加载图片空间
-                fragmentRightClick(6);
+            case R.string.pics_space://加载图片空间
+                autoFragmentClick(R.string.get_pics_space_pic);
                 break;
-            case 7://发布现场
-                fragmentRightClick(24);
+            case R.string.publish_scene://发布现场
+                autoFragmentClick(R.string.edit_sku);
                 break;
-            case 13:
+            case R.string.detail_1688:
                 if (aliOneKeyPublish) {
-                    fragmentRightClick(14);
+                    autoFragmentClick(R.string.get_detail_1688);
 
                 }
                 break;
@@ -448,16 +468,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @Override
     public void afterGetJson(final String json) {
         LogUtils.e("afterGetJson_urlJson:" + json);
-        if (deBug) {
-            return;
-        }
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
-            case 0:
+            case R.string.go1688:
 
                 break;
-            case 1:
+            case R.string.one_piece_send:
                 LogUtils.e("afterGetJson_urlJson:" + "pageIndex\n" + json);
+                aliResult = TextUtils.isEmpty(aliResult) ? json : aliResult + "\n" + json;
                 if (isInit) {
                     isInit = false;
 
@@ -471,10 +489,22 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 ////                    webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"fui-next\")"));
 //                }
                 break;
-            case 6:
-                fragmentRightClick(15);
+            case R.string.nextpage:
+                if (aliCurrentPage == -1) {
+                    aliCurrentPage = 1;
+                    aliMaxPage = Integer.parseInt(json);
+                } else if (aliCurrentPage == aliMaxPage) {
+                    aliCurrentPage = -1;
+                    aliMaxPage = -1;
+                } else {
+                    aliCurrentPage++;
+                    webView.loadUrl(urlOrigin + aliPageTag.replace("placeTag", aliCurrentPage + ""));
+                }
                 break;
-            case 8:
+            case R.string.get_pics_space_pic:
+                autoFragmentClick(R.string.get_upload_pic);
+                break;
+            case R.string.filter_word:
                 webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
                 mHandler.postDelayed(new Runnable() {
                     @Override
@@ -485,12 +515,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }
                 }, 1000);
                 break;
-            case 14:
+            case R.string.get_detail_1688:
                 if (aliOneKeyPublish) {
-                    fragmentRightClick(5);
+                    autoFragmentClick(R.string.pics_space);
                 }
                 break;
-            case 17:
+            case R.string.get_mobile_detail:
 //                生成手机详情
                 mHandler.postDelayed(new Runnable() {
                     @Override
@@ -500,19 +530,19 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }
                 }, 1000);
                 break;
-            case 18:
+            case R.string.upload_pic:
 
                 skuEditPicPos++;
                 if (skuEditPicPos < (skuPicInfo.size() < skuLimit ? skuPicInfo.size() : skuLimit)) {
                     webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
                 } else {
                     ToastUtils.showToast("图片sku结束");
-                    fragmentRightClick(25);
+                    autoFragmentClick(R.string.edit_price);
 
                 }
 
                 break;
-            case 24:
+            case R.string.edit_sku:
 
                 biz.getSingleThreadExecutor().execute(new Runnable() {
                     @Override
@@ -540,7 +570,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                         @Override
                                         public void run() {
                                             mHandler.removeCallbacks(this);
-                                            fragmentRightClick(18);
+                                            autoFragmentClick(R.string.upload_pic);
 
                                         }
                                     }, 1000);
@@ -550,7 +580,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }
                 });
                 break;
-            case 25://
+            case R.string.edit_price://
                 biz.getSingleThreadExecutor().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -567,7 +597,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                     webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
                                 } else {
                                     ToastUtils.showToast("价格sku结束");
-                                    fragmentRightClick(28);
+                                    autoFragmentClick(R.string.sku_count);
                                 }
                             }
                         });
@@ -575,7 +605,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 });
 
                 break;
-            case 28://
+            case R.string.sku_count://
                 biz.getSingleThreadExecutor().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -603,18 +633,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void afterClick() {
-        if (deBug) {
-            return;
-        }
 //        webView.scrollTo(0, webView.getScrollYRange());
         webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
         switch (clickPosition) {
-            case 18://上传图片
+            case R.string.upload_pic://上传图片
                 CommonUtils.copyText(skuPicInfo.get(skuEditPicPos));
                 webView.loadUrl(JsUtils.addJsMethod("getPicFromSpaces()"));
 
                 break;
-            case 31:
+            case R.string.timing_publish:
                 webView.loadUrl(JsUtils.addJsMethod("setChildInputValueByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\",0,0,\"2019-06-15 00:00:01\")"));
 
                 break;

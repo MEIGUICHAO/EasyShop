@@ -49,6 +49,52 @@
         <item>sort=renqi</item>
     </string-array>
 
+    <string-array name="click_array">
+        <item>@string/go1688</item>
+        <item>@string/one_piece_send</item>
+        <item>@string/nextpage</item>
+        <item>@string/one_click_shop</item>
+        <item>@string/login</item>
+        <item>@string/pics_space</item>
+        <item>@string/get_pics_space_pic</item>
+        <item>@string/publish_scene</item>
+        <item>@string/filter_word</item>
+        <item>@string/office_publish</item>
+        <item>@string/new_floder</item>
+        <item>@string/floder_name</item>
+        <item>@string/tao_keepworker</item>
+        <item>@string/detail_1688</item>
+        <item>@string/get_detail_1688</item>
+        <item>@string/get_upload_pic</item>
+        <item>@string/login_name</item>
+        <item>@string/get_mobile_detail</item>
+        <item>@string/upload_pic</item>
+        <item>@string/slide_record_switch</item>
+        <item>@string/pic_input_click_record</item>
+        <item>@string/pic_select_click_record</item>
+        <item>@string/pic_search_click_record</item>
+        <item>@string/paste_click_record</item>
+        <item>@string/edit_sku</item>
+        <item>@string/edit_price</item>
+        <item>@string/one_key_publish</item>
+        <item>@string/sku_count</item>
+        <item>@string/click_moblie_detail</item>
+        <item>@string/comfir_moblie_detail</item>
+        <item>@string/timing_publish</item>
+        <item>@string/ymd_click_record</item>
+        <item>@string/hmm_click_record</item>
+        <item>@string/timing_publish_click</item>
+        <item>@string/comfir_publish_click_record</item>
+        <item>@string/comfir_publish_click</item>
+        <item>@string/pic_space_select_all</item>
+        <item>@string/pic_space_click_record</item>
+        <item>@string/pic_space_click</item>
+        <item>@string/folder_select_click_record</item>
+        <item>@string/folder_comfir_click_record</item>
+        <item>@string/move_folder</item>
+        <item>@string/set_title</item>
+    </string-array>
+
 
     <string name="go1688">1688</string>
     <string name="one_piece_send">一件代发</string>
@@ -77,6 +123,26 @@
     <string name="edit_sku">编辑sku</string>
     <string name="edit_price">编辑价格</string>
     <string name="one_key_publish">一键发布</string>
+    <string name="debug_switch">调试开关</string>
     <string name="sku_count">sku数量</string>
-
+    <string name="click_moblie_detail">点击生成手机详情</string>
+    <string name="comfir_moblie_detail">确认生成手机详情</string>
+    <string name="timing_publish">定时上架</string>
+    <string name="ymd_click_record">年月日点击记录</string>
+    <string name="hmm_click_record">时分秒点击记录</string>
+    <string name="timing_publish_click">定时发布点击</string>
+    <string name="comfir_publish_click_record">确定发布点击记录</string>
+    <string name="comfir_publish_click">确定发布点击</string>
+    <string name="pic_space_select_all">图片空间全选图片</string>
+    <string name="pic_space_click_record">图片空间点击记录</string>
+    <string name="pic_space_click">图片空间点击</string>
+    <string name="folder_select_click_record">文件夹选择点击记录</string>
+    <string name="folder_comfir_click_record">文件夹确认点击记录</string>
+    <string name="move_folder">移动文件</string>
+    <string name="set_title">设置title</string>
+    <!--"1688", "一件代发", "下一页", "一键铺货", "登陆", "图片空间", "获取图片空间图片", "发布现场", "过滤文字", "官方传",-->
+    <!--"新建文件夹", "文件夹名称", "淘管家", "1688详情", "获取1688详情图片", "获取上传图片", "login", "生成手机详情", "上传图片", "滑动记录开关",-->
+    <!--"图片输入框点击记录", "图片选择点击记录", "图片搜索点击记录", "粘贴点击记录", "编辑sku", "编辑价格", "一键发布", "调试开关", "sku数量", "点击生成手机详情",-->
+    <!--"确认生成手机详情", "定时上架", "年月日点击记录", "时分秒点击记录", "定时发布点击", "确定发布点击记录", "确定发布点击", "图片空间全选图片", "图片空间点击记录", "图片空间点击",-->
+    <!--"文件夹选择点击记录", "文件夹确认点击记录", "移动文件", "设置title"-->
 </resources>

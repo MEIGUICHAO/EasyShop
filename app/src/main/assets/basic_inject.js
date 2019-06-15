@@ -28,6 +28,16 @@ function findSameStyle(productname){
 
 }
 
+function getAliPageCount(){
+    var pagingList = document.getElementsByClassName("fui-paging-list");
+    localMethod.JI_LOG("pagingList:"+pagingList.length);
+    var page = pagingList[0].getElementsByTagName("a");
+    localMethod.JI_LOG("page:"+pagingList.length);
+    localMethod.JI_LOG("page:"+page.length);
+//    localMethod.JI_LOG("page_value:"+page[page.length-2].value);
+    localMethod.JI_LOG("page_innerText:"+page[page.length-2].innerText);
+    localMethod.getJsonData(page[page.length-2].innerText);
+}
 
 function getAliTao(){
 //    var element = document.getElementsByClassName("sw-layout-1190");

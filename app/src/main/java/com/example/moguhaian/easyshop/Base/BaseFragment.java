@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.moguhaian.easyshop.R;
+import com.example.moguhaian.easyshop.Utils.ResUtil;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -23,8 +26,12 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
         return dataStrs;
     }
 
-    public void setDataStrs(String[] dataStrs) {
-        this.dataStrs = dataStrs;
+    public void setDataStrs(int[] dataStrs) {
+        String[] strings = new String[dataStrs.length];
+        for (int i = 0; i < dataStrs.length; i++) {
+            strings[i] = ResUtil.getS(dataStrs[i]);
+        }
+        this.dataStrs = strings;
     }
 
     private String[] dataStrs;
