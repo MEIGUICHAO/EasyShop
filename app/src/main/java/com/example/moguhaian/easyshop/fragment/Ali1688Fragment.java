@@ -379,7 +379,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("getPublishItemId()"));
                 break;
             case R.string.tao_guanjia_search_click:
-                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-btn next-btn-primary next-btn-small\",\"1\")"));
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassNamePosition(\"next-btn next-btn-primary next-btn-small\",\"1\")"));
                 break;
         }
     }

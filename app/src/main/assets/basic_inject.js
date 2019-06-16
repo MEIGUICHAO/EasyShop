@@ -310,11 +310,13 @@ function findElementsById(className){
 
 
 function clickElementsByClassName(className){
-    localMethod.JI_LOG("!!!!!!");
+    localMethod.JI_LOG("clickElementsByClassName!!!!!!");
     var element = document.getElementsByClassName(className);
     localMethod.JI_LOG(className+":"+element.length);
     if(element.length>0){
+        localMethod.JI_LOG("element[0].click()");
         element[0].click();
+        localMethod.JI_LOG("localMethod.afterClick");
         localMethod.afterClick();
         localMethod.JI_LOG(className+":"+element[0].value);
     }
@@ -333,7 +335,7 @@ function getPublishItemId(){
 }
 
 
-function clickElementsByClassName(className,position){
+function clickElementsByClassNamePosition(className,position){
     localMethod.JI_LOG("!!!!!!");
     var element = document.getElementsByClassName(className);
     localMethod.JI_LOG(className+":"+element.length);
