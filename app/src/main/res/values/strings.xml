@@ -125,8 +125,8 @@
     <string name="one_key_publish">一键发布</string>
     <string name="debug_switch">调试开关</string>
     <string name="sku_count">sku数量</string>
-    <string name="click_moblie_detail">点击生成手机详情</string>
-    <string name="comfir_moblie_detail">确认生成手机详情</string>
+    <string name="click_moblie_detail">点击生成手机详情记录</string>
+    <string name="comfir_moblie_detail">确认生成手机详情记录</string>
     <string name="timing_publish">定时上架</string>
     <string name="ymd_click_record">年月日点击记录</string>
     <string name="hmm_click_record">时分秒点击记录</string>
