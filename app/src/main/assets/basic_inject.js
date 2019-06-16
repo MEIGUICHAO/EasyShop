@@ -192,7 +192,10 @@ function getSrcByClassName(){
             } else {
                 localMethod.getJsonData("获取图片空间图片完成");
             }
+        } else {
+            localMethod.getJsonData("获取图片空间图片完成");
         }
+
     }
 
 }
@@ -311,8 +314,32 @@ function clickElementsByClassName(className){
     var element = document.getElementsByClassName(className);
     localMethod.JI_LOG(className+":"+element.length);
     if(element.length>0){
-        localMethod.JI_LOG(className+":"+element[0].value);
         element[0].click();
+        localMethod.afterClick();
+        localMethod.JI_LOG(className+":"+element[0].value);
+    }
+}
+
+
+function getPublishItemId(){
+    var element = document.getElementsByClassName("item-title");
+    localMethod.JI_LOG("item-title:"+element.length);
+    if(element.length>0){
+        var itemA = element[0].getElementsByTagName("a");
+        var href = itemA[0].getAttribute("href");
+        var itemId = href.split("id=")[1];
+        localMethod.getJsonData(itemId);
+    }
+}
+
+
+function clickElementsByClassName(className,position){
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    if(element.length>0){
+        localMethod.JI_LOG(className+":"+element[position].value);
+        element[position].click();
         localMethod.afterClick();
     }
 }
@@ -454,8 +481,8 @@ function setInputValue(className,inputvalue){
         var tag = element[0].getElementsByTagName("input");
         localMethod.JI_LOG("tag:"+tag.length);
         if(tag.length>0){
-            tag[0].value=inputvalue;
             tag[0].click();
+            tag[0].value=inputvalue;
         }
     }
     localMethod.showKeyboardB4Input();

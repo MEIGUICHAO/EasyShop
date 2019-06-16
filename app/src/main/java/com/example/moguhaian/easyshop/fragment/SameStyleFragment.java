@@ -3,7 +3,6 @@ package com.example.moguhaian.easyshop.fragment;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -372,6 +371,11 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 
     @Override
     public void afterClick() {
+
+    }
+
+    @Override
+    public void inputFinish() {
 
     }
 

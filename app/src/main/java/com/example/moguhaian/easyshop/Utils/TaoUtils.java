@@ -200,6 +200,34 @@ public class TaoUtils {
     }
 
 
+    public static String[] getSingle(String[] arr) {//实例化一个set集合
+        int t = 0;
+        String[] tempArr = new String[arr.length];
+        for(int i = 0; i < arr.length; i++){
+            //声明一个标记，并每次重置
+            boolean isTrue = true;
+            for(int j=i+1;j<arr.length;j++){
+                //如果有重复元素，改变标记状态并结束当次内层循环
+                if(arr[i].equals(arr[j])){
+                    isTrue = false;
+                    break;
+                }
+            }
+            //判断标记是否被改变，如果没被改变就是没有重复元素
+            if(isTrue){
+                tempArr[t] = arr[i];
+                //到这里证明当前元素没有重复，那么记录自增
+                t++;
+            }
+        }
+        //声明需要返回的数组，这个才是去重后的数组
+        String[]  newArr = new String[t];
+        //用arraycopy方法将刚才去重的数组拷贝到新数组并返回
+        System.arraycopy(tempArr,0,newArr,0,t);
+        return newArr;
+    }
+
+
     public static String getInitShop(String json) {
         String resultUrl = "";
         if (!TextUtils.isEmpty(json)) {

@@ -177,6 +177,13 @@ public class LocalMethod {
                         e.printStackTrace();
                     }
                 }
+                BaseApplication.getmHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.inputFinish();
+                    }
+                });
+
             }
         }).start();
 

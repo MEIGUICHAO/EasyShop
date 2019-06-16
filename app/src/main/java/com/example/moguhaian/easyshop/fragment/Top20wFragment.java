@@ -1,16 +1,13 @@
 package com.example.moguhaian.easyshop.fragment;
 
-import android.content.res.AssetManager;
 import android.util.Log;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Base.BaseFragment;
-import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Bean.Top20wBean;
 import com.example.moguhaian.easyshop.Bean.Top20wRecordBean;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
-import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.View.Top20wVu;
 import com.example.moguhaian.easyshop.biz.Top20wBiz;
@@ -124,6 +121,11 @@ public class Top20wFragment extends BaseFragment<Top20wVu, Top20wBiz> implements
 
     @Override
     public void afterClick() {
+
+    }
+
+    @Override
+    public void inputFinish() {
 
     }
 
