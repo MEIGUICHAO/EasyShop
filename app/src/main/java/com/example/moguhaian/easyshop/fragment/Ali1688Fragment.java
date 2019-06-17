@@ -45,7 +45,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             , R.string.new_floder, R.string.floder_name, R.string.tao_keepworker, R.string.detail_1688, R.string.get_detail_1688, R.string.get_upload_pic, R.string.login_name, R.string.get_mobile_detail, R.string.upload_pic, R.string.slide_record_switch
             , R.string.pic_input_click_record, R.string.pic_select_click_record, R.string.pic_search_click_record, R.string.paste_click_record, R.string.edit_sku, R.string.edit_price, R.string.one_key_publish, R.string.sku_count, R.string.click_moblie_detail, R.string.comfir_moblie_detail
             , R.string.timing_publish, R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.pic_space_select_all, R.string.pic_space_click_record, R.string.pic_space_click, R.string.folder_select_click_record
-            , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title,R.string.tao_guanjia_search,R.string.tao_guanjia_to_publish_scene,R.string.tao_guanjia_search_click,R.string.record_switch,R.string.resetSku};
+            , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title,R.string.tao_guanjia_search,R.string.tao_guanjia_to_publish_scene,R.string.tao_guanjia_search_click,R.string.record_switch,R.string.resetSku,R.string.edit_detail_area};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -391,6 +391,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.resetSku:
                 webView.loadUrl(JsUtils.addJsMethod("resetSkuPic(0)"));
                 break;
+            case R.string.edit_detail_area:
+                webView.loadUrl(JsUtils.addJsMethod("goEditDetailArea()"));
+                break;
         }
     }
 
@@ -581,27 +584,19 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.filter_word:
                 webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHandler.removeCallbacks(this);
-                        vu.getLocalMethod().generateMoblieDetail();
-
-                    }
-                }, 1000);
                 break;
             case R.string.get_detail_1688:
                 autoFragmentClick(R.string.pics_space);
                 break;
             case R.string.get_mobile_detail:
 //                生成手机详情
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mHandler.removeCallbacks(this);
-                        webView.loadUrl(JsUtils.addJsMethod("comfirMobileDetail()"));
-                    }
-                }, 1000);
+//                mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mHandler.removeCallbacks(this);
+//                        webView.loadUrl(JsUtils.addJsMethod("comfirMobileDetail()"));
+//                    }
+//                }, 1000);
                 break;
             case R.string.upload_pic:
 
@@ -703,6 +698,17 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 });
 
                 break;
+            case R.string.edit_detail_area:
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mHandler.removeCallbacks(this);
+                        vu.getLocalMethod().generateMoblieDetail();
+
+                    }
+                }, 1000);
+
+                break;
         }
     }
 
@@ -713,6 +719,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @Override
     public void afterClick() {
 //        webView.scrollTo(0, webView.getScrollYRange());
+        LogUtils.e("afterClick:" + ResUtil.getS(clickPosition));
         webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
         switch (clickPosition) {
             case R.string.upload_pic://上传图片
@@ -732,7 +739,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.upload_pic);
                 break;
             case R.string.filter_word:
-                autoFragmentClick(R.string.get_mobile_detail);
+                autoFragmentClick(R.string.edit_detail_area);
+
+                break;
+            case R.string.edit_detail_area:
+//                autoFragmentClick(R.string.get_mobile_detail);
+
                 break;
         }
     }
@@ -752,6 +764,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         switch (clickPosition) {
             case R.string.tao_guanjia_to_publish_scene:
                 //淘管家缺失ali
+                autoFragmentClick(R.string.tao_guanjia_search);
                 break;
         }
     }

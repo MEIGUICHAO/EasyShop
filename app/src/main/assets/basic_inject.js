@@ -323,14 +323,33 @@ function clickElementsByClassName(className){
 }
 
 
+function goEditDetailArea(){
+    localMethod.JI_LOG("goEditDetailArea!!!!!!");
+    var element = document.getElementsByClassName("next-menu-item");
+
+    for(var j=0;j<element.length;j++){
+        localMethod.JI_LOG("innerText:"+element[j].innerText);
+
+        if(element[j].innerText.indexOf("图文描述")!=-1){
+            element[j].click();
+            localMethod.getJsonData("图文描述");
+        }
+    }
+}
+
+
 function getPublishItemId(){
     var element = document.getElementsByClassName("item-title");
     localMethod.JI_LOG("item-title:"+element.length);
     if(element.length>0){
-        var itemA = element[0].getElementsByTagName("a");
-        var href = itemA[0].getAttribute("href");
-        var itemId = href.split("id=")[1];
-        localMethod.getJsonData(itemId);
+        if(element.length>1){
+            localMethod.errorOccur();
+        } else {
+            var itemA = element[0].getElementsByTagName("a");
+            var href = itemA[0].getAttribute("href");
+            var itemId = href.split("id=")[1];
+            localMethod.getJsonData(itemId);
+        }
     } else {
         localMethod.errorOccur();
     }
