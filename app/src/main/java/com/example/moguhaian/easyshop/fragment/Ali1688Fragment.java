@@ -460,6 +460,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("getPicFromSpaces()"));
             }
         }
+        if (clickPosition == R.string.one_click_shop) {
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    autoFragmentClick(R.string.office_publish);
+                }
+            }, 1000);
+        }
 
         if (TextUtils.isEmpty(url)) {
             return;
@@ -590,7 +598,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
                 break;
             case R.string.get_detail_1688:
-                autoFragmentClick(R.string.pics_space);
+                autoFragmentClick(R.string.one_click_shop);
+
+//                autoFragmentClick(R.string.pics_space);
                 break;
             case R.string.get_mobile_detail:
 //                生成手机详情
@@ -748,6 +758,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.edit_detail_area:
 //                autoFragmentClick(R.string.get_mobile_detail);
+
+                break;
+            case R.string.office_publish:
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        autoFragmentClick(R.string.pics_space);
+                    }
+                }, 1000);
 
                 break;
         }
