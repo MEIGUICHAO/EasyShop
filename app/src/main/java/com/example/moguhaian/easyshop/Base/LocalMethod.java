@@ -3,10 +3,10 @@ package com.example.moguhaian.easyshop.Base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
@@ -17,7 +17,6 @@ import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
-import com.example.moguhaian.easyshop.Utils.TaoUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
@@ -351,6 +350,7 @@ public class LocalMethod {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        Looper.prepare();
                         String str = CommonUtils.pasteToResult();
                         Instrumentation inst = new Instrumentation();
                         inst.sendStringSync(str);
@@ -368,6 +368,7 @@ public class LocalMethod {
                                 }, 1500);
                             }
                         }
+                        Looper.loop();
                     }
                 }).start();
             }
@@ -526,7 +527,7 @@ public class LocalMethod {
         BaseApplication.getmHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                listener.afterGetJson("");
+                listener.afterGetJson("picSelectClick");
                 BaseApplication.getmHandler().removeCallbacks(this);
             }
         }, 1000);

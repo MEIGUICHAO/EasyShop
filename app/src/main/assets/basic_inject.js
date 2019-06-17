@@ -337,6 +337,19 @@ function goEditDetailArea(){
     }
 }
 
+function goSaleInfoArea(){
+    localMethod.JI_LOG("goEditDetailArea!!!!!!");
+    var element = document.getElementsByClassName("next-menu-item");
+
+    for(var j=0;j<element.length;j++){
+        localMethod.JI_LOG("innerText:"+element[j].innerText);
+
+        if(element[j].innerText.indexOf("销售信息")!=-1){
+            element[j].click();
+        }
+    }
+}
+
 
 function getPublishItemId(){
     var element = document.getElementsByClassName("item-title");
@@ -495,9 +508,9 @@ function getPicFromSpaces(){
     var iframe = element[0].getElementsByTagName("iframe");
         localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
         localMethod.picSpaceInputClick();
-        localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
-        localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
-        iframe.focus();
+//        localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
+//        localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
+//        iframe.focus();
 
 
 }

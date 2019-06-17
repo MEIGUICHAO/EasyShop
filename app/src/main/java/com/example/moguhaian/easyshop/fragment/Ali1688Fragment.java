@@ -223,7 +223,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
 
                 //=========================================================
-                webScrollToEnd();
+                webView.loadUrl(JsUtils.addJsMethod("goSaleInfoArea()"));
                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -455,7 +455,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             if (uploadCheck) {
                 uploadCheck = false;
             } else {
-                webView.loadUrl(JsUtils.addJsMethod("getPicFromSpaces()"));
+                vu.getLocalMethod().picSpaceInputClick();
+//                webView.loadUrl(JsUtils.addJsMethod("getPicFromSpaces()"));
             }
         }
 
@@ -466,7 +467,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             return;
         }
         oldUrl = url;
-        webScrollToEnd();
+        if (clickPosition != R.string.upload_pic) {
+            webScrollToEnd();
+        }
 
         switch (clickPosition) {
             case R.string.go1688:
@@ -534,7 +537,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
             case R.string.resetSku:
-                webScrollToEnd();
+//                webScrollToEnd();
                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

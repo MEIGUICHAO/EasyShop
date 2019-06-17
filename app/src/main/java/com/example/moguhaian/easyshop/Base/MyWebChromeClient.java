@@ -4,6 +4,10 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import com.example.moguhaian.easyshop.R;
+import com.example.moguhaian.easyshop.Utils.LogUtils;
+import com.example.moguhaian.easyshop.Utils.ResUtil;
+import com.example.moguhaian.easyshop.fragment.Ali1688Fragment;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
@@ -40,7 +44,16 @@ public class MyWebChromeClient extends WebChromeClient {
             if (null != listener && needListener) {
                 needListener = false;
                 if (view instanceof MyWebView) {
-                    view.scrollTo(0, ((MyWebView) view).getScrollYRange());
+                    if (listener instanceof Ali1688Fragment) {
+                        if (((Ali1688Fragment) listener).clickPosition == R.string.upload_pic) {
+                            LogUtils.e("upload_pic return");
+                        } else {
+                            LogUtils.e("onProgressChanged_100:"+ResUtil.getS(((Ali1688Fragment) listener).clickPosition));
+                            view.scrollTo(0, ((MyWebView) view).getScrollYRange());
+                        }
+
+                    }
+
                 }
                 BaseApplication.getmHandler().post(new Runnable() {
                     @Override

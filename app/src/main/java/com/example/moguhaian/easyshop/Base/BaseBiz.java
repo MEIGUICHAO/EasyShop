@@ -1,7 +1,6 @@
 package com.example.moguhaian.easyshop.Base;
 
 import android.app.Activity;
-import android.view.View;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
@@ -47,14 +46,14 @@ public class BaseBiz {
         webView.setWebViewClient(webViewClient);
         webView.setInitialScale(25);
         webView.setWebChromeClient(webChromeClient);
-        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    setDefaultScale();
-                }
-            }
-        });
+//        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    setDefaultScale();
+//                }
+//            }
+//        });
         this.activity = activity;
     }
 
