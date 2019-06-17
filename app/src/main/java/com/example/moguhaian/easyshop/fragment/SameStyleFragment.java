@@ -379,5 +379,10 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 
     }
 
+    @Override
+    public void errorOccur() {
+
+    }
+
 
 }

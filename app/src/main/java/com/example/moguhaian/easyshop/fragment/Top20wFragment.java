@@ -129,6 +129,13 @@ public class Top20wFragment extends BaseFragment<Top20wVu, Top20wBiz> implements
 
     }
 
+    @Override
+    public void errorOccur() {
+        switch (clickPosition) {
+
+        }
+    }
+
 
     private void onImport() {
         try {

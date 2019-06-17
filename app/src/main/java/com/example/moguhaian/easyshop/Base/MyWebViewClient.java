@@ -63,8 +63,8 @@ public class MyWebViewClient extends WebViewClient {
     @Override
     public void onScaleChanged(final WebView view, float oldScale, final float newScale) {
         super.onScaleChanged(view, oldScale, newScale);
-        LogUtils.e("oldScale" + oldScale);
-        LogUtils.e("newScale" + newScale);
+//        LogUtils.e("oldScale" + oldScale);
+//        LogUtils.e("newScale" + newScale);
         if (indexScale == -1) {
             indexScale = oldScale;
         }

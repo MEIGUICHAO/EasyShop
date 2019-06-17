@@ -5,4 +5,5 @@ public interface LoalMethodListener {
     void afterClick();
 
     void inputFinish();
+    void errorOccur();
 }

@@ -331,6 +331,8 @@ function getPublishItemId(){
         var href = itemA[0].getAttribute("href");
         var itemId = href.split("id=")[1];
         localMethod.getJsonData(itemId);
+    } else {
+        localMethod.errorOccur();
     }
 }
 
@@ -376,17 +378,18 @@ function comfirMobileDetail(){
 
 
 function clearSku(position,inputvalue){
-    var skuCheckbox = document.getElementsByClassName("sell-color-checkbox-check-wrap");
-        localMethod.JI_LOG("skuCheckbox:"+skuCheckbox.length);
-    if(skuCheckbox.length>1){
-            localMethod.JI_LOG("skuCheckbox!:"+skuCheckbox.length);
-         var cleanrBtn = skuCheckbox[0].getElementsByClassName("next-icon next-icon-select next-icon-xs");
-        cleanrBtn[0].click();
-                localMethod.JI_LOG("cleanrBtn!!:"+cleanrBtn.length);
-        clearSku(position,inputvalue);
-    } else {
-        editSKu(position,inputvalue);
-    }
+    editSKu(position,inputvalue);
+//    var skuCheckbox = document.getElementsByClassName("sell-color-checkbox-check-wrap");
+//        localMethod.JI_LOG("skuCheckbox:"+skuCheckbox.length);
+//    if(skuCheckbox.length>1){
+//            localMethod.JI_LOG("skuCheckbox!:"+skuCheckbox.length);
+//         var cleanrBtn = skuCheckbox[0].getElementsByClassName("next-icon next-icon-select next-icon-xs");
+//        cleanrBtn[0].click();
+//                localMethod.JI_LOG("cleanrBtn!!:"+cleanrBtn.length);
+//        clearSku(position,inputvalue);
+//    } else {
+//        editSKu(position,inputvalue);
+//    }
 }
 
 
@@ -425,6 +428,40 @@ function editSKuPic(position){
 
 }
 
+function resetSkuPic(position){
+    localMethod.JI_LOG("resetSku!!!!!!");
+    var imageuploads = document.getElementsByClassName("color-image-upload");
+    var imageupload = imageuploads[position].getElementsByClassName("remove-link");
+    if(imageupload.length>0){
+        imageupload[0].click();
+    }
+    localMethod.JI_LOG("resetSku!!!!!!"+position);
+    position = position +1;
+    localMethod.JI_LOG("resetSku!!!!!!"+position);
+        localMethod.JI_LOG("imageuploads!!!!!!"+imageuploads.length);
+    localMethod.JI_LOG("resetSku!!!!!!"+(position<imageuploads.length));
+    if(position<imageuploads.length){
+        localMethod.JI_LOG("resetSku!!!!!!resetSku");
+        resetSkuPic(position);
+    } else {
+        resetSkuName();
+    }
+
+}
+
+
+function resetSkuName(){
+//    next-icon next-icon-delete-filling next-icon-medium
+    localMethod.JI_LOG("resetSkuName!!!!!!");
+    var skuClear = document.getElementsByClassName("next-icon next-icon-delete-filling next-icon-medium");
+    if(skuClear.length>0){
+        skuClear[0].click();
+        resetSkuName();
+    } else {
+        localMethod.getJsonData("reset complete!!!");
+    }
+}
+
 
 function getPicFromSpaces(){
     var overlay = document.getElementsByClassName("next-overlay-inner sell-o-simple-dialog next-position-cc");
@@ -438,9 +475,8 @@ function getPicFromSpaces(){
 //    var element = element3[0].getElementsByClassName("no-js");
     var iframe = element[0].getElementsByTagName("iframe");
         localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
-
-        localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
         localMethod.picSpaceInputClick();
+        localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
         localMethod.JI_LOG("iframe!!!!!!"+iframe.length);
         iframe.focus();
 
