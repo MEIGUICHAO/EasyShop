@@ -89,7 +89,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int aliMaxPage = -1;
     private boolean notAuto = false;
 
-    private boolean debug = true;
+    private boolean debug = false;
     private ArrayList<Object> skuEditCountList;
     private int skuEditCountPos;
     private String[] aliResutlArray;
@@ -99,6 +99,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private MainActivity activity;
     private Long singleSpaceTime;
     private String fullDateFromat;
+    private int guanjiaSearchErrorIndex = -1;
 
 
     @Override
@@ -213,7 +214,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 LogUtils.e("aliTempResutlArray:" + aliTempResutlArray.length);
                 aliResutlArray = TaoUtils.getSingle(aliTempResutlArray);
                 LogUtils.e("aliResutlArray:" + aliResutlArray.length);
-                aliCurrentPage = 0;
+                if (aliCurrentPage == -1) {
+                    aliCurrentPage = 0;
+                }
+                LogUtils.e("1688url:" + aliResutlArray[aliCurrentPage]);
                 webView.loadUrl(aliResutlArray[aliCurrentPage]);
                 break;
             case R.string.get_detail_1688://获取1688详情图片
@@ -349,6 +353,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 clickRecord(Constants.PUBLISH_MOBILE_COMFIR_X, Constants.PUBLISH_MOBILE_COMFIR_Y);
                 break;
             case R.string.timing_publish:
+                webScrollToEnd();
                 webView.loadUrl(JsUtils.addJsMethod("clickChildElementByTagName(\"sell-o-radio\",\"7\",\"input\",\"1\")"));
                 break;
             case R.string.ymd_click_record:
@@ -439,6 +444,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         String beginTime = DateUtil.date2TimeStamp(activity.getBeginTime(), "yyyy-MM-dd HH:mm:ss");
         String endTime = DateUtil.date2TimeStamp(activity.getEndTime(), "yyyy-MM-dd HH:mm:ss");
         Long spaceTime = Long.parseLong(endTime) - Long.parseLong(beginTime);
+        if (null == aliResutlArray) {
+            ToastUtils.showToast("getPublishDate test");
+            fullDateFromat = "2019-06-20 12:12:12";
+            return;
+        }
         singleSpaceTime = spaceTime / aliResutlArray.length;
         Long dateTime = Long.parseLong(beginTime) + aliCurrentPage * singleSpaceTime;
         fullDateFromat = DateUtil.getFullDateFromat(dateTime);
@@ -774,18 +784,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
                 break;
             case R.string.timing_publish:
-                webView.loadUrl(JsUtils.addJsMethod("setChildInputValueByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\",0,0,\"2019-06-15 00:00:01\")"));
-
+//                webView.loadUrl(JsUtils.addJsMethod("setChildInputValueByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\",0,0,\"2019-06-15 00:00:01\")"));
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
+//                autoFragmentClick(R.string.timing_publish_click);
                 break;
             case R.string.tao_guanjia_search_click:
                 autoFragmentClick(R.string.tao_guanjia_to_publish_scene);
                 break;
             case R.string.get_mobile_detail:
                 autoFragmentClick(R.string.upload_pic);
-                break;
-            case R.string.filter_word:
-                autoFragmentClick(R.string.edit_detail_area);
-
                 break;
             case R.string.edit_detail_area:
 //                autoFragmentClick(R.string.get_mobile_detail);
@@ -818,6 +825,13 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.tao_guanjia_search_click);
                 break;
             case R.string.filter_word:
+                autoFragmentClick(R.string.edit_detail_area);
+                break;
+            case R.string.set_title:
+                autoFragmentClick(R.string.timing_publish);
+                break;
+            case R.string.timing_publish_click:
+                autoFragmentClick(R.string.comfir_publish_click);
                 break;
         }
     }
@@ -828,7 +842,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         switch (clickPosition) {
             case R.string.tao_guanjia_to_publish_scene:
                 //淘管家缺失ali
-                autoFragmentClick(R.string.tao_guanjia_search);
+                if (guanjiaSearchErrorIndex == -1) {
+                    guanjiaSearchErrorIndex = 0;
+                } else if (guanjiaSearchErrorIndex == 5) {
+                    guanjiaSearchErrorIndex = -1;
+                    autoFragmentClick(R.string.nextpage);
+                } else {
+                    guanjiaSearchErrorIndex++;
+                    autoFragmentClick(R.string.tao_guanjia_search);
+                }
                 break;
         }
     }

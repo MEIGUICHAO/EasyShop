@@ -83,8 +83,8 @@ public class Ali1688Biz extends BaseBiz {
                         }
                     }
                     ToastUtils.showToast("对比结束");
+                    LogUtils.e("positonStrs:" + positonStrs);
                     listener.diffFinish();
-                    LogUtils.e(positonStrs);
                     detailPosition = -1;
                     picSpacePosition = -1;
                 }

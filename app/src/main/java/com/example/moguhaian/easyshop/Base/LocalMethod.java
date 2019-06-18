@@ -232,7 +232,6 @@ public class LocalMethod {
     }
 
 
-
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void errorOccur() {
@@ -332,7 +331,9 @@ public class LocalMethod {
 
         LogUtils.e("picSpaceInputClick");
 
-        if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")){ return;}
+        if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")) {
+            return;
+        }
         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)));
 
         BaseApplication.getmHandler().postDelayed(new Runnable() {
@@ -340,7 +341,9 @@ public class LocalMethod {
             public void run() {
 //                CommonUtils.pasteToResult();
                 BaseApplication.getmHandler().removeCallbacks(this);
-                if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")){ return;}
+                if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")) {
+                    return;
+                }
 
                 if (judeClickRecordEmpty(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X, Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y, "PIC_SPACE_SEARCH empty"))
                     return;
@@ -365,15 +368,14 @@ public class LocalMethod {
                                         picSelectClick();
                                         BaseApplication.getmHandler().removeCallbacks(this);
                                     }
-                                }, 2500);
+                                }, 1500);
                             }
                         }
                         Looper.loop();
                     }
                 }).start();
             }
-        }, 1000);
-
+        }, 500);
 
 
     }
@@ -381,7 +383,7 @@ public class LocalMethod {
     private boolean judeClickRecordEmpty(String picSpaceInputClickDownX, String picSpaceInputClickDownY, String s) {
 
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(picSpaceInputClickDownX)) || !TextUtils.isEmpty(SharedPreferencesUtils.getValue(picSpaceInputClickDownY))) {
-            LogUtils.e(picSpaceInputClickDownX+":"+SharedPreferencesUtils.getValue(picSpaceInputClickDownX));
+            LogUtils.e(picSpaceInputClickDownX + ":" + SharedPreferencesUtils.getValue(picSpaceInputClickDownX));
             LogUtils.e(picSpaceInputClickDownY + ":" + SharedPreferencesUtils.getValue(picSpaceInputClickDownY));
         }
         if (!recordAvailable) {
@@ -433,9 +435,11 @@ public class LocalMethod {
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void clickPublishTime(final String ymd, final String hmm) {
-        final Instrumentation instrumentation = new Instrumentation();
+
 
         LogUtils.e("clickPublishTime");
+        LogUtils.e("ymd:" + ymd);
+        LogUtils.e("hmm:" + hmm);
 
         if (judeClickRecordEmpty(Constants.TIME_CLICK_YMD_X, Constants.TIME_CLICK_YMD_Y, "TIME_CLICK_YMD empty"))
             return;
@@ -448,6 +452,7 @@ public class LocalMethod {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    Instrumentation instrumentation = new Instrumentation();
                     for (int i = 0; i < 15; i++) {
                         try {
                             typeIn(KeyEvent.KEYCODE_DEL);
@@ -457,40 +462,64 @@ public class LocalMethod {
                         }
                     }
                     instrumentation.sendStringSync(ymd);
+//                    BaseApplication.getmHandler().post(new )
+                    clickPublishTimeComfir();
                     BaseApplication.getmHandler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-
-                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
-                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
-                                    LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
-                                    LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
-                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
-                                }
-                            }
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    for (int i = 0; i < 15; i++) {
-                                        try {
-                                            typeIn(KeyEvent.KEYCODE_DEL);
-                                            Thread.sleep(100);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                    instrumentation.sendStringSync(hmm);
-                                }
-                            }).start();
-
+                            BaseApplication.getmHandler().removeCallbacks(this);
+                            mWebView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
+//                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y)));
+                            clickHMMTime(hmm);
                         }
-                    }, 100);
+                    }, 500);
 
                 }
             }).start();
 
         }
 
+    }
+
+    private void clickHMMTime(final String hmm) {
+
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                BaseApplication.getmHandler().removeCallbacks(this);
+                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
+                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
+                        LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
+                        LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
+                        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+                    }
+                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Instrumentation instrumentation = new Instrumentation();
+                        for (int i = 0; i < 15; i++) {
+                            try {
+                                typeIn(KeyEvent.KEYCODE_DEL);
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        instrumentation.sendStringSync(hmm);
+                        clickPublishTimeComfir();
+//                                    BaseApplication.getmHandler().post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            listener.inputFinish();
+//                                        }
+//                                    });
+                    }
+                }).start();
+
+            }
+        }, 1500);
     }
 
     @SuppressLint("JavascriptInterface")
@@ -530,7 +559,7 @@ public class LocalMethod {
                 listener.afterGetJson("picSelectClick");
                 BaseApplication.getmHandler().removeCallbacks(this);
             }
-        }, 3500);
+        }, 2500);
     }
 
     public void folderMoveClick() {
