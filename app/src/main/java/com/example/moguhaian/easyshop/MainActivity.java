@@ -48,6 +48,17 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     private ArrayList<BaseFragment> fragments;
     private ArrayList<String> mTitleList = new ArrayList<>();
     private String titleResult;
+    private String beginTime = "2019-06-19 07:07:07";
+
+    public String getBeginTime() {
+        return beginTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    private String endTime = "2019-06-19 23:27:07";
 
 
     @Override

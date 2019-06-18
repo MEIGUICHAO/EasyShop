@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -16,8 +17,10 @@ import android.webkit.WebView;
 import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
+import com.example.moguhaian.easyshop.MainActivity;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.CommonUtils;
+import com.example.moguhaian.easyshop.Utils.DateUtil;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.ResUtil;
@@ -45,7 +48,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             , R.string.new_floder, R.string.floder_name, R.string.tao_keepworker, R.string.detail_1688, R.string.get_detail_1688, R.string.get_upload_pic, R.string.login_name, R.string.get_mobile_detail, R.string.upload_pic, R.string.slide_record_switch
             , R.string.pic_input_click_record, R.string.pic_select_click_record, R.string.pic_search_click_record, R.string.paste_click_record, R.string.edit_sku, R.string.edit_price, R.string.one_key_publish, R.string.sku_count, R.string.click_moblie_detail, R.string.comfir_moblie_detail
             , R.string.timing_publish, R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.pic_space_select_all, R.string.pic_space_click_record, R.string.pic_space_click, R.string.folder_select_click_record
-            , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title,R.string.tao_guanjia_search,R.string.tao_guanjia_to_publish_scene,R.string.tao_guanjia_search_click,R.string.record_switch,R.string.resetSku,R.string.edit_detail_area,R.string.cache_available};
+            , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title, R.string.tao_guanjia_search, R.string.tao_guanjia_to_publish_scene, R.string.tao_guanjia_search_click, R.string.record_switch, R.string.resetSku, R.string.edit_detail_area, R.string.cache_available, R.string.cur_publish_time};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -53,7 +56,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=4&offset=0
     private String urlOrigin = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
     private String aliPageTag = "#beginPage=" + "placeTag" + "&offset=0";
-//    private String urlOrigin = "https://detail.1688.com/offer/539556562483.html?sk=consign";
+    //    private String urlOrigin = "https://detail.1688.com/offer/539556562483.html?sk=consign";
     //    private String urlOrigin = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
     private String loginUrl = "https://login.1688.com/member/signin.htm?tracelog=account_verify";
     //    private String picSpaceUrl = "https://sucai.wangpu.taobao.com/?spm=a2113j.8836301.0.0.1206139dRygyV4#/manage/pic?_k=40zg4c";
@@ -93,7 +96,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private boolean recordAvailable = true;
     private boolean uploadCheck;
     private boolean cacheAvailable = false;
-
+    private MainActivity activity;
+    private Long singleSpaceTime;
+    private String fullDateFromat;
 
 
     @Override
@@ -103,6 +108,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     protected void afterOnCreate() {
+        activity = (MainActivity) getActivity();
         vu.initWebViewSetting(webView, getActivity());
         biz.initWebView(webView, getActivity());
         biz.getWebViewClient().setOnLoadFinishListener(Ali1688Fragment.this);
@@ -313,15 +319,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 LogUtils.e("origin_prices:" + skuEditPricesList.get(skuEditPricesPos));
                 webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
 //                webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + 0 + "\",\"" + 88.88 + "\")"));
-                 break;
+                break;
             case R.string.one_key_publish://一键发布
                 aliOneKeyPublish = true;
                 autoFragmentClick(cacheAvailable ? R.string.detail_1688 : R.string.one_piece_send);
-                 break;
+                break;
             case R.string.debug_switch://调试开关
                 notAuto = !notAuto;
                 ToastUtils.showToast(notAuto ? "调试开启" : "调试关闭");
-                 break;
+                break;
             case R.string.sku_count://sku数量:
 
                 skuEditCountPos = 0;
@@ -335,7 +341,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 LogUtils.e("origin_prices:" + skuEditCountList.get(skuEditCountPos));
                 webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + skuEditCountList.get(skuEditCountPos) + "\")"));
 
-                 break;
+                break;
             case R.string.click_moblie_detail:
                 clickRecord(Constants.PUBLISH_MOBILE_DETAIL_X, Constants.PUBLISH_MOBILE_DETAIL_Y);
                 break;
@@ -352,7 +358,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 clickRecord(Constants.TIME_CLICK_HMM_X, Constants.TIME_CLICK_HMM_Y);
                 break;
             case R.string.timing_publish_click:
-                vu.getLocalMethod().clickPublishTime("2019-06-28", "07:07:07");
+                getPublishDate();
+                String[] date = fullDateFromat.split(" ");
+                vu.getLocalMethod().clickPublishTime(date[0], date[1]);
                 break;
             case R.string.comfir_publish_click_record:
                 clickRecord(Constants.TIME_CLICK_COMFIR_X, Constants.TIME_CLICK_COMFIR_Y);
@@ -415,7 +423,25 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 cacheAvailable = !cacheAvailable;
                 ToastUtils.showToast(cacheAvailable ? "开启" : "关闭");
                 break;
+            case R.string.cur_publish_time:
+                getPublishDate();
+//                for (int i = 0; i < 50; i++) {
+//                    Long dateTime = Long.parseLong(beginTime) + i * singleSpaceTime;
+//                    String fullDateFromat = DateUtil.getFullDateFromat(dateTime);
+//                    LogUtils.e("date:" + fullDateFromat);
+//                }
+
+                break;
         }
+    }
+
+    private void getPublishDate() {
+        String beginTime = DateUtil.date2TimeStamp(activity.getBeginTime(), "yyyy-MM-dd HH:mm:ss");
+        String endTime = DateUtil.date2TimeStamp(activity.getEndTime(), "yyyy-MM-dd HH:mm:ss");
+        Long spaceTime = Long.parseLong(endTime) - Long.parseLong(beginTime);
+        singleSpaceTime = spaceTime / aliResutlArray.length;
+        Long dateTime = Long.parseLong(beginTime) + aliCurrentPage * singleSpaceTime;
+        fullDateFromat = DateUtil.getFullDateFromat(dateTime);
     }
 
     private void clickRecord(String picSpacePasteClickDownX, String picSpacePasteClickDownY) {
@@ -636,11 +662,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     @Override
                     public void run() {
 
-                        int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X,KeyEvent.KEYCODE_DEL};
+                        int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
                         for (int i = 0; i < keyCodeArray.length; i++) {
                             try {
                                 typeIn(keyCodeArray[i]);
-                                Thread.sleep( 500 );
+                                Thread.sleep(500);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
