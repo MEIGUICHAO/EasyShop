@@ -355,6 +355,7 @@ public class LocalMethod {
                     public void run() {
                         Looper.prepare();
                         String str = CommonUtils.pasteToResult();
+                        LogUtils.e("picSpaceInputClick:"+str);
                         Instrumentation inst = new Instrumentation();
                         inst.sendStringSync(str);
                         LogUtils.e(str);
@@ -365,8 +366,8 @@ public class LocalMethod {
                                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        picSelectClick();
                                         BaseApplication.getmHandler().removeCallbacks(this);
+                                        picSelectClick();
                                     }
                                 }, 1500);
                             }
@@ -435,11 +436,9 @@ public class LocalMethod {
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void clickPublishTime(final String ymd, final String hmm) {
-
+        final Instrumentation instrumentation = new Instrumentation();
 
         LogUtils.e("clickPublishTime");
-        LogUtils.e("ymd:" + ymd);
-        LogUtils.e("hmm:" + hmm);
 
         if (judeClickRecordEmpty(Constants.TIME_CLICK_YMD_X, Constants.TIME_CLICK_YMD_Y, "TIME_CLICK_YMD empty"))
             return;
@@ -452,7 +451,6 @@ public class LocalMethod {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Instrumentation instrumentation = new Instrumentation();
                     for (int i = 0; i < 15; i++) {
                         try {
                             typeIn(KeyEvent.KEYCODE_DEL);
@@ -462,17 +460,36 @@ public class LocalMethod {
                         }
                     }
                     instrumentation.sendStringSync(ymd);
-//                    BaseApplication.getmHandler().post(new )
-                    clickPublishTimeComfir();
+
+                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
+                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
+                            LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
+                            LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
+                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+                        }
+                    }
                     BaseApplication.getmHandler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            BaseApplication.getmHandler().removeCallbacks(this);
-                            mWebView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
-//                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y)));
-                            clickHMMTime(hmm);
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (int i = 0; i < 15; i++) {
+                                        try {
+                                            typeIn(KeyEvent.KEYCODE_DEL);
+                                            Thread.sleep(100);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    instrumentation.sendStringSync(hmm);
+                                    listener.inputFinish();
+                                }
+                            }).start();
+
                         }
-                    }, 500);
+                    }, 2000);
 
                 }
             }).start();
@@ -559,7 +576,7 @@ public class LocalMethod {
                 listener.afterGetJson("picSelectClick");
                 BaseApplication.getmHandler().removeCallbacks(this);
             }
-        }, 2500);
+        }, 100);
     }
 
     public void folderMoveClick() {

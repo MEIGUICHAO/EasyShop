@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -89,8 +88,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int aliMaxPage = -1;
     private boolean notAuto = false;
 
-    private boolean debug = false;
-    private ArrayList<Object> skuEditCountList;
+    private boolean debug = true;
+    private ArrayList<String> skuEditCountList;
     private int skuEditCountPos;
     private String[] aliResutlArray;
     private boolean recordAvailable = true;
@@ -343,7 +342,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     skuEditCountList.add(compareResultCountList.get(i).split("\n")[3]);
                 }
                 LogUtils.e("origin_prices:" + skuEditCountList.get(skuEditCountPos));
-                webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + skuEditCountList.get(skuEditCountPos) + "\")"));
+                webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + (Integer.parseInt(skuEditCountList.get(skuEditCountPos)) > 100 ? 100 : skuEditCountList.get(skuEditCountPos)) + "\")"));
 
                 break;
             case R.string.click_moblie_detail:
@@ -661,7 +660,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     webView.loadUrl(JsUtils.addJsMethod("editSKuPic(\"" + skuEditPicPos + "\")"));
                 } else {
                     ToastUtils.showToast("图片sku结束");
-                    autoFragmentClick(R.string.edit_sku);
+                    autoFragmentClick(R.string.set_title);
 
                 }
 
@@ -742,10 +741,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                 skuEditCountPos++;
                                 if (skuEditCountPos < (skuEditCountList.size() < skuLimit ? skuEditCountList.size() : skuLimit)) {
                                     LogUtils.e("origin_prices:" + skuEditCountList.get(skuEditCountPos));
-                                    webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + skuEditCountList.get(skuEditCountPos) + "\")"));
+                                    webView.loadUrl(JsUtils.addJsMethod("setSkuCount(\"" + skuEditCountPos + "\",\"" + (Integer.parseInt(skuEditCountList.get(skuEditCountPos)) > 100 ? 100 : skuEditCountList.get(skuEditCountPos)) + "\")"));
+
                                 } else {
                                     ToastUtils.showToast("sku库存结束");
-                                    autoFragmentClick(R.string.set_title);
+                                    autoFragmentClick(R.string.upload_pic);
+//                                    autoFragmentClick(R.string.set_title);
                                 }
                             }
                         });
@@ -763,6 +764,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }
                 }, 1000);
 
+                break;
+            case R.string.timing_publish:
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
                 break;
         }
     }
@@ -784,15 +788,13 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
                 break;
             case R.string.timing_publish:
-//                webView.loadUrl(JsUtils.addJsMethod("setChildInputValueByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\",0,0,\"2019-06-15 00:00:01\")"));
-                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
-//                autoFragmentClick(R.string.timing_publish_click);
+                autoFragmentClick(R.string.timing_publish_click);
                 break;
             case R.string.tao_guanjia_search_click:
                 autoFragmentClick(R.string.tao_guanjia_to_publish_scene);
                 break;
             case R.string.get_mobile_detail:
-                autoFragmentClick(R.string.upload_pic);
+                autoFragmentClick(R.string.edit_sku);
                 break;
             case R.string.edit_detail_area:
 //                autoFragmentClick(R.string.get_mobile_detail);
@@ -800,7 +802,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     @Override
                     public void run() {
                         BaseApplication.getmHandler().removeCallbacks(this);
-                        autoFragmentClick(R.string.upload_pic);
+                        autoFragmentClick(R.string.edit_sku);
                     }
                 }, 2000);
 

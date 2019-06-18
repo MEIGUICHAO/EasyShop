@@ -389,7 +389,7 @@ function clickChildElementByTagName(parentName,parentPosition,childTagName,posit
         var childElement = parentElement[parentPosition].getElementsByTagName(childTagName);
         localMethod.JI_LOG(childTagName+":"+childElement[position].value);
         childElement[position].click();
-        localMethod.afterClick();
+        localMethod.getJsonData("clickChildElementByTagName");
     }
 }
 
