@@ -153,6 +153,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 if (aliCurrentPage == -1) {
                     aliCurrentPage = 0;
                 }
+                aliCurrentPage++;
                 SharedPreferencesUtils.putIntValue(Constants.ALI_CURRENT_PAGE, aliCurrentPage);
                 autoFragmentClick(R.string.detail_1688);
                 break;
