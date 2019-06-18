@@ -372,7 +372,7 @@ public class LocalMethod {
                     }
                 }).start();
             }
-        }, 2000);
+        }, 1000);
 
 
 
@@ -530,7 +530,7 @@ public class LocalMethod {
                 listener.afterGetJson("picSelectClick");
                 BaseApplication.getmHandler().removeCallbacks(this);
             }
-        }, 2000);
+        }, 3500);
     }
 
     public void folderMoveClick() {

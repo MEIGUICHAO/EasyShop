@@ -86,4 +86,7 @@ public interface Constants {
     String FOLDER_COMFIR_CLICK_X = "FOLDER_COMFIR_CLICK_X";
     String FOLDER_COMFIR_CLICK_Y = "FOLDER_COMFIR_CLICK_Y";
     String CSS_FILE_NAME = "MyCSS.css";
+    String TB_TITLE_RESULT = "TB_TITLE_RESULT";
+    String ALI_SHOP_RESULT = "ALI_SHOP_RESULT";
+    String ALI_CURRENT_PAGE = "ALI_CURRENT_PAGE";
 }

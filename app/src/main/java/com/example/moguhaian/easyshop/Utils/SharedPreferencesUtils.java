@@ -11,13 +11,12 @@ public class SharedPreferencesUtils {
     /**
      * 向SharedPreferences中写入int类型数据
      *
-     * @param name  对应的xml文件名称
      * @param key   键
      * @param value 值
      */
-    public static void putValue(String name, String key,
+    public static void putIntValue( String key,
                                 int value) {
-        SharedPreferences.Editor sp = getEditor(name);
+        SharedPreferences.Editor sp = getEditor(Constants.EASYSHOP);
         sp.putInt(key, value);
         sp.commit();
     }
@@ -80,15 +79,14 @@ public class SharedPreferencesUtils {
     /**
      * 从SharedPreferences中读取int类型的数据
      *
-     * @param name     对应的xml文件名称
      * @param key      键
      * @param defValue 如果读取不成功则使用默认值
      * @return 返回读取的值
      */
-    public static int getValue(String name, String key,
+    public static int getIntValue(String key,
                                int defValue) {
 
-        SharedPreferences sp = getSharedPreferences(name);
+        SharedPreferences sp = getSharedPreferences(Constants.EASYSHOP);
         int value = sp.getInt(key, defValue);
         return value;
     }

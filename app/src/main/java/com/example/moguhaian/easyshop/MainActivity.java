@@ -11,7 +11,9 @@ import android.widget.RelativeLayout;
 
 import com.example.moguhaian.easyshop.Base.BaseActivity;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
+import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Search.MainBiz;
+import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.View.MainVu;
 import com.example.moguhaian.easyshop.listener.AdapterClickListener;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
@@ -135,6 +137,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     }
 
     public void setTitleResult(String titleOnly) {
+        SharedPreferencesUtils.putValue(Constants.TB_TITLE_RESULT, titleOnly);
         titleResult = titleOnly;
     }
 }
