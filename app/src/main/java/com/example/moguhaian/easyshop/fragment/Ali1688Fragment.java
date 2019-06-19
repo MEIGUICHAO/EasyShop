@@ -777,9 +777,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void afterClick() {
-//        webView.scrollTo(0, webView.getScrollYRange());
         LogUtils.e("afterClick:" + ResUtil.getS(clickPosition));
-        webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
         switch (clickPosition) {
             case R.string.upload_pic://上传图片
                 CommonUtils.copyText(skuPicInfo.get(skuEditPicPos));
@@ -853,6 +851,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     guanjiaSearchErrorIndex++;
                     autoFragmentClick(R.string.tao_guanjia_search);
                 }
+                break;
+            case R.string.get_detail_1688:
+                autoFragmentClick(R.string.nextpage);
                 break;
         }
     }

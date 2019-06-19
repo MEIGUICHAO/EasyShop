@@ -612,6 +612,8 @@ function getSrcAttrByTagName(className,attr){
             localMethod.JI_LOG(priceTag[j].getElementsByClassName("value")[0].innerText);
         }
         localMethod.get1688details(urls,shopName,shopPrice,shopCount);
+    } else {
+        localMethod.errorOccur();
     }
 }
 

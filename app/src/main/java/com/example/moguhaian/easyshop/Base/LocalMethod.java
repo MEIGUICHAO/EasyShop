@@ -335,6 +335,7 @@ public class LocalMethod {
             return;
         }
         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)));
+        LogUtils.e("图片输入框点击");
 
         BaseApplication.getmHandler().postDelayed(new Runnable() {
             @Override
@@ -363,6 +364,7 @@ public class LocalMethod {
                         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X))) {
                             if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X))) {
                                 GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
+                                LogUtils.e("图片搜索点击");
                                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -570,6 +572,7 @@ public class LocalMethod {
 
     private void picSelectClick() {
         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
+        LogUtils.e("图片选择点击");
         BaseApplication.getmHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
