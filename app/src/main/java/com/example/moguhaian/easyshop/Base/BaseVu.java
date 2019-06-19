@@ -56,6 +56,7 @@ public abstract class BaseVu implements Vu {
         webSetting.setLoadWithOverviewMode(true);
 
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
@@ -70,6 +71,17 @@ public abstract class BaseVu implements Vu {
         }
 
 
+    }
+
+    public void blockNetIamge(final WebView webView, final boolean block) {
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+
+                WebSettings webSetting = webView.getSettings();
+                webSetting.setBlockNetworkImage(block);
+            }
+        });
     }
 
     public boolean onBackPress(WebView webView) {

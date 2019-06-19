@@ -47,8 +47,14 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     private String[] rightList = {};
     private ArrayList<BaseFragment> fragments;
     private ArrayList<String> mTitleList = new ArrayList<>();
+
+    public String getTitleResult() {
+        titleResult = SharedPreferencesUtils.getValue(Constants.TB_TITLE_RESULT);
+        return titleResult;
+    }
+
     private String titleResult;
-    private String beginTime = "2019-06-19 07:07:07";
+    private String beginTime = "2019-06-20 07:07:07";
 
     public String getBeginTime() {
         return beginTime;
@@ -58,7 +64,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
         return endTime;
     }
 
-    private String endTime = "2019-06-19 23:27:07";
+    private String endTime = "2019-06-20 23:27:07";
 
 
     @Override
