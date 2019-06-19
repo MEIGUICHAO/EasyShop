@@ -341,7 +341,7 @@ public class LocalMethod {
             @Override
             public void run() {
 //                CommonUtils.pasteToResult();
-                BaseApplication.getmHandler().removeCallbacks(this);
+
                 if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")) {
                     return;
                 }
@@ -368,8 +368,8 @@ public class LocalMethod {
                                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        BaseApplication.getmHandler().removeCallbacks(this);
                                         picSelectClick();
+                                        BaseApplication.getmHandler().removeCallbacks(this);
                                     }
                                 }, 1500);
                             }
@@ -377,8 +377,9 @@ public class LocalMethod {
                         Looper.loop();
                     }
                 }).start();
+                BaseApplication.getmHandler().removeCallbacks(this);
             }
-        }, 500);
+        }, 1000);
 
 
     }
@@ -448,6 +449,7 @@ public class LocalMethod {
             return;
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y))) {
             GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y)));
+            LogUtils.e("年月日点击");
             LogUtils.e("TIME_CLICK_YMD_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X));
             LogUtils.e("TIME_CLICK_YMD_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y));
             new Thread(new Runnable() {
@@ -468,6 +470,7 @@ public class LocalMethod {
                             LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
                             LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
                             GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+                            LogUtils.e("时分秒点击");
                         }
                     }
                     BaseApplication.getmHandler().postDelayed(new Runnable() {
@@ -489,6 +492,8 @@ public class LocalMethod {
                                     listener.inputFinish();
                                 }
                             }).start();
+
+                            BaseApplication.getmHandler().removeCallbacks(this);
 
                         }
                     }, 2000);
@@ -579,7 +584,7 @@ public class LocalMethod {
                 listener.afterGetJson("picSelectClick");
                 BaseApplication.getmHandler().removeCallbacks(this);
             }
-        }, 100);
+        }, 1000);
     }
 
     public void folderMoveClick() {
