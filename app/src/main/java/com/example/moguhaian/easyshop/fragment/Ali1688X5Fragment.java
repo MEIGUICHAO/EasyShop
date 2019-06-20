@@ -10,25 +10,22 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.example.moguhaian.easyshop.Base.BaseFragment;
-import com.example.moguhaian.easyshop.Base.Shops;
-import com.example.moguhaian.easyshop.MainActivity;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.View.Ali1688Vu;
 import com.example.moguhaian.easyshop.X5.X5WebView;
 import com.example.moguhaian.easyshop.biz.Ali1688Biz;
-import com.example.moguhaian.easyshop.weidge.MyX5WebView;
-import com.tencent.smtt.sdk.WebView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class Ali1688X5Fragment extends Base1688Fragment{
+public class Ali1688X5Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> {
 
 
 //    @BindView(R.id.wv_x5)
 //    MyX5WebView wvX5;
     Unbinder unbinder;
+    @BindView(R.id.fl_wv)
     FrameLayout flWv;
     private String[] items = {"1688"};
     private X5WebView mWebView;
@@ -41,7 +38,6 @@ public class Ali1688X5Fragment extends Base1688Fragment{
 
     @Override
     protected void afterOnCreate() {
-        flWv = view.findViewById(R.id.fl_wv);
         getActivity().getWindow().setFormat(PixelFormat.TRANSLUCENT);
         try {
             if (Integer.parseInt(Build.VERSION.SDK) >= 11) {
@@ -52,6 +48,7 @@ public class Ali1688X5Fragment extends Base1688Fragment{
         } catch (Exception e) {
         }
 
+        setDataStrs(items);
 
         mWebView = new X5WebView(getActivity(), null);
 
@@ -59,15 +56,39 @@ public class Ali1688X5Fragment extends Base1688Fragment{
                 FrameLayout.LayoutParams.FILL_PARENT,
                 FrameLayout.LayoutParams.FILL_PARENT));
 
-        urlOrigin = urlOrigin1 + Shops.aliName + urlOrigin2;
-        activity = (MainActivity) getActivity();
-        vu.initX5WebViewSetting(mWebView, getActivity());
-        biz.initX5WebView(mWebView, getActivity());
-//        biz.getWebViewClient().setOnLoadFinishListener(Ali1688X5Fragment.this);
-        vu.getLocalMethod().setLocalMethodListener(this);
-        setDataStrs(items);
-
 
     }
 
+
+    @Override
+    public void fragmentRightClick(int position) {
+        super.fragmentRightClick(position);
+//        wvX5.loadUrl("https://www.1688.com/");
+        mWebView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674");
+
+    }
+
+    @Override
+    protected Class getVuClass() {
+        return Ali1688Vu.class;
+    }
+
+    @Override
+    protected Class getBizClass() {
+        return Ali1688Biz.class;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

@@ -16,6 +16,7 @@ import android.webkit.WebView;
 import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
+import com.example.moguhaian.easyshop.Base.Shops;
 import com.example.moguhaian.easyshop.MainActivity;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.CommonUtils;
@@ -47,13 +48,16 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             , R.string.new_floder, R.string.floder_name, R.string.tao_keepworker, R.string.detail_1688, R.string.get_detail_1688, R.string.get_upload_pic, R.string.login_name, R.string.get_mobile_detail, R.string.upload_pic, R.string.slide_record_switch
             , R.string.pic_input_click_record, R.string.pic_select_click_record, R.string.pic_search_click_record, R.string.paste_click_record, R.string.edit_sku, R.string.edit_price, R.string.one_key_publish, R.string.sku_count, R.string.click_moblie_detail, R.string.comfir_moblie_detail
             , R.string.timing_publish, R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.pic_space_select_all, R.string.pic_space_click_record, R.string.pic_space_click, R.string.folder_select_click_record
-            , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title, R.string.tao_guanjia_search, R.string.tao_guanjia_to_publish_scene, R.string.tao_guanjia_search_click, R.string.record_switch, R.string.resetSku, R.string.edit_detail_area, R.string.cache_available, R.string.cur_publish_time};
+            , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title, R.string.tao_guanjia_search, R.string.tao_guanjia_to_publish_scene, R.string.tao_guanjia_search_click, R.string.record_switch, R.string.resetSku, R.string.edit_detail_area, R.string.cache_available, R.string.cur_publish_time
+            , R.string.ymd_input, R.string.hmm_input};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=4&offset=0
-    private String urlOrigin = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch";
+    private String urlOrigin;
+    private String urlOrigin1 = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=";
+    private String urlOrigin2 = "&netType=1%2C11&n=y&from=taoSellerSearch";
     private String aliPageTag = "#beginPage=" + "placeTag" + "&offset=0";
     //    private String urlOrigin = "https://detail.1688.com/offer/539556562483.html?sk=consign";
     //    private String urlOrigin = "https://item.publish.taobao.com/sell/publish.htm?catId=50013459&itemId=592570571674";
@@ -88,17 +92,18 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int aliMaxPage = -1;
     private boolean notAuto = false;
 
-    private boolean debug = true;
+    private boolean debug = false;
     private ArrayList<String> skuEditCountList;
     private int skuEditCountPos;
     private String[] aliResutlArray;
     private boolean recordAvailable = true;
     private boolean uploadCheck;
-    private boolean cacheAvailable = false;
+    private boolean cacheAvailable = true;
     private MainActivity activity;
     private Long singleSpaceTime;
     private String fullDateFromat;
     private int guanjiaSearchErrorIndex = -1;
+    private String[] titlResultArray;
 
 
     @Override
@@ -108,6 +113,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     protected void afterOnCreate() {
+        urlOrigin = urlOrigin1 + Shops.aliName + urlOrigin2;
+
         activity = (MainActivity) getActivity();
         vu.initWebViewSetting(webView, getActivity());
         biz.initWebView(webView, getActivity());
@@ -119,6 +126,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     }
 
     public void autoFragmentClick(int position) {
+        vu.blockNetIamge(webView, false);
         if (!notAuto && aliOneKeyPublish) {
             LogUtils.e("autoFragmentClick:" + ResUtil.getS(position));
             clickPosition = position;
@@ -147,7 +155,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
                 break;
             case R.string.one_piece_send:
-                aliResult = "";
+                vu.blockNetIamge(webView, true);
                 isInit = true;
                 webView.loadUrl(JsUtils.addJsMethod("getAliTao()"));
                 break;
@@ -174,6 +182,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 }
                 break;
             case R.string.pics_space://图片空间
+                vu.blockNetIamge(webView, true);
                 webView.loadUrl(picSpaceUrl);
                 break;
             case R.string.get_pics_space_pic://获取图片空间图片
@@ -203,12 +212,17 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
                 break;
             case R.string.detail_1688://1688详情
-                if (!cacheAvailable && TextUtils.isEmpty(aliResult)) {
+                vu.blockNetIamge(webView, true);
+                if (!cacheAvailable && !TextUtils.isEmpty(aliResult)) {
                     SharedPreferencesUtils.putValue(Constants.ALI_SHOP_RESULT, aliResult);
                 }
                 if (cacheAvailable) {
                     aliResult = SharedPreferencesUtils.getValue(Constants.ALI_SHOP_RESULT);
+                    aliCurrentPage = SharedPreferencesUtils.getIntValue(Constants.ALI_CURRENT_PAGE, 0);
+                    LogUtils.e("detail_1688 aliResult:" + aliResult);
+                    LogUtils.e("detail_1688 aliCurrentPage:" + aliCurrentPage);
                 }
+
                 String[] aliTempResutlArray = aliResult.split("\n");
                 LogUtils.e("aliTempResutlArray:" + aliTempResutlArray.length);
                 aliResutlArray = TaoUtils.getSingle(aliTempResutlArray);
@@ -225,12 +239,21 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.get_upload_pic://获取上传图片
 
                 ToastUtils.showToast("对比开始");
-                biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
-                    @Override
-                    public void diffFinish() {
-                        autoFragmentClick(R.string.tao_keepworker);
+                try {
+                    if (vu.getLocalMethod().getPicSpaceUrlList().size() > 0 && vu.getLocalMethod().getAliDetailDataList().size() > 0) {
+                        biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
+                            @Override
+                            public void diffFinish() {
+                                autoFragmentClick(R.string.tao_keepworker);
+                            }
+                        });
+                    } else {
+                        ToastUtils.showToast("get upload pic error");
                     }
-                });
+
+                } catch (Exception e) {
+
+                }
                 break;
             case R.string.login_name://login
                 webView.loadUrl(JsUtils.addJsMethod("login()"));
@@ -324,6 +347,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + 0 + "\",\"" + 88.88 + "\")"));
                 break;
             case R.string.one_key_publish://一键发布
+                aliResult = "";
                 aliOneKeyPublish = true;
                 autoFragmentClick(cacheAvailable ? R.string.detail_1688 : R.string.one_piece_send);
                 break;
@@ -391,7 +415,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 vu.getLocalMethod().folderMoveClick();
                 break;
             case R.string.set_title:
-                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fusion-input\",\"test\")"));
+                String titleResult = activity.getTitleResult();
+                if (!TextUtils.isEmpty(titleResult)) {
+                    titlResultArray = titleResult.split("\n");
+                }
+                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fusion-input\"" + ",\"" + ((null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage]) + "\")"));
+//                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fusion-input\"+ ",\"" + aliResutlArray[aliCurrentPage] + "\")"));
                 break;
             case R.string.tao_guanjia_search:
 
@@ -436,7 +465,26 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                }
 
                 break;
+            case R.string.ymd_input:
+                String ymd = fullDateFromat.split(" ")[0];
+                sendStrSync(ymd);
+
+                break;
+            case R.string.hmm_input:
+                String hmm = fullDateFromat.split(" ")[1];
+                sendStrSync(hmm);
+                break;
         }
+    }
+
+    private void sendStrSync(final String str){
+        biz.getSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                Instrumentation instrumentation = new Instrumentation();
+                instrumentation.sendStringSync(str);
+            }
+        });
     }
 
     private void getPublishDate() {
@@ -612,6 +660,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.one_piece_send:
                 LogUtils.e("afterGetJson_urlJson:" + "pageIndex\n" + json);
+                vu.blockNetIamge(webView, true);
                 aliResult = TextUtils.isEmpty(aliResult) ? json : aliResult + "\n" + json;
                 if (isInit) {
                     isInit = false;

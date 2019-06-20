@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.Bean.SamestyleBean;
@@ -19,10 +18,8 @@ import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
-import com.example.moguhaian.easyshop.X5.X5WebView;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
-import com.example.moguhaian.easyshop.weidge.MyX5WebView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +27,7 @@ import java.util.List;
 @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
 public class LocalMethod {
 
-    private MyWebView mWebView;
-    private X5WebView mX5WebView;
+    private final MyWebView mWebView;
     Activity mContext;
     LoalMethodListener listener;
     private AfterClickRunnable afterClickRunnable;
@@ -66,12 +62,6 @@ public class LocalMethod {
     public LocalMethod(Activity c, MyWebView webView) {
         this.mContext = c;
         mWebView = webView;
-    }
-
-
-    public LocalMethod(Activity c, X5WebView webView) {
-        this.mContext = c;
-        mX5WebView = webView;
     }
 
     public void setLocalMethodListener(LoalMethodListener localMethodListener) {
@@ -125,11 +115,7 @@ public class LocalMethod {
             @Override
             public void run() {
                 BaseApplication.getmHandler().removeCallbacks(this);
-                if (null != mWebView) {
-                    mWebView.loadUrl(JsUtils.addJsMethod("getSrcByClassName()"));
-                } else {
-                    mX5WebView.loadUrl(JsUtils.addJsMethod("getSrcByClassName()"));
-                }
+                mWebView.loadUrl(JsUtils.addJsMethod("getSrcByClassName()"));
             }
         }, 1000);
     }
@@ -262,43 +248,41 @@ public class LocalMethod {
     @JavascriptInterface
     public void slideTouch() {
 
-        if (mWebView instanceof MyWebView) {
-            try {
-                BaseApplication.getmHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            if (!((MyWebView)mWebView).isNeedDraw()) {
-                                GestureTouchUtils.simulateScroll(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_Y)), 500, GestureTouchUtils.HIGH);
-                            }
-                        } catch (Exception e) {
-                            ToastUtils.showToast("小二来了！！！");
+        try {
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (!mWebView.isNeedDraw()) {
+                            GestureTouchUtils.simulateScroll(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_DOWN_Y)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.SLIDE_UP_Y)), 500, GestureTouchUtils.HIGH);
                         }
-                        BaseApplication.getmHandler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    if (!((MyWebView)mWebView).isNeedDraw()) {
-                                        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.CLICK_DOWN_Y)));
-                                    }
-                                } catch (Exception e) {
-                                    ToastUtils.showToast("小二来了！！！");
-                                }
-                                BaseApplication.getmHandler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mWebView.loadUrl(JsUtils.addJsMethod("getDocument()"));
-                                    }
-                                }, 3000);
-
-                            }
-                        }, 3000);
+                    } catch (Exception e) {
+                        ToastUtils.showToast("小二来了！！！");
                     }
-                }, 3000);
+                    BaseApplication.getmHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (!mWebView.isNeedDraw()) {
+                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.CLICK_DOWN_Y)));
+                                }
+                            } catch (Exception e) {
+                                ToastUtils.showToast("小二来了！！！");
+                            }
+                            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mWebView.loadUrl(JsUtils.addJsMethod("getDocument()"));
+                                }
+                            }, 3000);
 
-            } catch (Exception e) {
-                ToastUtils.showToast("小二来了！！！");
-            }
+                        }
+                    }, 3000);
+                }
+            }, 3000);
+
+        } catch (Exception e) {
+            ToastUtils.showToast("小二来了！！！");
         }
 
 
@@ -350,8 +334,7 @@ public class LocalMethod {
         if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")) {
             return;
         }
-
-        GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)));
+        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)));
         LogUtils.e("图片输入框点击");
 
         BaseApplication.getmHandler().postDelayed(new Runnable() {
@@ -380,7 +363,7 @@ public class LocalMethod {
 
                         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X))) {
                             if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X))) {
-                                GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
+                                GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
                                 LogUtils.e("图片搜索点击");
                                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                                     @Override
@@ -431,7 +414,7 @@ public class LocalMethod {
         if (judeClickRecordEmpty(Constants.PUBLISH_MOBILE_COMFIR_X, Constants.PUBLISH_MOBILE_COMFIR_Y, "PUBLISH_MOBILE_COMFIR empty"))
             return;
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y))) {
-            GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)));
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y)));
             LogUtils.e("PUBLISH_MOBILE_DETAIL_X:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_X));
             LogUtils.e("PUBLISH_MOBILE_DETAIL_Y:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_DETAIL_Y));
             BaseApplication.getmHandler().postDelayed(new Runnable() {
@@ -442,7 +425,7 @@ public class LocalMethod {
                         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y))) {
                             LogUtils.e("PUBLISH_MOBILE_COMFIR_X:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X));
                             LogUtils.e("PUBLISH_MOBILE_COMFIR_Y:" + SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y));
-                            GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y)));
+                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PUBLISH_MOBILE_COMFIR_Y)));
                             listener.afterClick();
                         }
                     }
@@ -465,7 +448,7 @@ public class LocalMethod {
         if (judeClickRecordEmpty(Constants.TIME_CLICK_HMM_X, Constants.TIME_CLICK_HMM_Y, "TIME_CLICK_HMM empty"))
             return;
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y))) {
-            GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y)));
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y)));
             LogUtils.e("年月日点击");
             LogUtils.e("TIME_CLICK_YMD_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X));
             LogUtils.e("TIME_CLICK_YMD_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y));
@@ -486,7 +469,7 @@ public class LocalMethod {
                         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
                             LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
                             LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
-                            GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
                             LogUtils.e("时分秒点击");
                         }
                     }
@@ -533,7 +516,7 @@ public class LocalMethod {
                     if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
                         LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
                         LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
-                        GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+                        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
                     }
                 }
                 new Thread(new Runnable() {
@@ -567,7 +550,7 @@ public class LocalMethod {
     @JavascriptInterface
     public void clickPublishTimeComfir() {
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y))) {
-            GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y)));
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y)));
             LogUtils.e("TIME_CLICK_COMFIR_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X));
             LogUtils.e("TIME_CLICK_COMFIR_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y));
 
@@ -579,17 +562,13 @@ public class LocalMethod {
     @JavascriptInterface
     public void picSpaceFirstClick() {
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y))) {
-            GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y)));
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y)));
             LogUtils.e("PIC_SPACE_FIRST_CLICK_X:" + SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X));
             LogUtils.e("PIC_SPACE_FIRST_CLICK_Y:" + SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y));
             BaseApplication.getmHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (null != mWebView) {
-                        mWebView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"sele-button move\")"));
-                    } else {
-                        mX5WebView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"sele-button move\")"));
-                    }
+                    mWebView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"sele-button move\")"));
                 }
             }, 1000);
         }
@@ -597,7 +576,7 @@ public class LocalMethod {
     }
 
     private void picSelectClick() {
-        GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
+        GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
         LogUtils.e("图片选择点击");
         BaseApplication.getmHandler().postDelayed(new Runnable() {
             @Override
@@ -612,7 +591,7 @@ public class LocalMethod {
 
         LogUtils.e("folderMoveClick");
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_Y))) {
-            GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_Y)));
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_Y)));
             LogUtils.e("FOLDER_SELECT_CLICK_X:" + SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_X));
             LogUtils.e("FOLDER_SELECT_CLICK_Y:" + SharedPreferencesUtils.getValue(Constants.FOLDER_SELECT_CLICK_Y));
             BaseApplication.getmHandler().postDelayed(new Runnable() {
@@ -623,7 +602,7 @@ public class LocalMethod {
                         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y))) {
                             LogUtils.e("FOLDER_COMFIR_CLICK_X:" + SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_X));
                             LogUtils.e("FOLDER_COMFIR_CLICK_Y:" + SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y));
-                            GestureTouchUtils.simulateClick(null != mWebView ? mWebView : mX5WebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y)));
+                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y)));
                         }
                     }
                 }

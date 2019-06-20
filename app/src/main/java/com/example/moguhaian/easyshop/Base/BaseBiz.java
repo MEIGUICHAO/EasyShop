@@ -7,7 +7,6 @@ import com.example.moguhaian.easyshop.Bean.SameStyleShopsBean;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.UrlUtils;
-import com.example.moguhaian.easyshop.X5.X5WebView;
 import com.example.moguhaian.easyshop.listener.JsoupParseListener;
 
 import org.jsoup.Connection;
@@ -47,21 +46,6 @@ public class BaseBiz {
         webView.setWebViewClient(webViewClient);
         webView.setInitialScale(25);
         webView.setWebChromeClient(webChromeClient);
-//        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    setDefaultScale();
-//                }
-//            }
-//        });
-        this.activity = activity;
-    }
-
-    public void initX5WebView(X5WebView wv, final Activity activity) {
-        wv.setWebViewClient(new MyX5WebViewClient());
-        wv.setInitialScale(25);
-        wv.setWebChromeClient(new MyX5WebChromeClient());
 //        webView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
 //            public void onFocusChange(View v, boolean hasFocus) {
@@ -140,9 +124,7 @@ public class BaseBiz {
 
 
     public void loadTBSearchUrlByName(String name) {
-        if (null != webView) {
-            webView.loadUrl(UrlUtils.setQueryWord(name));
-        }
+        webView.loadUrl(UrlUtils.setQueryWord(name));
     }
 
 
@@ -164,5 +146,58 @@ public class BaseBiz {
         }
     }
 
+    private void setDefaultScale() {
+        try {
+            Field defaultScale = WebView.class.getDeclaredField("mDefaultScale");
+            defaultScale.setAccessible(true);
+            // Object zoomValue = defaultScale.get(wv);
+            // float sv = defaultScale.getFloat(zoomValue);
+            defaultScale.setFloat(activity, 2.0f);// 0.7f根据手机分辨率自行计算设置
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            System.out.println("1、mDefaultScale");
+            try {
+                Field zoomManager;
+                zoomManager = WebView.class.getDeclaredField("mZoomManager");
+                zoomManager.setAccessible(true);
+                Object zoomValue = zoomManager.get(webView);
+                Field defaultScale = zoomManager.getType().getDeclaredField("mDefaultScale");
+                defaultScale.setAccessible(true);
+                float sv = defaultScale.getFloat(zoomValue);
+                defaultScale.setFloat(zoomValue, 2.0f);
+            } catch (SecurityException e1) {
+                e1.printStackTrace();
+            } catch (IllegalArgumentException e1) {
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
+            } catch (NoSuchFieldException e1) {
+                e1.printStackTrace();
+                System.out.println("2、mZoomManager");
+                try {
+                    Field mProviderField = WebView.class.getDeclaredField("mProvider");
+                    mProviderField.setAccessible(true);
+                    // mProviderField.getClass()
+                    Object webviewclassic = mProviderField.get(webView);
+                    Field zoomManager = webviewclassic.getClass().getDeclaredField("mZoomManager");
+                    zoomManager.setAccessible(true);
+                    Object zoomValue = zoomManager.get(webviewclassic);
+                    Field defaultScale = zoomManager.getType().getDeclaredField("mDefaultScale");
+                    defaultScale.setAccessible(true);
+                    float sv = defaultScale.getFloat(zoomValue);
+                    defaultScale.setFloat(zoomValue, 2.0f);
+                } catch (Exception e2) {
+                    System.out.println("3、mProvider");
+                    e2.printStackTrace();
+                }
+            }
+        }
+    }
 
 }

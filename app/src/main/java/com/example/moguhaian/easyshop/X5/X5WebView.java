@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.moguhaian.easyshop.Base.Constants;
-import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm;
@@ -28,13 +27,6 @@ public class X5WebView extends WebView {
 			return true;
 		}
 	};
-
-
-	public int getScrollYRange() {
-		LogUtils.e("getScrollYRange");
-
-		return computeVerticalScrollRange();
-	}
 
 	@SuppressLint("SetJavaScriptEnabled")
 	public X5WebView(Context arg0, AttributeSet arg1) {

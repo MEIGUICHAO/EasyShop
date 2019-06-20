@@ -155,11 +155,6 @@ public class SearchTaobaoActivity extends BaseActivity<SearchVu, SearchBiz> impl
     }
 
     @Override
-    public void loadFinish(com.tencent.smtt.sdk.WebView wv, String url) {
-
-    }
-
-    @Override
     public void onBackPressed() {
         if (!vu.onBackPress(wvSearch)) {
             super.onBackPressed();
