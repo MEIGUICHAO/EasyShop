@@ -23,7 +23,6 @@ import top.eg100.code.excel.jxlhelper.ExcelManager;
 
 public class Top20wFragment extends BaseFragment<Top20wVu, Top20wBiz> implements LoadFinishListener, LoalMethodListener {
 
-    @BindView(R.id.webView)
     MyWebView webView;
     private String[] items = {"获取top20w","录入","结果"};
     private List<Top20wBean> users;
@@ -37,6 +36,7 @@ public class Top20wFragment extends BaseFragment<Top20wVu, Top20wBiz> implements
 
     @Override
     protected void afterOnCreate() {
+        webView = view.findViewById(R.id.webView);
         setDataStrs(items);
         LogUtils.e("Top20wFragment loadUrl");
         vu.initWebViewSetting(webView,getActivity());
@@ -112,6 +112,11 @@ public class Top20wFragment extends BaseFragment<Top20wVu, Top20wBiz> implements
     @Override
     public void loadFinish(WebView wv, String url) {
         LogUtils.e("loadFinish!!!");
+    }
+
+    @Override
+    public void loadFinish(com.tencent.smtt.sdk.WebView wv, String url) {
+
     }
 
     @Override

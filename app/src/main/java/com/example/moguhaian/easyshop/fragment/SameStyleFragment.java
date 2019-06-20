@@ -39,7 +39,6 @@ import butterknife.Unbinder;
 
 @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
 public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> implements LoadFinishListener, LoalMethodListener {
-    @BindView(R.id.webView)
     MyWebView webView;
     Unbinder unbinder;
     private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新", "清楚cookie", "开关滑动记录", "获取标题"};
@@ -65,6 +64,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 
     @Override
     protected void afterOnCreate() {
+        webView = view.findViewById(R.id.webView);
         setDataStrs(items);
         activity = (MainActivity) getActivity();
         vu.initWebViewSetting(webView, getActivity());
@@ -343,6 +343,11 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 }
                 break;
         }
+    }
+
+    @Override
+    public void loadFinish(com.tencent.smtt.sdk.WebView wv, String url) {
+
     }
 
     @Override

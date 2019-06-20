@@ -141,6 +141,11 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     }
 
     @Override
+    public void loadFinish(com.tencent.smtt.sdk.WebView wv, String url) {
+
+    }
+
+    @Override
     public void onBackPressed() {
         if (fragments.get(vu.getLeftPosition()).canGoback()) {
             fragments.get(vu.getLeftPosition()).webviewGoback();

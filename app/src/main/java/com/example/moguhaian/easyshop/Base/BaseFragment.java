@@ -18,9 +18,9 @@ import butterknife.Unbinder;
 
 public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extends Fragment {
 
-    protected Vu vu;
-    protected Biz biz;
-    Unbinder unbinder;
+    public Vu vu;
+    public Biz biz;
+    public View view;
 
     public String[] getDataStrs() {
         return dataStrs;
@@ -67,8 +67,7 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        View view = inflater.inflate(getLayoutId(), container, false);
-        unbinder = ButterKnife.bind(this, view);
+        view = inflater.inflate(getLayoutId(), container, false);
         afterOnCreate();
 
         return view;
@@ -79,7 +78,6 @@ public abstract class BaseFragment<Vu extends BaseVu,Biz extends BaseBiz> extend
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
 
