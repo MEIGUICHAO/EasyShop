@@ -6,9 +6,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.example.moguhaian.easyshop.X5.X5WebView;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
-import com.example.moguhaian.easyshop.weidge.MyX5WebView;
 
 public abstract class BaseVu implements Vu {
     public View view;
@@ -58,7 +56,6 @@ public abstract class BaseVu implements Vu {
         webSetting.setLoadWithOverviewMode(true);
 
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
@@ -73,61 +70,6 @@ public abstract class BaseVu implements Vu {
         }
 
 
-    }
-
-    public void initX5WebViewSetting(X5WebView webView, Activity context) {
-
-        com.tencent.smtt.sdk.WebSettings webSetting = webView.getSettings();
-        webSetting.setJavaScriptEnabled(true);
-        webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
-        webSetting.setAllowFileAccess(true);
-//        webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        webSetting.setSupportZoom(true);
-        webSetting.setBuiltInZoomControls(true);
-        webSetting.setUseWideViewPort(true);
-        webSetting.setSupportMultipleWindows(true);
-        // webSetting.setLoadWithOverviewMode(true);
-        webSetting.setAppCacheEnabled(true);
-        // webSetting.setDatabaseEnabled(true);
-        webSetting.setDomStorageEnabled(true);
-        webSetting.setGeolocationEnabled(true);
-        webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
-        // webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
-        webSetting.setPluginState(com.tencent.smtt.sdk.WebSettings.PluginState.ON_DEMAND);
-        // webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSetting.setUserAgentString(Constants.UserAgentString);
-
-        webSetting.setLayoutAlgorithm(com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        webSetting.setLoadWithOverviewMode(true);
-
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-
-        //支持获取手势焦点
-        localMethod = new LocalMethod(context, webView);
-        webView.addJavascriptInterface(localMethod, "localMethod");
-        webSetting.setLayoutAlgorithm(com.tencent.smtt.sdk.WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webView.getSettings().setMixedContentMode(
-                    WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-
-
-    }
-
-    public void blockNetIamge(final WebView webView, final boolean block) {
-        BaseApplication.getmHandler().post(new Runnable() {
-            @Override
-            public void run() {
-
-                WebSettings webSetting = webView.getSettings();
-                webSetting.setBlockNetworkImage(block);
-            }
-        });
     }
 
     public boolean onBackPress(WebView webView) {
