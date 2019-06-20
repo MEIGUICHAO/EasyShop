@@ -4,5 +4,4 @@ import android.webkit.WebView;
 
 public interface LoadFinishListener {
     void loadFinish(WebView wv, String url);
-
 }

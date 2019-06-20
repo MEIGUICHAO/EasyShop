@@ -129,6 +129,7 @@ public class LocalMethod {
             public void run() {
                 aliDetailDataList.clear();
                 //src地址、名字、价格、数量
+                LogUtils.e("get1688details src:\n" + src);
                 String[] srcArray = src.split("###");
                 String[] shopNameArray = shopName.split("###");
                 String[] shopPriceArray = shopPrice.split("###");

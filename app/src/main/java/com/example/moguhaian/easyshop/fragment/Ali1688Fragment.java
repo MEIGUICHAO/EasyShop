@@ -98,7 +98,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private String[] aliResutlArray;
     private boolean recordAvailable = true;
     private boolean uploadCheck;
-    private boolean cacheAvailable = true;
+    private boolean cacheAvailable = false;
     private MainActivity activity;
     private Long singleSpaceTime;
     private String fullDateFromat;

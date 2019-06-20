@@ -38,7 +38,7 @@ public class Ali1688Biz extends BaseBiz {
 
     public void diffResult(final List<String> list1, final List<String> list2, final DiffProgressListener listener) {
 //        LogUtils.e("list1:" + list1.size() + ",list2:" + list2.size());
-
+        LogUtils.e("对比开始");
         if (detailPosition == -1 && picSpacePosition == -1) {
             detailPosition = 0;
             picSpacePosition = 0;
@@ -82,6 +82,7 @@ public class Ali1688Biz extends BaseBiz {
                             }
                         }
                     }
+                    LogUtils.e("对比结束");
                     ToastUtils.showToast("对比结束");
                     LogUtils.e("positonStrs:" + positonStrs);
                     listener.diffFinish();

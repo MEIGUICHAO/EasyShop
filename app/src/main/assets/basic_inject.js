@@ -583,35 +583,40 @@ function getSrcAttrByTagName(className,attr){
         var countTag = element[0].getElementsByClassName("count");
         localMethod.JI_LOG("tag:"+tag.length);
         localMethod.JI_LOG("priceTag:"+priceTag.length);
-        for(var j=0;j<tag.length;j++){
-            if(urls.length==0){
-                urls = tag[j].getAttribute("src");
-                shopName = tag[j].getAttribute(attr);
-            } else {
-                urls = urls + "###" + tag[j].getAttribute("src");
-                shopName = shopName + "###" + tag[j].getAttribute(attr);
+        if(tag.length>0){
 
+            for(var j=0;j<tag.length;j++){
+                if(urls.length==0){
+                    urls = tag[j].getAttribute("src");
+                    shopName = tag[j].getAttribute(attr);
+                } else {
+                    urls = urls + "###" + tag[j].getAttribute("src");
+                    shopName = shopName + "###" + tag[j].getAttribute(attr);
+
+                }
+                localMethod.JI_LOG(tag[j].getAttribute("src"));
+                localMethod.JI_LOG(tag[j].getAttribute(attr));
             }
-            localMethod.JI_LOG(tag[j].getAttribute("src"));
-            localMethod.JI_LOG(tag[j].getAttribute(attr));
-        }
-        for(var j=0;j<priceTag.length;j++){
-            if(shopPrice.length==0){
-                shopPrice = priceTag[j].getElementsByClassName("value")[0].innerText;
-            } else {
-                shopPrice = shopPrice + "###" + priceTag[j].getElementsByClassName("value")[0].innerText;
+            for(var j=0;j<priceTag.length;j++){
+                if(shopPrice.length==0){
+                    shopPrice = priceTag[j].getElementsByClassName("value")[0].innerText;
+                } else {
+                    shopPrice = shopPrice + "###" + priceTag[j].getElementsByClassName("value")[0].innerText;
+                }
+                localMethod.JI_LOG(priceTag[j].getElementsByClassName("value")[0].innerText);
             }
-            localMethod.JI_LOG(priceTag[j].getElementsByClassName("value")[0].innerText);
-        }
-        for(var j=0;j<countTag.length;j++){
-            if(shopCount.length==0){
-                shopCount = countTag[j].getElementsByClassName("value")[0].innerText;
-            } else {
-                shopCount = shopCount + "###" + countTag[j].getElementsByClassName("value")[0].innerText;
+            for(var j=0;j<countTag.length;j++){
+                if(shopCount.length==0){
+                    shopCount = countTag[j].getElementsByClassName("value")[0].innerText;
+                } else {
+                    shopCount = shopCount + "###" + countTag[j].getElementsByClassName("value")[0].innerText;
+                }
+                localMethod.JI_LOG(priceTag[j].getElementsByClassName("value")[0].innerText);
             }
-            localMethod.JI_LOG(priceTag[j].getElementsByClassName("value")[0].innerText);
+            localMethod.get1688details(urls,shopName,shopPrice,shopCount);
+        } else {
+            localMethod.errorOccur();
         }
-        localMethod.get1688details(urls,shopName,shopPrice,shopCount);
     } else {
         localMethod.errorOccur();
     }
