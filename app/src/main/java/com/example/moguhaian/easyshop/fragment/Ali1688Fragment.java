@@ -98,7 +98,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private String[] aliResutlArray;
     private boolean recordAvailable = true;
     private boolean uploadCheck;
-    private boolean cacheAvailable = false;
+    private boolean cacheAvailable = true;
     private MainActivity activity;
     private Long singleSpaceTime;
     private String fullDateFromat;
@@ -229,6 +229,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 LogUtils.e("aliResutlArray:" + aliResutlArray.length);
                 if (aliCurrentPage == -1) {
                     aliCurrentPage = 0;
+                }
+                if (aliCurrentPage>=aliResutlArray.length) {
+                    ToastUtils.showToast("detail 最大值");
+                    aliCurrentPage = aliResutlArray.length / 2;
                 }
                 LogUtils.e("1688url:" + aliResutlArray[aliCurrentPage]);
                 webView.loadUrl(aliResutlArray[aliCurrentPage]);

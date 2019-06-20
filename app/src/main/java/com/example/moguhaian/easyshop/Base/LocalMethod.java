@@ -129,6 +129,7 @@ public class LocalMethod {
             public void run() {
                 aliDetailDataList.clear();
                 //src地址、名字、价格、数量
+//                String srcTemp = src.replace("32x32.jpg", "160x160.jpg");
                 LogUtils.e("get1688details src:\n" + src);
                 String[] srcArray = src.split("###");
                 String[] shopNameArray = shopName.split("###");

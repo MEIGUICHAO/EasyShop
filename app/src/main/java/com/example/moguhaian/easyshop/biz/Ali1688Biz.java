@@ -77,9 +77,9 @@ public class Ali1688Biz extends BaseBiz {
                                 positonStrs = positonStrs + "," + i;
                                 break;
                             }
-                            if (Integer.parseInt(detailArray[3]) < 50) {
-                                LogUtils.e("less 50:\n" + detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
-                            }
+//                            if (Integer.parseInt(detailArray[3]) < 50) {
+//                                LogUtils.e("less 50:\n" + detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
+//                            }
                         }
                     }
                     LogUtils.e("对比结束");
