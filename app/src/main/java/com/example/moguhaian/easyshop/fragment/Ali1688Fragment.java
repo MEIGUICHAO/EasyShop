@@ -248,7 +248,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                         biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
                             @Override
                             public void diffFinish() {
-                                autoFragmentClick(R.string.tao_keepworker);
+                                if (biz.getCompareResultList().size() > 0) {
+                                    autoFragmentClick(R.string.tao_keepworker);
+                                } else {
+                                    autoFragmentClick(R.string.nextpage);
+                                }
+
                             }
                         });
                     } else {
@@ -470,11 +475,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
                 break;
             case R.string.ymd_input:
+                getPublishDate();
+                LogUtils.e(fullDateFromat);
                 String ymd = fullDateFromat.split(" ")[0];
                 sendStrSync(ymd);
 
                 break;
             case R.string.hmm_input:
+                getPublishDate();
                 String hmm = fullDateFromat.split(" ")[1];
                 sendStrSync(hmm);
                 break;
@@ -892,12 +900,13 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     @Override
     public void errorOccur() {
 
+        LogUtils.e("errorOccur:" + ResUtil.getS(clickPosition));
         switch (clickPosition) {
             case R.string.tao_guanjia_to_publish_scene:
                 //淘管家缺失ali
                 if (guanjiaSearchErrorIndex == -1) {
                     guanjiaSearchErrorIndex = 0;
-                } else if (guanjiaSearchErrorIndex == 5) {
+                } else if (guanjiaSearchErrorIndex == 3) {
                     guanjiaSearchErrorIndex = -1;
                     autoFragmentClick(R.string.nextpage);
                 } else {
@@ -907,6 +916,21 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.get_detail_1688:
                 autoFragmentClick(R.string.nextpage);
+                break;
+            case R.string.one_piece_send:
+                autoFragmentClick(R.string.detail_1688);
+                break;
+            case R.string.get_pics_space_pic:
+
+                if (guanjiaSearchErrorIndex == -1) {
+                    guanjiaSearchErrorIndex = 0;
+                } else if (guanjiaSearchErrorIndex == 3) {
+                    guanjiaSearchErrorIndex = -1;
+                    autoFragmentClick(R.string.nextpage);
+                } else {
+                    guanjiaSearchErrorIndex++;
+                    autoFragmentClick(R.string.get_pics_space_pic);
+                }
                 break;
         }
     }

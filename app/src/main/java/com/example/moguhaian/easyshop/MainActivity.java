@@ -13,6 +13,8 @@ import com.example.moguhaian.easyshop.Base.BaseActivity;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Search.MainBiz;
+import com.example.moguhaian.easyshop.Utils.DateUtil;
+import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.View.MainVu;
 import com.example.moguhaian.easyshop.listener.AdapterClickListener;
@@ -54,7 +56,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     }
 
     private String titleResult;
-    private String beginTime = "2019-06-20 07:07:07";
+    private String beginTime = " 07:07:07";
 
     public String getBeginTime() {
         return beginTime;
@@ -64,7 +66,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
         return endTime;
     }
 
-    private String endTime = "2019-06-20 23:27:07";
+    private String endTime = " 23:27:07";
 
 
     @Override
@@ -99,6 +101,10 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
                 fragments.get(vu.getLeftPosition()).fragmentRightClick(position);
             }
         });
+        String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
+        LogUtils.e("dayFromat:" + dayFromat);
+        beginTime = dayFromat + beginTime;
+        endTime = dayFromat + endTime;
     }
 
 

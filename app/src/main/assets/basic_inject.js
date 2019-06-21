@@ -43,32 +43,37 @@ function getAliTao(){
 //    var element = document.getElementsByClassName("sw-layout-1190");
     var element = document.getElementsByClassName("imgofferresult-mainBlock");
     localMethod.JI_LOG("getAliTao!!!!!!"+element.length);
-    var pagingNum = document.getElementsByClassName("fui-paging-num")[0];
+    var pagingNum = document.getElementsByClassName("fui-paging-num");
     var tagElement = document.getElementsByClassName("left-tag");
     var saleElement = document.getElementsByClassName("sm-offer-trade sw-dpl-offer-trade sm-offer-tradeBt");
     var hrefElement = document.getElementsByClassName("s-widget-offershopwindowtitle sm-offer-title sw-dpl-offer-title sm-widget-offershopwindowtitle-onerow");
-    localMethod.setPagingNum(pagingNum.innerText);
 
-    var urls = "";
-    for(var i=0;i<saleElement.length;i++){
+    if(pagingNum.length>0){
+        localMethod.setPagingNum(pagingNum[0].innerText);
+        var urls = "";
+        for(var i=0;i<saleElement.length;i++){
 
-        var emTag = saleElement[i].getElementsByTagName("em");
-        if(emTag.length>0){
-            em = emTag[0].innerText;
-        }
-        if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
-            var aTag = hrefElement[i].getElementsByTagName("a");
-            if(aTag.length>0){
-                hrefUrl= aTag[0].getAttribute('href');
-                if(urls.length==0){
-                    urls = hrefUrl;
-                } else if(hrefUrl.indexOf("sk=consign") != -1&&hrefUrl.length>0){
-                    urls = urls + "\n" + hrefUrl;
+            var emTag = saleElement[i].getElementsByTagName("em");
+            if(emTag.length>0){
+                em = emTag[0].innerText;
+            }
+            if(tagElement[i].innerText.indexOf("一件代发") != -1&& em > 50){
+                var aTag = hrefElement[i].getElementsByTagName("a");
+                if(aTag.length>0){
+                    hrefUrl= aTag[0].getAttribute('href');
+                    if(urls.length==0){
+                        urls = hrefUrl;
+                    } else if(hrefUrl.indexOf("sk=consign") != -1&&hrefUrl.length>0){
+                        urls = urls + "\n" + hrefUrl;
+                    }
                 }
             }
         }
+        localMethod.getJsonData(urls+"");
+
+    } else {
+        localMethod.errorOccur();
     }
-    localMethod.getJsonData(urls+"");
 
 }
 
@@ -148,54 +153,58 @@ function getSrcByClassName(){
 
 //    var element = document.getElementsByClassName("lis-imgBox-img");
 //    var titleElement = document.getElementsByClassName("mid-lis-name");
-    var urls = "";
-    var titles = "";
-    for(var i=0;i<block.length;i++){
-        var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
-        if(mDocument.length>0){
-            localMethod.JI_LOG(i+"mDocument:"+mDocument.length);
-            var lead = block[i].getElementsByClassName("lis-lead not-dragging");
-            if(lead.length<1){
+    if(block.length>0){
+        var urls = "";
+        var titles = "";
+        for(var i=0;i<block.length;i++){
+            var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
+            if(mDocument.length>0){
+                localMethod.JI_LOG(i+"mDocument:"+mDocument.length);
+                var lead = block[i].getElementsByClassName("lis-lead not-dragging");
+                if(lead.length<1){
 
+                }
+                 var element = block[i].getElementsByClassName("lis-imgBox-img");
+                                var titleElement = block[i].getElementsByClassName("mid-lis-name");
+                                var hrefUrl= element[0].getAttribute('src');
+    //                            hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
+
+                                if(urls.length==0){
+                                    urls = hrefUrl;
+                                } else {
+                                    urls = urls + "\n" + hrefUrl;
+                                }
+
+                                var title= titleElement[0].getAttribute('title');
+                                if(titles.length==0){
+                                    titles = title;
+                                } else {
+                                    titles = titles + "\n" + title;
+                                }
             }
-             var element = block[i].getElementsByClassName("lis-imgBox-img");
-                            var titleElement = block[i].getElementsByClassName("mid-lis-name");
-                            var hrefUrl= element[0].getAttribute('src');
-//                            hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
-
-                            if(urls.length==0){
-                                urls = hrefUrl;
-                            } else {
-                                urls = urls + "\n" + hrefUrl;
-                            }
-
-                            var title= titleElement[0].getAttribute('title');
-                            if(titles.length==0){
-                                titles = title;
-                            } else {
-                                titles = titles + "\n" + title;
-                            }
         }
-    }
-    localMethod.JI_LOG(urls);
-    localMethod.JI_LOG(titles);
-    localMethod.addPicSpaceResult(urls,titles);
-    var nextArea = document.getElementsByClassName("itemList-bottom ");
-    if(nextArea.length>0){
-        localMethod.JI_LOG("nextArea:"+nextArea.length);
-        var next = nextArea[0].getElementsByClassName("next");
-        var nextDiasble = nextArea[0].getElementsByClassName("next disable1");
-        if(next.length>0){
-            next[0].click();
-            if(nextDiasble.length<1){
-                localMethod.next();
+        localMethod.JI_LOG(urls);
+        localMethod.JI_LOG(titles);
+        localMethod.addPicSpaceResult(urls,titles);
+        var nextArea = document.getElementsByClassName("itemList-bottom ");
+        if(nextArea.length>0){
+            localMethod.JI_LOG("nextArea:"+nextArea.length);
+            var next = nextArea[0].getElementsByClassName("next");
+            var nextDiasble = nextArea[0].getElementsByClassName("next disable1");
+            if(next.length>0){
+                next[0].click();
+                if(nextDiasble.length<1){
+                    localMethod.next();
+                } else {
+                    localMethod.getJsonData("获取图片空间图片完成");
+                }
             } else {
                 localMethod.getJsonData("获取图片空间图片完成");
             }
-        } else {
-            localMethod.getJsonData("获取图片空间图片完成");
-        }
 
+        }
+    } else {
+        localMethod.errorOccur();
     }
 
 }
