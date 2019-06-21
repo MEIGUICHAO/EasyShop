@@ -102,7 +102,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private MainActivity activity;
     private Long singleSpaceTime;
     private String fullDateFromat;
-    private int guanjiaSearchErrorIndex = -1;
+    private int errorIndex = -1;
     private String[] titlResultArray;
 
 
@@ -258,6 +258,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                         });
                     } else {
                         ToastUtils.showToast("get upload pic error");
+                        errorOcur(R.string.get_upload_pic);
                     }
 
                 } catch (Exception e) {
@@ -596,9 +597,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
 
         switch (clickPosition) {
-            case R.string.go1688:
-
-                break;
             case R.string.one_piece_send:
                 if (!url.contains(Constants.BAIDU)) {
                     if (needGetJson) {
@@ -904,15 +902,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         switch (clickPosition) {
             case R.string.tao_guanjia_to_publish_scene:
                 //淘管家缺失ali
-                if (guanjiaSearchErrorIndex == -1) {
-                    guanjiaSearchErrorIndex = 0;
-                } else if (guanjiaSearchErrorIndex == 3) {
-                    guanjiaSearchErrorIndex = -1;
-                    autoFragmentClick(R.string.nextpage);
-                } else {
-                    guanjiaSearchErrorIndex++;
-                    autoFragmentClick(R.string.tao_guanjia_search);
-                }
+                errorOcur(R.string.tao_guanjia_search);
                 break;
             case R.string.get_detail_1688:
                 autoFragmentClick(R.string.nextpage);
@@ -921,17 +911,23 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.detail_1688);
                 break;
             case R.string.get_pics_space_pic:
-
-                if (guanjiaSearchErrorIndex == -1) {
-                    guanjiaSearchErrorIndex = 0;
-                } else if (guanjiaSearchErrorIndex == 3) {
-                    guanjiaSearchErrorIndex = -1;
-                    autoFragmentClick(R.string.nextpage);
-                } else {
-                    guanjiaSearchErrorIndex++;
-                    autoFragmentClick(R.string.get_pics_space_pic);
-                }
+                errorOcur(R.string.get_pics_space_pic);
                 break;
+            case R.string.office_publish:
+                errorOcur(R.string.office_publish);
+                break;
+        }
+    }
+
+    private void errorOcur(int get_pics_space_pic) {
+        if (errorIndex == -1) {
+            errorIndex = 0;
+        } else if (errorIndex == 3) {
+            errorIndex = -1;
+            autoFragmentClick(R.string.nextpage);
+        } else {
+            errorIndex++;
+            autoFragmentClick(get_pics_space_pic);
         }
     }
 }

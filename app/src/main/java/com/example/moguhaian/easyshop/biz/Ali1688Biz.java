@@ -72,7 +72,7 @@ public class Ali1688Biz extends BaseBiz {
                             int diff = PicUtils.diff(detailsList.get(i).split("\n")[4], picSpacelsList.get(j).split("\n")[2]);
                             String[] detailArray = detailsList.get(i).split("\n");
                             //名字、图片名字、价格、数量
-                            if (diff == 0) {
+                            if (diff < 4) {
                                 if (Integer.parseInt(detailArray[3]) > 50) {
                                     LogUtils.e(">50:\n" + i + ",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
                                     compareResultList.add(detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);

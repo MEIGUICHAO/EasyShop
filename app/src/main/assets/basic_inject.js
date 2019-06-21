@@ -328,6 +328,8 @@ function clickElementsByClassName(className){
         localMethod.JI_LOG("localMethod.afterClick");
         localMethod.afterClick();
         localMethod.JI_LOG(className+":"+element[0].value);
+    } else {
+        localMethod.errorOccur();
     }
 }
 
