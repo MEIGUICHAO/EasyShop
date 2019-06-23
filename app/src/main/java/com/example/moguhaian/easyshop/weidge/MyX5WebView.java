@@ -102,7 +102,7 @@ public class MyX5WebView extends WebView {
         });
         WebSettings webSetting = getSettings();
         webSetting.setJavaScriptEnabled(true);
-        webSetting.setBuiltInZoomControls(true);
+//        webSetting.setBuiltInZoomControls(true);
         webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
         webSetting.setDomStorageEnabled(true);
         webSetting.setAllowFileAccess(true);

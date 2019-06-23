@@ -37,7 +37,7 @@ public abstract class BaseVu implements Vu {
         webSetting.setAllowFileAccess(true);
 //        webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webSetting.setSupportZoom(true);
-        webSetting.setBuiltInZoomControls(true);
+//        webSetting.setBuiltInZoomControls(true);
         webSetting.setUseWideViewPort(true);
         webSetting.setSupportMultipleWindows(true);
         // webSetting.setLoadWithOverviewMode(true);

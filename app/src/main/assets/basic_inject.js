@@ -592,6 +592,7 @@ function setInputValue(className,inputvalue){
         localMethod.JI_LOG("tag:"+tag.length);
         if(tag.length>0){
             tag[0].click();
+            tag[0].focus();
             tag[0].value=inputvalue;
         }
     }
@@ -607,6 +608,7 @@ function setTitle(className,inputvalue){
         localMethod.JI_LOG("tag:"+tag.length);
         if(tag.length>0){
             tag[0].click();
+            tag[0].focus();
 //            tag[0].value=inputvalue;
         }
     }
