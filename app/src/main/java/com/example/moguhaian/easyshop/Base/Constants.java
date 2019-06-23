@@ -89,4 +89,5 @@ public interface Constants {
     String TB_TITLE_RESULT = "TB_TITLE_RESULT";
     String ALI_SHOP_RESULT = "ALI_SHOP_RESULT";
     String ALI_CURRENT_PAGE = "ALI_CURRENT_PAGE";
+    String GET_UPLOAD_PIC_NAMES = "GET_UPLOAD_PIC_NAMES";
 }

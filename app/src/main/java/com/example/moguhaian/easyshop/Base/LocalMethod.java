@@ -23,6 +23,8 @@ import com.example.moguhaian.easyshop.weidge.MyWebView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
 public class LocalMethod {
@@ -57,6 +59,7 @@ public class LocalMethod {
 
 
     private int pagingNum = 0;
+    public ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
 
 
     public LocalMethod(Activity c, MyWebView webView) {
@@ -165,14 +168,17 @@ public class LocalMethod {
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
     public void showKeyboardB4Input() {
-        new Thread(new Runnable() {
+        LogUtils.e("showKeyboardB4Input");
+
+        singleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
+//
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e1) {
+//                    e1.printStackTrace();
+//                }
 
                 // “旋转”的拼音
                 int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
@@ -190,25 +196,48 @@ public class LocalMethod {
                         listener.inputFinish();
                     }
                 });
-
             }
-        }).start();
+        });
 
-//        BaseApplication.getmHandler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                BaseApplication.getmHandler().removeCallbacks(this);
-//                int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
-//                for (int k = 0; k < keyCodeArray.length; k++) {
-//                    typeIn(keyCodeArray[k]);
-//                    try {
-//                        Thread.sleep( 400 );
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void clearTitle(final String inputVale) {
+        LogUtils.e("clearTitle");
+
+        singleThreadExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+//
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e1) {
+//                    e1.printStackTrace();
 //                }
-//            }
-//        }, 1500);
+
+                // “旋转”的拼音
+//                int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_DEL};
+                for (int i = 0; i < 60; i++) {
+                    try {
+                        typeIn(KeyEvent.KEYCODE_DEL);
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                BaseApplication.getmHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+//                        listener.inputFinish();
+                        mWebView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fusion-input\"" + ",\"" + (inputVale) + "\")"));
+                        BaseApplication.getmHandler().removeCallbacks(this);
+                    }
+                });
+            }
+        });
+
     }
 
 
@@ -229,6 +258,36 @@ public class LocalMethod {
             @Override
             public void run() {
                 listener.afterGetJson(content);
+            }
+        });
+    }
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void inputContent(final String inputvalue) {
+        LogUtils.e("inputContent:" + inputvalue);
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+
+                singleThreadExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Instrumentation instrumentation = new Instrumentation();
+                        String[] split = inputvalue.split("###");
+                        for (int i = 0; i < split.length; i++) {
+                            instrumentation.sendStringSync(split[i]);
+                            instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_ENTER);
+                        }
+                        BaseApplication.getmHandler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.inputFinish();
+                                BaseApplication.getmHandler().removeCallbacks(this);
+                            }
+                        }, 500);
+                    }
+                });
             }
         });
     }
@@ -353,9 +412,10 @@ public class LocalMethod {
                 if (judeClickRecordEmpty(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X, Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y, "PIC_SPACE_SELECT empty"))
                     return;
 
-                new Thread(new Runnable() {
+                singleThreadExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
+
                         Looper.prepare();
                         String str = CommonUtils.pasteToResult();
                         LogUtils.e("picSpaceInputClick:"+str);
@@ -378,7 +438,7 @@ public class LocalMethod {
                         }
                         Looper.loop();
                     }
-                }).start();
+                });
                 BaseApplication.getmHandler().removeCallbacks(this);
             }
         }, 1000);
@@ -454,9 +514,10 @@ public class LocalMethod {
             LogUtils.e("年月日点击");
             LogUtils.e("TIME_CLICK_YMD_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X));
             LogUtils.e("TIME_CLICK_YMD_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y));
-            new Thread(new Runnable() {
+            singleThreadExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
+
                     for (int i = 0; i < 15; i++) {
                         try {
                             typeIn(KeyEvent.KEYCODE_DEL);
@@ -479,9 +540,10 @@ public class LocalMethod {
                         @Override
                         public void run() {
 
-                            new Thread(new Runnable() {
+                            singleThreadExecutor.execute(new Runnable() {
                                 @Override
                                 public void run() {
+
                                     for (int i = 0; i < 15; i++) {
                                         try {
                                             typeIn(KeyEvent.KEYCODE_DEL);
@@ -493,15 +555,16 @@ public class LocalMethod {
                                     instrumentation.sendStringSync(hmm);
                                     listener.inputFinish();
                                 }
-                            }).start();
+                            });
 
                             BaseApplication.getmHandler().removeCallbacks(this);
 
                         }
                     }, 2000);
 
+
                 }
-            }).start();
+            });
 
         }
 
@@ -521,9 +584,10 @@ public class LocalMethod {
                         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
                     }
                 }
-                new Thread(new Runnable() {
+                singleThreadExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
+
                         Instrumentation instrumentation = new Instrumentation();
                         for (int i = 0; i < 15; i++) {
                             try {
@@ -535,14 +599,8 @@ public class LocalMethod {
                         }
                         instrumentation.sendStringSync(hmm);
                         clickPublishTimeComfir();
-//                                    BaseApplication.getmHandler().post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            listener.inputFinish();
-//                                        }
-//                                    });
                     }
-                }).start();
+                });
 
             }
         }, 1500);
@@ -571,6 +629,14 @@ public class LocalMethod {
                 @Override
                 public void run() {
                     mWebView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"sele-button move\")"));
+                    BaseApplication.getmHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.afterClick();
+                            BaseApplication.getmHandler().removeCallbacks(this);
+                        }
+                    }, 1000);
+                    BaseApplication.getmHandler().removeCallbacks(this);
                 }
             }, 1000);
         }
@@ -605,6 +671,15 @@ public class LocalMethod {
                             LogUtils.e("FOLDER_COMFIR_CLICK_X:" + SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_X));
                             LogUtils.e("FOLDER_COMFIR_CLICK_Y:" + SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y));
                             GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.FOLDER_COMFIR_CLICK_Y)));
+                            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listener.afterClick();
+                                    BaseApplication.getmHandler().removeCallbacks(this);
+                                }
+                            }, 2000);
+                            BaseApplication.getmHandler().removeCallbacks(this);
+
                         }
                     }
                 }

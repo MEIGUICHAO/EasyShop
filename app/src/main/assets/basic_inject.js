@@ -213,25 +213,30 @@ function getSrcByClassName(){
 function selectAllPic(){
     localMethod.JI_LOG("!!!!!!");
 
-    var allChoose = document.getElementsByClassName("allChoose not-dragging");
-    allChoose[0].click();
     var block = document.getElementsByClassName("block-mid-lis ");
-    for(var i=0;i<block.length;i++){
-        var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
-        if(mDocument.length<1){
-    //        lis-img-sele doing-sele not-dragging lis-all-shift
-            var shift = block[i].getElementsByClassName("lis-img-sele doing-sele not-dragging lis-all-shift");
-            localMethod.JI_LOG("shift:"+shift.length);
-            var choose = shift[0].getElementsByClassName("Check iconfont");
-            localMethod.JI_LOG("choose:"+choose.length);
-            var hover = block[i].getElementsByClassName("mid-lis-img ");
-            localMethod.JI_LOG("hover:"+choose.length);
-            hover[0].click();
-            choose[0].click();
-            shift[0].click();
-            block[i].click();
-        }
+    if(block.length<2){
+        localMethod.errorOccur();
+    } else {
+        var allChoose = document.getElementsByClassName("allChoose not-dragging");
+        allChoose[0].click();
+        localMethod.afterClick();
     }
+//    for(var i=0;i<block.length;i++){
+//        var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
+//        if(mDocument.length<1){
+//    //        lis-img-sele doing-sele not-dragging lis-all-shift
+//            var shift = block[i].getElementsByClassName("lis-img-sele doing-sele not-dragging lis-all-shift");
+//            localMethod.JI_LOG("shift:"+shift.length);
+//            var choose = shift[0].getElementsByClassName("Check iconfont");
+//            localMethod.JI_LOG("choose:"+choose.length);
+//            var hover = block[i].getElementsByClassName("mid-lis-img ");
+//            localMethod.JI_LOG("hover:"+choose.length);
+//            hover[0].click();
+//            choose[0].click();
+//            shift[0].click();
+//            block[i].click();
+//        }
+//    }
 
 }
 
@@ -436,10 +441,11 @@ function clearSku(position,inputvalue){
 }
 
 
-function editSKu(position,inputvalue){
+function editSKu(position,inputvalue,className){
     localMethod.JI_LOG("!!!!!!");
 
-    var skuSpans = document.getElementsByClassName("next-input next-input-single next-input-medium clear color-dropdown-input");
+    var skuSpans = document.getElementsByClassName(className);
+//    var skuSpans = document.getElementsByClassName("next-input next-input-single next-input-medium clear color-dropdown-input");
     localMethod.JI_LOG("skuSpans:"+skuSpans.length);
     var skuInputs = skuSpans[position].getElementsByTagName("input");
     localMethod.JI_LOG("skuInputs:"+skuInputs.length);
@@ -541,6 +547,18 @@ function showKeyboardAfterClick(className){
     localMethod.showKeyboardB4Input();
 }
 
+function showKeyboardInput(className,inputvalue){
+    localMethod.JI_LOG("!!!!!!");
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    if(element.length>0){
+        localMethod.JI_LOG(className+":"+element[0].value);
+        element[0].click();
+        element[0].focus();
+    }
+    localMethod.inputContent(inputvalue);
+}
+
 
 function getMoblieDetail(){
     var element = document.getElementsByClassName("m-editor-head-left");
@@ -567,6 +585,21 @@ function setInputValue(className,inputvalue){
         }
     }
     localMethod.showKeyboardB4Input();
+}
+
+function setTitle(className,inputvalue){
+
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    if(element.length>0){
+        var tag = element[0].getElementsByTagName("input");
+        localMethod.JI_LOG("tag:"+tag.length);
+        if(tag.length>0){
+            tag[0].click();
+//            tag[0].value=inputvalue;
+        }
+    }
+    localMethod.clearTitle(inputvalue);
 }
 
 

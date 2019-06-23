@@ -2,13 +2,16 @@ package com.example.moguhaian.easyshop.biz;
 
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
+import android.text.TextUtils;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.moguhaian.easyshop.Base.BaseBiz;
+import com.example.moguhaian.easyshop.Base.Constants;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.PicUtils;
+import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.listener.GlideLoadListener;
 
@@ -38,8 +41,8 @@ public class Ali1688Biz extends BaseBiz {
 
     public void diffResult(final List<String> list1, final List<String> list2, final DiffProgressListener listener) {
 //        LogUtils.e("list1:" + list1.size() + ",list2:" + list2.size());
-        LogUtils.e("对比开始");
         if (detailPosition == -1 && picSpacePosition == -1) {
+            LogUtils.e("对比开始");
             detailPosition = 0;
             picSpacePosition = 0;
             detailsList = new ArrayList<>();
@@ -66,6 +69,7 @@ public class Ali1688Biz extends BaseBiz {
                     diffResult(list1, list2,listener);
                 } else {
                     String positonStrs = "";
+                    String picSpaceName = "";
                     for (int i = 0; i < detailsList.size(); i++) {
                         for (int j = 0; j < picSpacelsList.size(); j++) {
                             LogUtils.e("总数:" + detailsList.size() * picSpacelsList.size() + ",进度:" + (i * detailsList.size() + j));
@@ -77,6 +81,7 @@ public class Ali1688Biz extends BaseBiz {
                                     LogUtils.e(">50:\n" + i + ",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
                                     compareResultList.add(detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
                                     positonStrs = positonStrs + "," + i;
+                                    picSpaceName = TextUtils.isEmpty(picSpaceName) ? picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") : picSpaceName + "###" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "");
                                 } else {
                                     LogUtils.e("<50:\n" + i + ",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
                                 }
@@ -86,6 +91,9 @@ public class Ali1688Biz extends BaseBiz {
 //                                LogUtils.e("less 50:\n" + detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
 //                            }
                         }
+                    }
+                    if (!TextUtils.isEmpty(picSpaceName)) {
+                        SharedPreferencesUtils.putValue(Constants.GET_UPLOAD_PIC_NAMES, picSpaceName);
                     }
                     LogUtils.e("对比结束");
                     ToastUtils.showToast("对比结束");
