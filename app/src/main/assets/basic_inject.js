@@ -339,6 +339,17 @@ function clickElementsByClassName(className){
 }
 
 
+function saveDraft(){
+    var element = document.getElementsByClassName("next-btn next-btn-normal next-btn-large");
+    localMethod.JI_LOG("className:"+element.length);
+    if(element.length>0){
+        element[1].click();
+        localMethod.JI_LOG("localMethod.afterClick");
+        setInputValue("next-input next-input-single next-input-medium draft-ipt","test");
+    }
+}
+
+
 function goEditDetailArea(){
     localMethod.JI_LOG("goEditDetailArea!!!!!!");
     var element = document.getElementsByClassName("next-menu-item");

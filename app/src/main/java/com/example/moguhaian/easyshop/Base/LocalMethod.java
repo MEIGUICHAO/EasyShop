@@ -11,7 +11,6 @@ import android.webkit.JavascriptInterface;
 
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
 import com.example.moguhaian.easyshop.Bean.SamestyleBean;
-import com.example.moguhaian.easyshop.Utils.CommonUtils;
 import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.GreenDaoUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
@@ -185,6 +184,7 @@ public class LocalMethod {
                 for (int i = 0; i < keyCodeArray.length; i++) {
                     try {
                         typeIn(keyCodeArray[i]);
+                        LogUtils.e("KeyEvent：" + keyCodeArray[i]);
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -387,7 +387,7 @@ public class LocalMethod {
 
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
-    public void picSpaceInputClick() {
+    public void picSpaceInputClick(final String pic) {
 
 
         LogUtils.e("picSpaceInputClick");
@@ -397,51 +397,55 @@ public class LocalMethod {
         }
         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)));
         LogUtils.e("图片输入框点击");
-
-        BaseApplication.getmHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
 //                CommonUtils.pasteToResult();
 
-                if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")) {
-                    return;
-                }
+        if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")) {
+            return;
+        }
 
-                if (judeClickRecordEmpty(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X, Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y, "PIC_SPACE_SEARCH empty"))
-                    return;
-                if (judeClickRecordEmpty(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X, Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y, "PIC_SPACE_SELECT empty"))
-                    return;
+//                if (judeClickRecordEmpty(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X, Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y, "PIC_SPACE_SEARCH empty"))
+//                    return;
+        if (judeClickRecordEmpty(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X, Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y, "PIC_SPACE_SELECT empty"))
+            return;
+        singleThreadExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
 
-                singleThreadExecutor.execute(new Runnable() {
+                Looper.prepare();
+//                String str = CommonUtils.pasteToResult();
+                LogUtils.e("picSpaceInputClick:"+pic);
+                Instrumentation inst = new Instrumentation();
+                inst.sendStringSync(pic);
+                LogUtils.e(pic);
+                inst.sendKeyDownUpSync(KeyEvent.KEYCODE_ENTER);
+//                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X))) {
+//                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X))) {
+//                                GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
+//                                LogUtils.e("图片搜索点击");
+//                                BaseApplication.getmHandler().postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//
+//                                        BaseApplication.getmHandler().removeCallbacks(this);
+//                                    }
+//                                }, 1500);
+//                            }
+//                        }
+                Looper.loop();
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
 
-                        Looper.prepare();
-                        String str = CommonUtils.pasteToResult();
-                        LogUtils.e("picSpaceInputClick:"+str);
-                        Instrumentation inst = new Instrumentation();
-                        inst.sendStringSync(str);
-                        LogUtils.e(str);
+                        picSelectClick();
 
-                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X))) {
-                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X))) {
-                                GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
-                                LogUtils.e("图片搜索点击");
-                                BaseApplication.getmHandler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        picSelectClick();
-                                        BaseApplication.getmHandler().removeCallbacks(this);
-                                    }
-                                }, 1500);
-                            }
-                        }
-                        Looper.loop();
+                        BaseApplication.getmHandler().removeCallbacks(this);
                     }
-                });
-                BaseApplication.getmHandler().removeCallbacks(this);
+                }, 1000);
+
             }
-        }, 1000);
+        });
+
+
 
 
     }
