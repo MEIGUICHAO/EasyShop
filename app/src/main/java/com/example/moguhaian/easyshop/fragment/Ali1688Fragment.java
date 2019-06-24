@@ -264,7 +264,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }
                 });
                 try {
-                    if (vu.getLocalMethod().getPicSpaceUrlList().size() > 1 && vu.getLocalMethod().getAliDetailDataList().size() > 1) {
+                    if (vu.getLocalMethod().getPicSpaceUrlList().size() > 1 && vu.getLocalMethod().getAliDetailDataList().size() > 0) {
                         biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
                             @Override
                             public void diffFinish() {
