@@ -242,6 +242,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 if (aliCurrentPage == -1) {
                     aliCurrentPage = 0;
                 }
+                LogUtils.e("aliCurrentPage:"+aliCurrentPage);
                 if (aliCurrentPage>=aliResutlArray.length) {
                     ToastUtils.showToast("detail 最大值");
                     aliCurrentPage = aliResutlArray.length / 2;
@@ -1069,10 +1070,26 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             errorIndex = 0;
         } else if (errorIndex == 3) {
             errorIndex = -1;
-            autoFragmentClick(R.string.nextpage);
+            erroOpera(R.string.nextpage);
         } else {
             errorIndex++;
             autoFragmentClick(get_pics_space_pic);
         }
+    }
+
+    private void erroOpera(final int nextpage) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        BaseApplication.getmHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                autoFragmentClick(nextpage);
+                BaseApplication.getmHandler().removeCallbacks(this);
+            }
+        }, 1500);
     }
 }
