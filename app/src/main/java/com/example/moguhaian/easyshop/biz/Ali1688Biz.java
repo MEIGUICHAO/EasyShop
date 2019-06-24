@@ -38,11 +38,16 @@ public class Ali1688Biz extends BaseBiz {
         void diffFinish();
     }
 
+    public void resetPosition() {
+        detailPosition = -1;
+        picSpacePosition = -1;
+    }
+
 
     public void diffResult(final List<String> list1, final List<String> list2, final DiffProgressListener listener) {
-//        LogUtils.e("list1:" + list1.size() + ",list2:" + list2.size());
         if (detailPosition == -1 && picSpacePosition == -1) {
             LogUtils.e("对比开始");
+            LogUtils.e("list1:" + list1.size() + ",list2:" + list2.size());
             detailPosition = 0;
             picSpacePosition = 0;
             detailsList = new ArrayList<>();

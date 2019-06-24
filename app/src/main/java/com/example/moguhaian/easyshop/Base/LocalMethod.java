@@ -629,6 +629,7 @@ public class LocalMethod {
             GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y)));
             LogUtils.e("PIC_SPACE_FIRST_CLICK_X:" + SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_X));
             LogUtils.e("PIC_SPACE_FIRST_CLICK_Y:" + SharedPreferencesUtils.getValue(Constants.PIC_SPACE_FIRST_CLICK_Y));
+            threadSleep();
             BaseApplication.getmHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -636,6 +637,7 @@ public class LocalMethod {
                     BaseApplication.getmHandler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            threadSleep();
                             listener.afterClick();
                             BaseApplication.getmHandler().removeCallbacks(this);
                         }
@@ -647,9 +649,18 @@ public class LocalMethod {
 
     }
 
+    private void threadSleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void picSelectClick() {
         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
         LogUtils.e("图片选择点击");
+        threadSleep();
         BaseApplication.getmHandler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -255,6 +255,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.get_upload_pic://获取上传图片
 
+                biz.resetPosition();
                 SharedPreferencesUtils.putValue(Constants.GET_UPLOAD_PIC_NAMES, "");
                 ToastUtils.showToast("对比开始");
                 biz.getSingleThreadExecutor().execute(new Runnable() {
