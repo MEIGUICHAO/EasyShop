@@ -146,65 +146,81 @@ function getDocument(){
 
 
 
-function getSrcByClassName(){
-    localMethod.JI_LOG("!!!!!!");
-    var block = document.getElementsByClassName("block-mid-lis ");
-    localMethod.JI_LOG("block:"+block.length);
+function getSrcByClassName(needJude){
 
-//    var element = document.getElementsByClassName("lis-imgBox-img");
-//    var titleElement = document.getElementsByClassName("mid-lis-name");
-    if(block.length>0){
-        var urls = "";
-        var titles = "";
-        for(var i=0;i<block.length;i++){
-            var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
-            if(mDocument.length>0){
-                localMethod.JI_LOG(i+"mDocument:"+mDocument.length);
-                var lead = block[i].getElementsByClassName("lis-lead not-dragging");
-                if(lead.length<1){
+    var mHtml = document.getElementsByTagName('script');
 
-                }
-                 var element = block[i].getElementsByClassName("lis-imgBox-img");
-                                var titleElement = block[i].getElementsByClassName("mid-lis-name");
-                                var hrefUrl= element[0].getAttribute('src');
-    //                            hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
-
-                                if(urls.length==0){
-                                    urls = hrefUrl;
-                                } else {
-                                    urls = urls + "\n" + hrefUrl;
-                                }
-
-                                var title= titleElement[0].getAttribute('title');
-                                if(titles.length==0){
-                                    titles = title;
-                                } else {
-                                    titles = titles + "\n" + title;
-                                }
-            }
+    var needslide = true;
+    for(var i=0;i<mHtml.length;i++){
+//        localMethod.JI_LOG("innerText!!!!!!"+mHtml[i].innerText);
+        if(mHtml[i].innerText.indexOf("g_page_config") != -1 ){
+            needslide = false;
+            localMethod.getJsonData("script!!!!!!"+mHtml[i].innerText);
         }
-        localMethod.JI_LOG(urls);
-        localMethod.JI_LOG(titles);
-        localMethod.addPicSpaceResult(urls,titles);
-        var nextArea = document.getElementsByClassName("itemList-bottom ");
-        if(nextArea.length>0){
-            localMethod.JI_LOG("nextArea:"+nextArea.length);
-            var next = nextArea[0].getElementsByClassName("next");
-            var nextDiasble = nextArea[0].getElementsByClassName("next disable1");
-            if(next.length>0){
-                next[0].click();
-                if(nextDiasble.length<1){
-                    localMethod.next();
+    }
+    if(!needslide||needJude.indexOf("false")!=-1){
+
+        localMethod.JI_LOG("!!!!!!");
+        var block = document.getElementsByClassName("block-mid-lis ");
+        localMethod.JI_LOG("block:"+block.length);
+
+    //    var element = document.getElementsByClassName("lis-imgBox-img");
+    //    var titleElement = document.getElementsByClassName("mid-lis-name");
+        if(block.length>0){
+            var urls = "";
+            var titles = "";
+            for(var i=0;i<block.length;i++){
+                var mDocument = block[i].getElementsByClassName("lis-imgBox-img");
+                if(mDocument.length>0){
+                    localMethod.JI_LOG(i+"mDocument:"+mDocument.length);
+                    var lead = block[i].getElementsByClassName("lis-lead not-dragging");
+                    if(lead.length<1){
+
+                    }
+                     var element = block[i].getElementsByClassName("lis-imgBox-img");
+                                    var titleElement = block[i].getElementsByClassName("mid-lis-name");
+                                    var hrefUrl= element[0].getAttribute('src');
+        //                            hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
+
+                                    if(urls.length==0){
+                                        urls = hrefUrl;
+                                    } else {
+                                        urls = urls + "\n" + hrefUrl;
+                                    }
+
+                                    var title= titleElement[0].getAttribute('title');
+                                    if(titles.length==0){
+                                        titles = title;
+                                    } else {
+                                        titles = titles + "\n" + title;
+                                    }
+                }
+            }
+            localMethod.JI_LOG(urls);
+            localMethod.JI_LOG(titles);
+            localMethod.addPicSpaceResult(urls,titles);
+            var nextArea = document.getElementsByClassName("itemList-bottom ");
+            if(nextArea.length>0){
+                localMethod.JI_LOG("nextArea:"+nextArea.length);
+                var next = nextArea[0].getElementsByClassName("next");
+                var nextDiasble = nextArea[0].getElementsByClassName("next disable1");
+                if(next.length>0){
+                    next[0].click();
+                    if(nextDiasble.length<1){
+                        localMethod.next();
+                    } else {
+                        localMethod.getJsonData("获取图片空间图片完成");
+                    }
                 } else {
                     localMethod.getJsonData("获取图片空间图片完成");
                 }
-            } else {
-                localMethod.getJsonData("获取图片空间图片完成");
-            }
 
+            }
+        } else {
+            localMethod.errorOccur();
         }
     } else {
-        localMethod.errorOccur();
+        localMethod.JI_LOG("小二来了!!!!!!");
     }
 
 }
