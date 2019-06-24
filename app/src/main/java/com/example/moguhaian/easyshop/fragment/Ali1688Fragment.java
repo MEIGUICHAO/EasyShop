@@ -263,7 +263,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }
                 });
                 try {
-                    if (vu.getLocalMethod().getPicSpaceUrlList().size() > 0 && vu.getLocalMethod().getAliDetailDataList().size() > 0) {
+                    if (vu.getLocalMethod().getPicSpaceUrlList().size() > 1 && vu.getLocalMethod().getAliDetailDataList().size() > 1) {
                         biz.diffResult(vu.getLocalMethod().getAliDetailDataList(), vu.getLocalMethod().getPicSpaceUrlList(), new Ali1688Biz.DiffProgressListener() {
                             @Override
                             public void diffFinish() {
@@ -448,7 +448,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 if (!TextUtils.isEmpty(titleResult)) {
                     titlResultArray = titleResult.split("\n");
                 }
-                webView.loadUrl(JsUtils.addJsMethod("setTitle(\"next-input next-input-single next-input-medium fusion-input\"" + ",\"" + ((null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage]) + "\")"));
+//                webView.loadUrl(JsUtils.addJsMethod("setTitle(\"next-input next-input-single next-input-medium fusion-input\"" + ",\"" + ((null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage]) + "\")"));
+                webView.loadUrl(JsUtils.addJsMethod("showKeyboardInput(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\"" + ",\"" + ((null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage]) + "\")"));
+//                webView.loadUrl(JsUtils.addJsMethod("showKeyboardInput(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\"" + ",\"" + fullDateFromat + "\")"));
+
 //                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fusion-input\"+ ",\"" + aliResutlArray[aliCurrentPage] + "\")"));
                 break;
             case R.string.tao_guanjia_search:
@@ -631,6 +634,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             isReset = false;
             webView.getSettings().setJavaScriptEnabled(true);
             webView.loadUrl(picSpaceUrl);
+            return;
         }
         if (clickPosition == R.string.one_click_shop) {
             BaseApplication.getmHandler().postDelayed(new Runnable() {
@@ -709,7 +713,19 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
 
             case R.string.picspace_clear_up:
-                autoFragmentClick(R.string.pic_space_select_all);
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        autoFragmentClick(R.string.pic_space_select_all);
+                        BaseApplication.getmHandler().removeCallbacks(this);
+                    }
+                }, 1000);
+
                 break;
         }
     }
@@ -983,7 +999,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.pic_space_select_all);
                 break;
             case R.string.save_draft:
-
+                String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
+                String title = (null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage];
+                draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + title : draft + "\n" + oldUrl + "\n" + title;
+                LogUtils.e("draft:" + draft);
+                SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, draft);
                 autoFragmentClick(R.string.picspace_clear_up);
                 break;
         }
@@ -1003,6 +1023,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.timing_publish_click:
                 autoFragmentClick(R.string.comfir_publish_click);
+                break;
+            case R.string.ymd_input:
+                autoFragmentClick(R.string.save_draft);
                 break;
 
             case R.string.save_draft:

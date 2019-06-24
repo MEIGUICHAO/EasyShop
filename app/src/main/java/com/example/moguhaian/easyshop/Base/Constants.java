@@ -92,4 +92,5 @@ public interface Constants {
     String GET_UPLOAD_PIC_NAMES = "GET_UPLOAD_PIC_NAMES";
     String PUBLISH_PAGE_LEAVE_X = "PUBLISH_PAGE_LEAVE_X";
     String PUBLISH_PAGE_LEAVE_Y = "PUBLISH_PAGE_LEAVE_Y";
+    String SAVE_DRAFT = "SAVE_DRAFT";
 }
