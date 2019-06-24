@@ -117,7 +117,7 @@ public class LocalMethod {
             @Override
             public void run() {
                 BaseApplication.getmHandler().removeCallbacks(this);
-                mWebView.loadUrl(JsUtils.addJsMethod("getSrcByClassName(\"" + true + "\")"));
+                mWebView.loadUrl(JsUtils.addJsMethod("getSrcByClassName(\"" + false + "\")"));
             }
         }, 1000);
     }
