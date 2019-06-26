@@ -310,13 +310,17 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                         BaseApplication.getmHandler().removeCallbacks(this);
                         skuEditPicPos = 0;
                         ArrayList<String> compareResultPicList = biz.getCompareResultList();
+                        compareResultPicList.clear();
+                        compareResultPicList.add("abc\na9deb840-30fb-43ec-b582-9246d7174bd4");
+                        compareResultPicList.add("abc\na9deb840-30fb-43ec-b582-9246d7174bd4");
+                        compareResultPicList.add("abc\na9deb840-30fb-43ec-b582-9246d7174bd4");
 
                         LogUtils.e("上传数量:" + compareResultPicList.size());
                         if (compareResultPicList.size() < 1) {
                             ToastUtils.showToast("请选择上传图片");
                             return;
                         }
-
+                        uploadCheck = true;
 //                        CommonUtils.copyText(compareResultPicList.get(skuEditPicPos));
                         skuPicInfo = new ArrayList<>();
                         for (int i = 0; i < compareResultPicList.size(); i++) {

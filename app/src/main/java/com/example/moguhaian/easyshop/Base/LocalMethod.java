@@ -3,10 +3,12 @@ package com.example.moguhaian.easyshop.Base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Context;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 
 import com.example.moguhaian.easyshop.Bean.SameSytleUrlBean;
@@ -396,51 +398,64 @@ public class LocalMethod {
             return;
         }
         GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y)));
-        LogUtils.e("图片输入框点击");
-//                CommonUtils.pasteToResult();
-
-        if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")) {
-            return;
-        }
-
-//                if (judeClickRecordEmpty(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X, Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y, "PIC_SPACE_SEARCH empty"))
-//                    return;
+//        LogUtils.e("图片输入框点击");
+//
+//        if (judeClickRecordEmpty(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X, Constants.PIC_SPACE_INPUT_CLICK_DOWN_Y, "PIC_SPACE_INPUT empty")) {
+//            return;
+//        }
         if (judeClickRecordEmpty(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X, Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y, "PIC_SPACE_SELECT empty"))
             return;
         singleThreadExecutor.execute(new Runnable() {
             @Override
             public void run() {
 
-                Looper.prepare();
-//                String str = CommonUtils.pasteToResult();
                 LogUtils.e("picSpaceInputClick:"+pic);
                 Instrumentation inst = new Instrumentation();
                 inst.sendStringSync(pic);
                 LogUtils.e(pic);
                 inst.sendKeyDownUpSync(KeyEvent.KEYCODE_ENTER);
-//                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_INPUT_CLICK_DOWN_X))) {
-//                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X))) {
-//                                GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SEARCH_CLICK_DOWN_Y)));
-//                                LogUtils.e("图片搜索点击");
-//                                BaseApplication.getmHandler().postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//
-//                                        BaseApplication.getmHandler().removeCallbacks(this);
-//                                    }
-//                                }, 1500);
-//                            }
-//                        }
-                Looper.loop();
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mWebView.getWindowToken(), 0);
+
                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        Log.e("base1", "11111111111111");
 
-                        picSelectClick();
+//                        Looper.prepare();
+//                        Looper.loop();
 
+                        BaseApplication.getmHandler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.e("base1", "2222222222");
+                                GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.PIC_SPACE_SELECT_CLICK_DOWN_Y)));
+
+                                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        Log.e("base1", "33333333333333");
+                                        listener.afterGetJson("picSelectClick");
+                                        BaseApplication.getmHandler().removeCallbacks(this);
+                                    }
+                                }, 1000);
+                                BaseApplication.getmHandler().removeCallbacks(this);
+                            }
+                        }, 1000);
                         BaseApplication.getmHandler().removeCallbacks(this);
                     }
                 }, 1000);
+
+//                BaseApplication.getmHandler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        picSelectClick();
+//
+//                        BaseApplication.getmHandler().removeCallbacks(this);
+//                    }
+//                }, 1000);
 
             }
         });
