@@ -423,8 +423,13 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.timing_publish_click:
                 getPublishDate();
-                String[] date = fullDateFromat.split(" ");
-                vu.getLocalMethod().clickPublishTime(date[0], date[1]);
+                if (TextUtils.isEmpty(fullDateFromat)) {
+                    String[] date = fullDateFromat.split(" ");
+                    vu.getLocalMethod().clickPublishTime(date[0], date[1]);
+                } else {
+                    String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
+                    vu.getLocalMethod().clickPublishTime(dayFromat, "20:20:20");
+                }
                 break;
             case R.string.comfir_publish_click_record:
                 clickRecord(Constants.TIME_CLICK_COMFIR_X, Constants.TIME_CLICK_COMFIR_Y);
@@ -455,8 +460,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 if (!TextUtils.isEmpty(titleResult)) {
                     titlResultArray = titleResult.split("\n");
                 }
-//                webView.loadUrl(JsUtils.addJsMethod("setTitle(\"next-input next-input-single next-input-medium fusion-input\"" + ",\"" + ((null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage]) + "\")"));
-                webView.loadUrl(JsUtils.addJsMethod("showKeyboardInput(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\"" + ",\"" + ((null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage]) + "\")"));
+                webView.loadUrl(JsUtils.addJsMethod("setTitle(\"next-input next-input-single next-input-medium fusion-input\"" + ",\"" + ((null == titlResultArray || aliCurrentPage == -1) ? "开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏开启快速冷藏" : titlResultArray[aliCurrentPage]) + "\")"));
+//                webView.loadUrl(JsUtils.addJsMethod("showKeyboardInput(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\"" + ",\"" + ((null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage]) + "\")"));
 //                webView.loadUrl(JsUtils.addJsMethod("showKeyboardInput(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\"" + ",\"" + fullDateFromat + "\")"));
 
 //                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fusion-input\"+ ",\"" + aliResutlArray[aliCurrentPage] + "\")"));

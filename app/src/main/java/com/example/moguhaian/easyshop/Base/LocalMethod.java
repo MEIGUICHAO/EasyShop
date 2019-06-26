@@ -414,8 +414,7 @@ public class LocalMethod {
                 inst.sendStringSync(pic);
                 LogUtils.e(pic);
                 inst.sendKeyDownUpSync(KeyEvent.KEYCODE_ENTER);
-                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(mWebView.getWindowToken(), 0);
+                hideKeybord();
 
                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                     @Override
@@ -463,6 +462,11 @@ public class LocalMethod {
 
 
 
+    }
+
+    private void hideKeybord() {
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mWebView.getWindowToken(), 0);
     }
 
     private boolean judeClickRecordEmpty(String picSpaceInputClickDownX, String picSpaceInputClickDownY, String s) {
@@ -546,19 +550,21 @@ public class LocalMethod {
                         }
                     }
                     instrumentation.sendStringSync(ymd);
+                    hideKeybord();
 
-                    if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
-                        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
-                            LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
-                            LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
-                            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
-                            LogUtils.e("时分秒点击");
-                        }
-                    }
+
                     BaseApplication.getmHandler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
 
+                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
+                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
+                                    LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
+                                    LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
+                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+                                    LogUtils.e("时分秒点击");
+                                }
+                            }
                             singleThreadExecutor.execute(new Runnable() {
                                 @Override
                                 public void run() {
@@ -572,6 +578,7 @@ public class LocalMethod {
                                         }
                                     }
                                     instrumentation.sendStringSync(hmm);
+                                    hideKeybord();
                                     listener.inputFinish();
                                 }
                             });
@@ -579,7 +586,7 @@ public class LocalMethod {
                             BaseApplication.getmHandler().removeCallbacks(this);
 
                         }
-                    }, 2000);
+                    }, 10000);
 
 
                 }
