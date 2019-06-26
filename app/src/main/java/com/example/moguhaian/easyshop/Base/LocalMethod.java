@@ -534,6 +534,7 @@ public class LocalMethod {
             return;
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y))) {
             GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y)));
+            hideKeybord();
             LogUtils.e("年月日点击");
             LogUtils.e("TIME_CLICK_YMD_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_X));
             LogUtils.e("TIME_CLICK_YMD_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_YMD_Y));
@@ -562,6 +563,7 @@ public class LocalMethod {
                                     LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
                                     LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
                                     GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+                                    hideKeybord();
                                     LogUtils.e("时分秒点击");
                                 }
                             }
@@ -579,14 +581,20 @@ public class LocalMethod {
                                     }
                                     instrumentation.sendStringSync(hmm);
                                     hideKeybord();
-                                    listener.inputFinish();
+                                    BaseApplication.getmHandler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            listener.inputFinish();
+                                            BaseApplication.getmHandler().removeCallbacks(this);
+                                        }
+                                    }, 2500);
                                 }
                             });
 
                             BaseApplication.getmHandler().removeCallbacks(this);
 
                         }
-                    }, 10000);
+                    }, 5000);
 
 
                 }
