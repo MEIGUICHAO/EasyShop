@@ -39,6 +39,17 @@ function getAliPageCount(){
     localMethod.getJsonData(page[page.length-2].innerText);
 }
 
+
+function getPicSpacesSpecUrl(){
+    var element = document.getElementsByClassName("table-td-width");
+    localMethod.JI_LOG("!!!!!!"+element.length);
+    var a = element[0].getElementsByTagName("a");
+    localMethod.JI_LOG("a!!!!!!"+a.length);
+    var href = a[0].getAttribute("href");
+    localMethod.getJsonData(href);
+}
+
+
 function getAliTao(){
 //    var element = document.getElementsByClassName("sw-layout-1190");
     var element = document.getElementsByClassName("imgofferresult-mainBlock");

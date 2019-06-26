@@ -50,7 +50,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             , R.string.pic_input_click_record, R.string.pic_select_click_record, R.string.pic_search_click_record, R.string.paste_click_record, R.string.edit_sku, R.string.edit_price, R.string.one_key_publish, R.string.sku_count, R.string.click_moblie_detail, R.string.comfir_moblie_detail
             , R.string.timing_publish, R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.pic_space_select_all, R.string.pic_space_click_record, R.string.pic_space_click, R.string.folder_select_click_record
             , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title, R.string.tao_guanjia_search, R.string.tao_guanjia_to_publish_scene, R.string.tao_guanjia_search_click, R.string.record_switch, R.string.resetSku, R.string.edit_detail_area, R.string.cache_available, R.string.cur_publish_time
-            , R.string.ymd_input, R.string.hmm_input, R.string.sku_pic_name, R.string.autoDebug_switch, R.string.save_draft, R.string.picspace_clear_up, R.string.leave_publish_page_record, R.string.get_publish_result, R.string.refresh_page, R.string.model_number, R.string.go_draft_page, R.string.reload_draft_click_record};
+            , R.string.ymd_input, R.string.hmm_input, R.string.sku_pic_name, R.string.autoDebug_switch, R.string.save_draft, R.string.picspace_clear_up, R.string.leave_publish_page_record, R.string.get_publish_result, R.string.refresh_page, R.string.model_number
+            , R.string.go_draft_page, R.string.reload_draft_click_record, R.string.pic_space_search_pic};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -165,6 +166,28 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     private void rightClickSwitch(int item) {
         switch (item) {
+            case R.string.pic_space_search_pic:
+//
+
+
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"advanced-sarch-senior\")"));
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+//
+                        webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-radio-inner unpress\")"));
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium con-label-input\",\"儿童积木拼装大颗粒男孩女孩益智滑道积木玩具批发\")"));
+                                mHandler.removeCallbacks(this);
+                            }
+                        }, 1000);
+                        mHandler.removeCallbacks(this);
+                    }
+                }, 1000);
+
+                break;
             case R.string.go1688:
 //                biz.getWebViewClient().setNeedListener(true);
 //                pageIndex = 1;
@@ -821,6 +844,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }, 1000);
                 }
             break;
+            case R.string.pic_space_search_pic:
+                webView.loadUrl(json);
+                break;
             case R.string.resetSku:
 //                webScrollToEnd();
                 autoFragmentClick(R.string.filter_word);
@@ -1127,6 +1153,16 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-btn next-btn-primary next-btn-medium action-btn\")"));
 //                autoFragmentClick(R.string.resetSku);
+                break;
+            case R.string.pic_space_search_pic:
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-btn next-btn-normal next-btn-medium bottom-btns-primary\")"));
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        webView.loadUrl(JsUtils.addJsMethod("getPicSpacesSpecUrl()"));
+                        mHandler.removeCallbacks(this);
+                    }
+                }, 1000);
                 break;
         }
     }
