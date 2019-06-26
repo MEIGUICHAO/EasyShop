@@ -280,6 +280,7 @@ function setChildInputValueByClassName(parentName,parentPosition,position,inputv
     localMethod.JI_LOG(parentName+":"+parentElement.length);
     var childElement = parentElement[parentPosition].getElementsByTagName("input");
     childElement[position].value = inputvalue;
+    localMethod.showKeyboardB4Input();
 }
 
 function setTagValue(tags){
