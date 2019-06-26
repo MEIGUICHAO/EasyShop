@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -526,7 +525,7 @@ public class LocalMethod {
     public void clickPublishTime(final String ymd, final String hmm) {
         final Instrumentation instrumentation = new Instrumentation();
 
-        LogUtils.e("clickPublishTime");
+        LogUtils.e("clickPublishTime:" + ymd + hmm);
 
         if (judeClickRecordEmpty(Constants.TIME_CLICK_YMD_X, Constants.TIME_CLICK_YMD_Y, "TIME_CLICK_YMD empty"))
             return;

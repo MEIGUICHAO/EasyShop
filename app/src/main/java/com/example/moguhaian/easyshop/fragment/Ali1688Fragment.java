@@ -21,6 +21,7 @@ import com.example.moguhaian.easyshop.MainActivity;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.CommonUtils;
 import com.example.moguhaian.easyshop.Utils.DateUtil;
+import com.example.moguhaian.easyshop.Utils.GestureTouchUtils;
 import com.example.moguhaian.easyshop.Utils.JsUtils;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.ResUtil;
@@ -49,7 +50,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             , R.string.pic_input_click_record, R.string.pic_select_click_record, R.string.pic_search_click_record, R.string.paste_click_record, R.string.edit_sku, R.string.edit_price, R.string.one_key_publish, R.string.sku_count, R.string.click_moblie_detail, R.string.comfir_moblie_detail
             , R.string.timing_publish, R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.pic_space_select_all, R.string.pic_space_click_record, R.string.pic_space_click, R.string.folder_select_click_record
             , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title, R.string.tao_guanjia_search, R.string.tao_guanjia_to_publish_scene, R.string.tao_guanjia_search_click, R.string.record_switch, R.string.resetSku, R.string.edit_detail_area, R.string.cache_available, R.string.cur_publish_time
-            , R.string.ymd_input, R.string.hmm_input, R.string.sku_pic_name, R.string.autoDebug_switch, R.string.save_draft, R.string.picspace_clear_up, R.string.leave_publish_page_record, R.string.get_publish_result, R.string.refresh_page, R.string.model_number};
+            , R.string.ymd_input, R.string.hmm_input, R.string.sku_pic_name, R.string.autoDebug_switch, R.string.save_draft, R.string.picspace_clear_up, R.string.leave_publish_page_record, R.string.get_publish_result, R.string.refresh_page, R.string.model_number, R.string.go_draft_page, R.string.reload_draft_click_record};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -568,6 +569,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.model_number:
                 webView.loadUrl(JsUtils.addJsMethod("setChildInputValueByClassName(\"next-col next-col-12 left-items\",0,2,\"20190622\")"));
                 break;
+            case R.string.go_draft_page:
+//                webView.getSettings().setJavaScriptEnabled(false);
+
+                webView.loadUrl(JsUtils.addJsMethod("clickChildElementByTagName(\"draft-item\",0,\"div\",0)"));
+                break;
+            case R.string.reload_draft_click_record:
+                clickRecord(Constants.RELOAD_DRAFT_CLICK_X, Constants.RELOAD_DRAFT_CLICK_Y);
+                webView.loadUrl(JsUtils.addJsMethod("clickChildElementByTagName(\"draft-item\",0,\"div\",0)"));
+                break;
         }
     }
 
@@ -682,7 +692,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     public void loadFinish(WebView wv, String url) {
         LogUtils.e("loadFinish:\n" + url);
 
-        if (oldUrl.contains("item.publish.taobao.com") && clickPosition == R.string.refresh_page) {
+        if (oldUrl.contains("item.publish.taobao.com") && (clickPosition == R.string.refresh_page || clickPosition == R.string.go_draft_page)) {
             webView.getSettings().setJavaScriptEnabled(true);
         }
         if (clickPosition == R.string.upload_pic) {
@@ -800,6 +810,17 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         LogUtils.e("afterGetJson_urlJson:" + json);
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
+            case R.string.go_draft_page:
+                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.RELOAD_DRAFT_CLICK_Y))) {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            GestureTouchUtils.simulateClick(webView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.RELOAD_DRAFT_CLICK_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.RELOAD_DRAFT_CLICK_Y)));
+                            mHandler.removeCallbacks(this);
+                        }
+                    }, 1000);
+                }
+            break;
             case R.string.resetSku:
 //                webScrollToEnd();
                 autoFragmentClick(R.string.filter_word);
@@ -1077,6 +1098,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + title : draft + "\n" + oldUrl + "\n" + title;
                 LogUtils.e("draft:" + draft);
                 SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, draft);
+
                 autoFragmentClick(R.string.picspace_clear_up);
                 break;
         }
