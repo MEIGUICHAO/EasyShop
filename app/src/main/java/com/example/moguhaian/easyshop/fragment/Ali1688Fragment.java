@@ -293,7 +293,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(aliResutlArray[aliCurrentPage]);
                 break;
             case R.string.get_detail_1688://获取1688详情图片
-                webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
+                webView.loadUrl(JsUtils.addJsMethod("getAliDetailTitle()"));
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        webView.loadUrl(JsUtils.addJsMethod("getSrcAttrByTagName(\"table-sku\",\"alt\")"));
+                        mHandler.removeCallbacks(this);
+                    }
+                }, 1000);
                 break;
             case R.string.get_upload_pic://获取上传图片
                 getDiff();
@@ -887,11 +894,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.filter_word:
                 webView.loadUrl(JsUtils.addJsMethod("showKeyboardAfterClick(\"cke_wysiwyg_div cke_reset cke_enable_context_menu cke_editable cke_editable_themed cke_contents_ltr cke_show_borders\")"));
                 break;
-            case R.string.get_detail_1688:
-                autoFragmentClick(R.string.one_click_shop);
-
-//                autoFragmentClick(R.string.pics_space);
-                break;
             case R.string.get_mobile_detail:
 //                生成手机详情
 //                mHandler.postDelayed(new Runnable() {
@@ -1073,6 +1075,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     public void afterClick() {
         LogUtils.e("afterClick:" + ResUtil.getS(clickPosition));
         switch (clickPosition) {
+            case R.string.get_detail_1688:
+                autoFragmentClick(R.string.one_click_shop);
+
+//                autoFragmentClick(R.string.pics_space);
+                break;
             case R.string.upload_pic://上传图片
                 CommonUtils.copyText(skuPicInfo.get(skuEditPicPos));
 //                move to loadFinish

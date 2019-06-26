@@ -141,7 +141,7 @@ public class LocalMethod {
                 for (int i = 0; i < srcArray.length; i++) {
                     aliDetailDataList.add(srcArray[i] + "\n" + shopNameArray[i] + "\n" + shopPriceArray[i] + "\n" + shopCountArray[i]);
                 }
-                listener.afterGetJson("");
+                listener.afterClick();
             }
         });
     }

@@ -643,7 +643,16 @@ function setTitle(className,inputvalue){
     localMethod.clearTitle(inputvalue);
 }
 
-
+function getAliDetailTitle(){
+    localMethod.JI_LOG("getAliDetailTitle");
+    var titlMod = document.getElementsByClassName("d-title");
+//    localMethod.JI_LOG("titlMod:"+titlMod.length);
+//    var title = titlMod[0].getElementsByTagName("h1");
+    localMethod.JI_LOG("title:"+titlMod.length);
+    localMethod.JI_LOG("innerText:"+titlMod[0].innerText);
+    localMethod.JI_LOG("value:"+titlMod[0].value);
+    localMethod.getJsonData(titlMod[0].innerText);
+}
 
 
 function getSrcAttrByTagName(className,attr){
