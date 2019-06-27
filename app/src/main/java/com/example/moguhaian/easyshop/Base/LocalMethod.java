@@ -181,16 +181,7 @@ public class LocalMethod {
 //                }
 
                 // “旋转”的拼音
-                int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
-                for (int i = 0; i < keyCodeArray.length; i++) {
-                    try {
-                        typeIn(keyCodeArray[i]);
-                        LogUtils.e("KeyEvent：" + keyCodeArray[i]);
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+                inputAvaliable();
                 BaseApplication.getmHandler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -200,6 +191,19 @@ public class LocalMethod {
             }
         });
 
+    }
+
+    private void inputAvaliable() {
+        int[] keyCodeArray = new int[]{KeyEvent.KEYCODE_X, KeyEvent.KEYCODE_DEL};
+        for (int i = 0; i < keyCodeArray.length; i++) {
+            try {
+                typeIn(keyCodeArray[i]);
+                LogUtils.e("KeyEvent：" + keyCodeArray[i]);
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -463,7 +467,7 @@ public class LocalMethod {
 
     }
 
-    private void hideKeybord() {
+    public void hideKeybord() {
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mWebView.getWindowToken(), 0);
     }
@@ -549,8 +553,15 @@ public class LocalMethod {
                             e.printStackTrace();
                         }
                     }
-                    instrumentation.sendStringSync(ymd);
-                    hideKeybord();
+                    BaseApplication.getmHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            instrumentation.sendStringSync(ymd);
+                            inputAvaliable();
+                            hideKeybord();
+                        }
+                    }, 1600);
 
 
                     BaseApplication.getmHandler().postDelayed(new Runnable() {
@@ -579,6 +590,7 @@ public class LocalMethod {
                                         }
                                     }
                                     instrumentation.sendStringSync(hmm);
+                                    inputAvaliable();
                                     hideKeybord();
                                     BaseApplication.getmHandler().postDelayed(new Runnable() {
                                         @Override
