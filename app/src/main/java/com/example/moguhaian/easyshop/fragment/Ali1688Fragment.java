@@ -1232,7 +1232,13 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.nextpage);
                 break;
             case R.string.pic_space_search_pic:
-//                autoFragmentClick(R.string.pic_space_search_pic);
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        autoFragmentClick(R.string.pic_space_search_pic);
+                        BaseApplication.getmHandler().removeCallbacks(this);
+                    }
+                }, 10000);
                 break;
         }
     }
