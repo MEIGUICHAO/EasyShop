@@ -102,7 +102,7 @@ public class MyWebViewClient extends WebViewClient {
                 public void run() {
 
                     if (newScale > 0.65) {
-                        if (null != fragment) {
+                        if (null != fragment && !view.getUrl().contains("login")) {
                             fragment.hideKeybord();
                         }
                         view.zoomOut();
