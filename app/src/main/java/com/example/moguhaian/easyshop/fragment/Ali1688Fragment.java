@@ -115,6 +115,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private boolean isReset = false;
     private int oldClickPosition;
     private String currentAliTitle;
+    private String itemId;
 
 
     @Override
@@ -289,7 +290,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.getSettings().setJavaScriptEnabled(true);
                 break;
             case R.string.get_detail_1688://获取1688详情图片
-                webView.loadUrl(JsUtils.addJsMethod("getAliDetailTitle()"));
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -624,6 +624,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     @Override
                     public void diffFinish() {
                         if (biz.getCompareResultList().size() > 0) {
+                            webView.loadUrl(basePublish + itemId);
+//                            autoFragmentClick(R.string.tao_keepworker);
                             autoFragmentClick(R.string.tao_keepworker);
                         } else {
                             autoFragmentClick(R.string.nextpage);
@@ -761,6 +763,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
 
         switch (clickPosition) {
+            case R.string.get_upload_pic:
+                autoFragmentClick(R.string.resetSku);
+                break;
             case R.string.go_draft_page:
                 String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
                 String title = (null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage];
@@ -823,9 +828,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }
                 }, 1500);
                 break;
-            case R.string.tao_guanjia_to_publish_scene:
-                autoFragmentClick(R.string.resetSku);
-                break;
 
             case R.string.picspace_clear_up:
                 try {
@@ -853,9 +855,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         LogUtils.e("afterGetJson_urlJson:" + json);
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
-            case R.string.get_detail_1688:
-                currentAliTitle = json;
-                break;
             case R.string.go_draft_page:
                 if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.RELOAD_DRAFT_CLICK_Y))) {
                     mHandler.postDelayed(new Runnable() {
@@ -875,7 +874,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.filter_word);
                 break;
             case R.string.tao_guanjia_to_publish_scene:
-                webView.loadUrl(basePublish + json);
+                itemId = json.split("###")[0];
+                currentAliTitle = json.split("###")[1];
+                autoFragmentClick(R.string.pics_space);
+//                webView.loadUrl(basePublish + json);
                 break;
             case R.string.go1688:
 
@@ -1130,7 +1132,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        autoFragmentClick(R.string.pics_space);
+                        autoFragmentClick(R.string.tao_keepworker);
                     }
                 }, 1000);
 

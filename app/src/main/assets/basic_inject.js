@@ -409,14 +409,18 @@ function goSaleInfoArea(){
 function getPublishItemId(){
     var element = document.getElementsByClassName("item-title");
     localMethod.JI_LOG("item-title:"+element.length);
-    if(element.length>0){
+    var title = document.getElementsByClassName("offer-title ");
+    localMethod.JI_LOG("title:"+title.length);
+
+    if(element.length>0&&title.length>0){
+        localMethod.JI_LOG("title:"+title[0].innerText);
         if(element.length>1){
             localMethod.errorOccur();
         } else {
             var itemA = element[0].getElementsByTagName("a");
             var href = itemA[0].getAttribute("href");
             var itemId = href.split("id=")[1];
-            localMethod.getJsonData(itemId);
+            localMethod.getJsonData(itemId+"###"+title[0].innerText);
         }
     } else {
         localMethod.errorOccur();
@@ -657,6 +661,7 @@ function getAliDetailTitle(){
 
 function getSrcAttrByTagName(className,attr){
 
+    localMethod.JI_LOG("getSrcAttrByTagName");
     var sku = document.getElementsByClassName("obj-sku");
     if(sku.length>0){
         var expand = sku[0].getElementsByClassName("obj-expand");
