@@ -626,7 +626,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                         if (biz.getCompareResultList().size() > 0) {
                             webView.loadUrl(basePublish + itemId);
 //                            autoFragmentClick(R.string.tao_keepworker);
-                            autoFragmentClick(R.string.tao_keepworker);
+//                            autoFragmentClick(R.string.tao_keepworker);
                         } else {
                             autoFragmentClick(R.string.nextpage);
                         }
