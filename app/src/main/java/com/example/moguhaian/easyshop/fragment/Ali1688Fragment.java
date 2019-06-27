@@ -287,7 +287,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     return;
                 }
                 LogUtils.e("1688url:" + aliResutlArray[aliCurrentPage]);
-                webView.loadUrl(aliResutlArray[aliCurrentPage]);
+                if (!TextUtils.isEmpty(aliResutlArray[aliCurrentPage])) {
+                    webView.loadUrl(aliResutlArray[aliCurrentPage]);
+                } else {
+                    autoFragmentClick(R.string.nextpage);
+                }
                 webView.getSettings().setJavaScriptEnabled(true);
                 break;
             case R.string.get_detail_1688://获取1688详情图片

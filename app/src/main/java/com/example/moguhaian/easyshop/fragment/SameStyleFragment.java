@@ -79,6 +79,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 
     @Override
     public void fragmentRightClick(int position) {
+        vu.blockNetIamge(webView, true);
         clickPosition = position;
         switch (position) {
             case 0://同款链接
