@@ -286,6 +286,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 }
                 LogUtils.e("1688url:" + aliResutlArray[aliCurrentPage]);
                 webView.loadUrl(aliResutlArray[aliCurrentPage]);
+                webView.getSettings().setJavaScriptEnabled(true);
                 break;
             case R.string.get_detail_1688://获取1688详情图片
                 webView.loadUrl(JsUtils.addJsMethod("getAliDetailTitle()"));
@@ -303,9 +304,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     @Override
                     public void run() {
                         if (clickPosition == R.string.get_upload_pic) {
-                            getDiff();
+                            autoFragmentClick(R.string.get_pics_space_pic);
+                        } else {
+                            BaseApplication.getmHandler().removeCallbacks(this);
                         }
-                        BaseApplication.getmHandler().removeCallbacks(this);
 
                     }
                 }, 40000);
@@ -765,6 +767,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + title : draft + "\n" + oldUrl + "\n" + title;
                 LogUtils.e("draft:" + draft);
                 SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, draft);
+                webView.getSettings().setJavaScriptEnabled(false);
+                autoFragmentClick(R.string.nextpage);
+
                 break;
             case R.string.one_piece_send:
                 if (!url.contains(Constants.BAIDU)) {
@@ -1140,7 +1145,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.pic_space_select_all);
                 break;
             case R.string.save_draft:
-
+                autoFragmentClick(R.string.go_draft_page);
 //                autoFragmentClick(R.string.picspace_clear_up);
                 break;
         }

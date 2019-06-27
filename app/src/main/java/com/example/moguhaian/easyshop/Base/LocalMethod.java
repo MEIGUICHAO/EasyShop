@@ -553,15 +553,14 @@ public class LocalMethod {
                             e.printStackTrace();
                         }
                     }
-                    BaseApplication.getmHandler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            instrumentation.sendStringSync(ymd);
-                            inputAvaliable();
-                            hideKeybord();
-                        }
-                    }, 1600);
+                    try {
+                        Thread.sleep(1600);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    instrumentation.sendStringSync(ymd);
+                    inputAvaliable();
+                    hideKeybord();
 
 
                     BaseApplication.getmHandler().postDelayed(new Runnable() {
