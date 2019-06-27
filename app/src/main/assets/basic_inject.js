@@ -43,12 +43,34 @@ function getAliPageCount(){
 function getPicSpacesSpecUrl(){
     var element = document.getElementsByClassName("table-td-width");
     localMethod.JI_LOG("!!!!!!"+element.length);
-    var a = element[0].getElementsByTagName("a");
-    localMethod.JI_LOG("a!!!!!!"+a.length);
-    var href = a[0].getAttribute("href");
-    localMethod.getJsonData(href);
+    if(element.length>0){
+        var a = element[0].getElementsByTagName("a");
+        localMethod.JI_LOG("a!!!!!!"+a.length);
+        if(a.length>0){
+            var href = a[0].getAttribute("href");
+            localMethod.getJsonData(href);
+        } else {
+            localMethod.errorOccur();
+        }
+    } else {
+        localMethod.errorOccur();
+    }
 }
 
+
+function checkOfficPublishResult(){
+//    content-header-icon
+    var element = document.getElementsByClassName("content-header-icon");
+    if(element.length>0){
+        var text = element[0].innerText;
+        localMethod.JI_LOG(text);
+        if(text.indexOf("很抱歉，铺货失败")!=-1){
+            localMethod.errorOccur();
+        } else {
+            localMethod.afterClick();
+        }
+    }
+}
 
 function getAliTao(){
 //    var element = document.getElementsByClassName("sw-layout-1190");
@@ -361,6 +383,26 @@ function clickElementsByClassName(className){
         localMethod.JI_LOG("localMethod.afterClick");
         localMethod.afterClick();
         localMethod.JI_LOG(className+":"+element[0].value);
+    } else {
+        localMethod.errorOccur();
+    }
+}
+
+function advanceSearchClick(){
+    var element = document.getElementsByClassName("next-radio-inner unpress");
+    var label = document.getElementsByClassName("next-radio-label");
+    localMethod.JI_LOG("next-radio-inner unpress:"+element.length);
+    if(element.length>0){
+        if(label.length>0){
+            var text = label[0].innerText;
+            if(text.indexOf("按宝贝名称搜索")==-1){
+                localMethod.JI_LOG("element[0].click()");
+                element[0].click();
+                localMethod.JI_LOG("localMethod.afterClick");
+            }
+        }
+//        localMethod.afterClick();
+        localMethod.JI_LOG("label:"+label[0].value);
     } else {
         localMethod.errorOccur();
     }

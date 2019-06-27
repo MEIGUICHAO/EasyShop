@@ -51,7 +51,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             , R.string.timing_publish, R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.pic_space_select_all, R.string.pic_space_click_record, R.string.pic_space_click, R.string.folder_select_click_record
             , R.string.folder_comfir_click_record, R.string.move_folder, R.string.set_title, R.string.tao_guanjia_search, R.string.tao_guanjia_to_publish_scene, R.string.tao_guanjia_search_click, R.string.record_switch, R.string.resetSku, R.string.edit_detail_area, R.string.cache_available, R.string.cur_publish_time
             , R.string.ymd_input, R.string.hmm_input, R.string.sku_pic_name, R.string.autoDebug_switch, R.string.save_draft, R.string.picspace_clear_up, R.string.leave_publish_page_record, R.string.get_publish_result, R.string.refresh_page, R.string.model_number
-            , R.string.go_draft_page, R.string.reload_draft_click_record, R.string.pic_space_search_pic};
+            , R.string.go_draft_page, R.string.reload_draft_click_record, R.string.pic_space_search_pic, R.string.clear_publish_result};
 
     private int pageIndex = 0;
     //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=2&offset=0
@@ -176,7 +176,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     @Override
                     public void run() {
 //
-                        webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-radio-inner unpress\")"));
+                        webView.loadUrl(JsUtils.addJsMethod("advanceSearchClick()"));
+//                        webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-radio-inner unpress\")"));
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -585,6 +586,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
                 LogUtils.e("draft:\n" + draft);
                 break;
+            case R.string.clear_publish_result:
+                SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, "");
+                break;
             case R.string.refresh_page:
                 if (oldUrl.contains("item.publish.taobao.com")) {
                     webView.getSettings().setJavaScriptEnabled(false);
@@ -763,6 +767,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
 
         switch (clickPosition) {
+            case R.string.office_publish:
+                webView.loadUrl(JsUtils.addJsMethod("checkOfficPublishResult()"));
+                break;
             case R.string.get_upload_pic:
                 autoFragmentClick(R.string.resetSku);
                 break;
@@ -1096,6 +1103,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     public void afterClick() {
         LogUtils.e("afterClick:" + ResUtil.getS(clickPosition));
         switch (clickPosition) {
+            case R.string.pic_space_search_pic:
+                webView.loadUrl(JsUtils.addJsMethod("getPicSpacesSpecUrl()"));
+                break;
+
+
+            case R.string.office_publish:
+                autoFragmentClick(R.string.tao_keepworker);
+                break;
             case R.string.get_detail_1688:
                 autoFragmentClick(R.string.one_click_shop);
 
@@ -1128,15 +1143,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
 
                 break;
-            case R.string.office_publish:
-                BaseApplication.getmHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        autoFragmentClick(R.string.tao_keepworker);
-                    }
-                }, 1000);
-
-                break;
             case R.string.pic_space_select_all:
                 autoFragmentClick(R.string.pic_space_click);
                 break;
@@ -1155,7 +1161,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void inputFinish() {
-        vu.getLocalMethod().hideKeybord();
+        hideKeybord();
         switch (clickPosition) {
             case R.string.tao_guanjia_search:
                 autoFragmentClick(R.string.tao_guanjia_search_click);
@@ -1180,15 +1186,18 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.pic_space_search_pic:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-btn next-btn-normal next-btn-medium bottom-btns-primary\")"));
-                mHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        webView.loadUrl(JsUtils.addJsMethod("getPicSpacesSpecUrl()"));
-                        mHandler.removeCallbacks(this);
-                    }
-                }, 1000);
+//                mHandler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mHandler.removeCallbacks(this);
+//                    }
+//                }, 2500);
                 break;
         }
+    }
+
+    public void hideKeybord() {
+        vu.getLocalMethod().hideKeybord();
     }
 
     @Override
@@ -1217,6 +1226,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.pic_space_select_all:
                 autoFragmentClick(R.string.nextpage);
+                break;
+            case R.string.pic_space_search_pic:
+//                autoFragmentClick(R.string.pic_space_search_pic);
                 break;
         }
     }

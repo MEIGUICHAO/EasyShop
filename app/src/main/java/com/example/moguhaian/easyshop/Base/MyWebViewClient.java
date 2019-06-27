@@ -1,8 +1,11 @@
 package com.example.moguhaian.easyshop.Base;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
@@ -10,13 +13,19 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.example.moguhaian.easyshop.MainActivity;
 import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
+import com.example.moguhaian.easyshop.fragment.Ali1688Fragment;
+
+import java.util.List;
 
 public class MyWebViewClient extends WebViewClient {
 
 
+    private final MainActivity mActivity;
+    private Ali1688Fragment fragment;
 
     public String getUserAgent() {
         return userAgent;
@@ -29,7 +38,17 @@ public class MyWebViewClient extends WebViewClient {
     private String userAgent = "";
 
     private float indexScale = -1;
-    public MyWebViewClient() {
+    public MyWebViewClient(Activity activity) {
+        mActivity = (MainActivity) activity;
+        FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (int i = 0; i < fragments.size(); i++) {
+            if (fragments.get(i).getClass().getSimpleName().equals("Ali1688Fragment")) {
+                fragment = (Ali1688Fragment) fragments.get(i);
+                break;
+            }
+        }
+
     }
 
     @Override
@@ -83,6 +102,9 @@ public class MyWebViewClient extends WebViewClient {
                 public void run() {
 
                     if (newScale > 0.65) {
+                        if (null != fragment) {
+                            fragment.hideKeybord();
+                        }
                         view.zoomOut();
                     } else {
                         BaseApplication.getmHandler().removeCallbacks(this);

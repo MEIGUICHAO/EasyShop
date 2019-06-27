@@ -41,7 +41,7 @@ public class BaseBiz {
 
     public void initWebView(WebView wv, final Activity activity) {
         this.webView = wv;
-        webViewClient = new MyWebViewClient();
+        webViewClient = new MyWebViewClient(activity);
         webChromeClient = new MyWebChromeClient();
         webView.setWebViewClient(webViewClient);
         webView.setInitialScale(25);
