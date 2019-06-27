@@ -59,6 +59,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=%CE%A2%B2%A8%C2%AF%D6%C3%CE%EF%BC%DC&netType=1%2C11&n=y&from=taoSellerSearch#beginPage=4&offset=0
     private String urlOrigin;
     private String urlOrigin1 = "https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=";
+//    https://s.1688.com/selloffer/offer_search.htm?descendOrder=true&sortType=va_rmdarkgmv30rt&uniqfield=userid&keywords=
+//    &beginPage=2&offset=0
     private String urlOrigin2 = "&netType=1%2C11&n=y&from=taoSellerSearch";
     private String aliPageTag = "#beginPage=" + "placeTag" + "&offset=0";
     //    private String urlOrigin = "https://detail.1688.com/offer/539556562483.html?sk=consign";
@@ -187,12 +189,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
                 break;
             case R.string.go1688:
-//                biz.getWebViewClient().setNeedListener(true);
-//                pageIndex = 1;
-//
-                webView.loadUrl(urlOrigin);
-//                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794");
-//                webView.loadMyUrl("https://item.publish.taobao.com/sell/publish.htm?catId=124392001&itemId=593358799794",Constants.CSS_FILE_NAME);
+                webView.loadUrl(TextUtils.isEmpty(nextUrl) ? urlOrigin : nextUrl);
 
                 break;
             case R.string.one_piece_send:
@@ -720,6 +717,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     public void loadFinish(WebView wv, String url) {
         LogUtils.e("loadFinish:\n" + url);
 
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
+
+
         if (oldUrl.contains("item.publish.taobao.com") && (clickPosition == R.string.refresh_page || clickPosition == R.string.go_draft_page)) {
             webView.getSettings().setJavaScriptEnabled(true);
         }
@@ -747,9 +749,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             }, 1000);
         }
 
-        if (TextUtils.isEmpty(url)) {
-            return;
-        }
         if (oldUrl.equals(url)&&!isErrorOccur) {
             return;
         }
@@ -884,6 +883,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     isInit = false;
                     LogUtils.e("getPagingNum()" + vu.getLocalMethod().getPagingNum() + "");
                     if (pageIndex < (debug ? 1 : vu.getLocalMethod().getPagingNum())) {
+                        if (pageIndex == 0) {
+                            pageIndex = 1;
+                        }
                         pageIndex++;
                         nextUrl = urlOrigin + "#beginPage=" + pageIndex + "&offset=0";
                         webView.loadUrl(Constants.BAIDU);
@@ -1196,7 +1198,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.nextpage);
                 break;
             case R.string.one_piece_send:
-                autoFragmentClick(R.string.detail_1688);
+                if (!oldUrl.contains("www.baidu.com")) {
+                    autoFragmentClick(R.string.detail_1688);
+                }
                 break;
             case R.string.get_pics_space_pic:
                 errorOcur(R.string.pics_space);

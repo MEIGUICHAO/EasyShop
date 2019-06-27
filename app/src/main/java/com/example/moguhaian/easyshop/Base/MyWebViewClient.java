@@ -2,6 +2,7 @@ package com.example.moguhaian.easyshop.Base;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.os.Build;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
@@ -33,7 +34,11 @@ public class MyWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        view.loadUrl(request.toString());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            view.loadUrl(request.getUrl().toString());
+        } else {
+            view.loadUrl(request.toString());
+        }
         return true;
     }
 
