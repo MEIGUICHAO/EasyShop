@@ -116,6 +116,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int oldClickPosition;
     private String currentAliTitle;
     private String itemId;
+    private boolean loadSearchResult;
 
 
     @Override
@@ -171,6 +172,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private void rightClickSwitch(int item) {
         switch (item) {
             case R.string.pic_space_search_pic:
+                loadSearchResult = false;
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"advanced-sarch-senior\")"));
                 mHandler.postDelayed(new Runnable() {
                     @Override
@@ -878,6 +880,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 }
             break;
             case R.string.pic_space_search_pic:
+                loadSearchResult = true;
                 webView.loadUrl(json);
                 break;
             case R.string.resetSku:
@@ -1235,10 +1238,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        autoFragmentClick(R.string.pic_space_search_pic);
+                        if (!loadSearchResult) {
+                            autoFragmentClick(R.string.pic_space_search_pic);
+                        }
                         BaseApplication.getmHandler().removeCallbacks(this);
                     }
-                }, 10000);
+                }, 20000);
                 break;
         }
     }
