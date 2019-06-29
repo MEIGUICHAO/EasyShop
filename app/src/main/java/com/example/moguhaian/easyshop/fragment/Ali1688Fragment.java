@@ -251,7 +251,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("findMoblieImgLength(\"m-editor-content-body\")"));
                 break;
             case R.string.office_publish:
-                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"btn confirm official-confirm\")"));
+                webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassNameWithoutAfterClick(\"btn confirm official-confirm\")"));
                 break;
             case R.string.new_floder:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"itemList-head-btn-item\")"));
@@ -593,6 +593,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 LogUtils.e("draft:\n" + draft);
                 break;
             case R.string.clear_publish_result:
+                aliCurrentPage = -1;
+                SharedPreferencesUtils.putIntValue(Constants.ALI_CURRENT_PAGE, aliCurrentPage);
                 SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, "");
                 break;
             case R.string.refresh_page:
@@ -731,10 +733,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     public void loadFinish(WebView wv, String url) {
         LogUtils.e("loadFinish:\n" + url);
 
-        if (TextUtils.isEmpty(url)) {
-            return;
-        }
-
 
         if (oldUrl.contains("item.publish.taobao.com") && (clickPosition == R.string.refresh_page || clickPosition == R.string.go_draft_page)) {
             webView.getSettings().setJavaScriptEnabled(true);
@@ -760,7 +758,24 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 public void run() {
                     autoFragmentClick(R.string.office_publish);
                 }
+            }, 2500);
+
+        }
+        if (clickPosition == R.string.office_publish) {
+            BaseApplication.getmHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    webView.loadUrl(JsUtils.addJsMethod("checkOfficPublishResult()"));
+
+                }
             }, 1000);
+
+        }
+
+
+
+        if (TextUtils.isEmpty(url)) {
+            return;
         }
 
         if (oldUrl.equals(url)&&!isErrorOccur) {
@@ -773,9 +788,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
 
         switch (clickPosition) {
-            case R.string.office_publish:
-                webView.loadUrl(JsUtils.addJsMethod("checkOfficPublishResult()"));
-                break;
             case R.string.get_upload_pic:
                 autoFragmentClick(R.string.resetSku);
                 break;
@@ -1243,7 +1255,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                         }
                         BaseApplication.getmHandler().removeCallbacks(this);
                     }
-                }, 20000);
+                }, 60000);
                 break;
         }
     }

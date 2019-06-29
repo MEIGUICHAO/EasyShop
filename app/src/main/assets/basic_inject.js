@@ -60,14 +60,19 @@ function getPicSpacesSpecUrl(){
 
 function checkOfficPublishResult(){
 //    content-header-icon
-    var element = document.getElementsByClassName("content-header-icon");
+    var element = document.getElementsByClassName("content-header");
+    localMethod.JI_LOG("checkOfficPublishResult_element:"+element.length);
     if(element.length>0){
         var text = element[0].innerText;
         localMethod.JI_LOG(text);
-        if(text.indexOf("很抱歉，铺货失败")!=-1){
-            localMethod.errorOccur();
-        } else {
+        if(text.length<1){
             localMethod.afterClick();
+        } else {
+            if(text.indexOf("很抱歉，铺货失败")!=-1){
+                localMethod.errorOccur();
+            } else {
+                localMethod.afterClick();
+            }
         }
     }
 }
@@ -213,7 +218,7 @@ function getSrcByClassName(needJude){
                      var element = block[i].getElementsByClassName("lis-imgBox-img");
                                     var titleElement = block[i].getElementsByClassName("mid-lis-name");
                                     var hrefUrl= element[0].getAttribute('src');
-        //                            hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
+                                    hrefUrl = hrefUrl.replace("jpg_160x160","jpg_32x32");
 
                                     if(urls.length==0){
                                         urls = hrefUrl;
@@ -382,6 +387,21 @@ function clickElementsByClassName(className){
         element[0].click();
         localMethod.JI_LOG("localMethod.afterClick");
         localMethod.afterClick();
+        localMethod.JI_LOG(className+":"+element[0].value);
+    } else {
+        localMethod.errorOccur();
+    }
+}
+
+function clickElementsByClassNameWithoutAfterClick(className){
+    localMethod.JI_LOG("clickElementsByClassName!!!!!!");
+    var element = document.getElementsByClassName(className);
+    localMethod.JI_LOG(className+":"+element.length);
+    if(element.length>0){
+        localMethod.JI_LOG("element[0].click()");
+        element[0].click();
+        localMethod.JI_LOG("localMethod.afterClick");
+//        localMethod.afterClick();
         localMethod.JI_LOG(className+":"+element[0].value);
     } else {
         localMethod.errorOccur();
