@@ -737,6 +737,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         if (oldUrl.contains("item.publish.taobao.com") && (clickPosition == R.string.refresh_page || clickPosition == R.string.go_draft_page)) {
             webView.getSettings().setJavaScriptEnabled(true);
         }
+        if (clickPosition == R.string.detail_1688) {
+            autoFragmentClick(R.string.get_detail_1688);
+        }
         if (clickPosition == R.string.upload_pic) {
 
             if (uploadCheck) {
@@ -1131,7 +1134,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.tao_keepworker);
                 break;
             case R.string.get_detail_1688:
-                autoFragmentClick(R.string.one_click_shop);
+//                autoFragmentClick(R.string.one_click_shop);
 
 //                autoFragmentClick(R.string.pics_space);
                 break;
@@ -1230,7 +1233,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 errorOcur(R.string.tao_guanjia_search);
                 break;
             case R.string.get_detail_1688:
-                autoFragmentClick(R.string.nextpage);
+//                autoFragmentClick(R.string.nextpage);
                 break;
             case R.string.one_piece_send:
                 if (!oldUrl.contains("www.baidu.com")) {

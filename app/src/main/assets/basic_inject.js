@@ -727,8 +727,13 @@ function getSrcAttrByTagName(className,attr){
     var sku = document.getElementsByClassName("obj-sku");
     if(sku.length>0){
         var expand = sku[0].getElementsByClassName("obj-expand");
-        if(expand.length>0){
-            expand[0].click;
+        var style = expand[0].getAttribute("style");
+        localMethod.JI_LOG("style:"+style);
+        if(style.indexOf("display")!=-1){
+            if(expand.length>0){
+                expand[0].click;
+                localMethod.JI_LOG("sku:click");
+            }
         }
     }
 
