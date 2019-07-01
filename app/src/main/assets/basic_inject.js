@@ -721,7 +721,7 @@ function getAliDetailTitle(){
 }
 
 
-function getSrcAttrByTagName(className,attr){
+function getAliDetailInfo(){
 
     localMethod.JI_LOG("getSrcAttrByTagName");
     var sku = document.getElementsByClassName("obj-sku");
@@ -729,16 +729,74 @@ function getSrcAttrByTagName(className,attr){
         var expand = sku[0].getElementsByClassName("obj-expand");
         var style = expand[0].getAttribute("style");
         localMethod.JI_LOG("style:"+style);
-        if(style.indexOf("display")!=-1){
-            if(expand.length>0){
-                expand[0].click;
-                localMethod.JI_LOG("sku:click");
+        if(null!=style){
+            if(style.length>0){
+                if(style.indexOf("display")!=-1){
+                    if(expand.length>0){
+                        expand[0].click;
+                        localMethod.JI_LOG("sku:click");
+                    }
+                }
             }
+        }
+
+
+        var style1 = document.getElementsByClassName("unit-detail-spec-operator");
+        localMethod.JI_LOG("style1:"+style1.length);
+        if(style1.length>0){
+            getAliDetailInfoJunma(style1);
         }
     }
 
-    var element = document.getElementsByClassName(className);
-    localMethod.JI_LOG(className+":"+element.length);
+
+}
+
+function getAliDetailInfoJunma(style1){
+    localMethod.JI_LOG("getAliDetailInfoJunma");
+    var element = document.getElementsByClassName("table-sku");
+    localMethod.JI_LOG("element:"+element.length);
+    var priceTag = element[0].getElementsByClassName("price")[0].getElementsByClassName("value")[0].innerText;
+    var countTag = element[0].getElementsByClassName("count")[0].getElementsByClassName("value")[0].innerText;
+    localMethod.JI_LOG("priceTag:"+priceTag);
+    localMethod.JI_LOG("countTag:"+countTag);
+    var urls = "";
+    var shopName = "";
+    var shopPrice = "";
+    var shopCount = "";
+    localMethod.JI_LOG("style1:"+style1.length);
+    for(var i=0;i<style1.length;i++){
+        var img = style1[i].getElementsByTagName("img")[0];
+        if(urls.length==0){
+            urls = img.getAttribute("src");
+            shopName = img.getAttribute("alt");
+        } else {
+            urls = urls + "###" + img.getAttribute("src");
+            shopName = shopName + "###" + img.getAttribute("alt");
+        }
+//        localMethod.JI_LOG("shopName:"+shopName);
+//        localMethod.JI_LOG("urls:"+urls);
+        if(shopPrice.length==0){
+            shopPrice = priceTag;
+        } else {
+            shopPrice = shopPrice + "###" + priceTag;
+        }
+        if(shopCount.length==0){
+            shopCount = countTag;
+        } else {
+            shopCount = shopCount + "###" + countTag;
+        }
+    }
+
+
+    localMethod.get1688details(urls,shopName,shopPrice,shopCount);
+
+}
+
+
+function getAliDetailInfoNormal(){
+
+    var element = document.getElementsByClassName("table-sku");
+    localMethod.JI_LOG("table-sku"+":"+element.length);
     var urls = "";
     var shopName = "";
     var shopPrice = "";
@@ -754,14 +812,14 @@ function getSrcAttrByTagName(className,attr){
             for(var j=0;j<tag.length;j++){
                 if(urls.length==0){
                     urls = tag[j].getAttribute("src");
-                    shopName = tag[j].getAttribute(attr);
+                    shopName = tag[j].getAttribute("alt");
                 } else {
                     urls = urls + "###" + tag[j].getAttribute("src");
-                    shopName = shopName + "###" + tag[j].getAttribute(attr);
+                    shopName = shopName + "###" + tag[j].getAttribute("alt");
 
                 }
                 localMethod.JI_LOG(tag[j].getAttribute("src"));
-                localMethod.JI_LOG(tag[j].getAttribute(attr));
+                localMethod.JI_LOG(tag[j].getAttribute("alt"));
             }
             for(var j=0;j<priceTag.length;j++){
                 if(shopPrice.length==0){
