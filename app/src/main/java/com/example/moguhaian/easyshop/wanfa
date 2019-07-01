@@ -39,11 +39,11 @@ resetSku、filter_word、edit_detail_area、edit_sku、edit_price、sku_count、
 set_title、timing_publish、comfir_publish_click
 
 正常sku
-https://detail.1688.com/offer/543818816512.html?sk=consign
+https://detail.1688.com/offer/543818816512.html?sk=consign  ok
 没图片sku
 https://detail.1688.com/offer/578607374928.html?sk=consign
 sku不同颜色（for循环）
-https://detail.1688.com/offer/587652823516.html?sk=consign
+https://detail.1688.com/offer/587652823516.html?sk=consign  ok
 sku不同颜色无图片
 https://detail.1688.com/offer/580549523893.html?sk=consign
 sku不同颜色无图片有图片混合
