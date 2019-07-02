@@ -740,7 +740,6 @@ function getAliDetailInfo(){
             }
         }
 
-
         var style1 = document.getElementsByClassName("unit-detail-spec-operator");
         localMethod.JI_LOG("style1:"+style1.length);
         if(style1.length>0){
@@ -748,10 +747,27 @@ function getAliDetailInfo(){
         } else {
             getAliDetailInfoNormal();
         }
+
+    } else {
+        getAliDetailInfoNoneSku();
     }
 
 
 }
+
+
+
+function getAliDetailInfoNoneSku(){
+
+    localMethod.JI_LOG("getAliDetailInfoNoneSku");
+    var pricesTag = document.getElementsByClassName("price-text price-num");
+    var urls = "~~";
+    var shopName = "默认";
+    var shopPrice = pricesTag[0].innerText;
+    var shopCount = "99";
+    localMethod.get1688details(urls,shopName,shopPrice,shopCount);
+}
+
 
 function getAliDetailInfoJunma(style1){
     localMethod.JI_LOG("getAliDetailInfoJunma");

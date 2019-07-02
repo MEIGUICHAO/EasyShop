@@ -83,6 +83,8 @@ public class Ali1688Biz extends BaseBiz {
 
                             if (detailsList.get(i).contains("~~")) {
                                 compareResultList.add(detailsList.get(i).split("\n")[1] + "\n" + "~~" + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
+                                picSpaceName = TextUtils.isEmpty(picSpaceName) ? "~~" : picSpaceName + "###" + "~~";
+
                             } else {
                                 if (Integer.parseInt(detailArray[3]) > 50) {
                                     for (int j = 0; j < picSpacelsList.size(); j++) {
@@ -119,6 +121,16 @@ public class Ali1688Biz extends BaseBiz {
                 detailPosition++;
                 url = list1.get(detailPosition).split("\n")[0];
                 diffResult(list1, list2,listener);
+            }
+            if (list1.size() == 1) {
+                String picSpaceName = "";
+                detailsList.add(list1.get(detailPosition) + "\n" + "~~");
+                compareResultList.add(detailsList.get(0).split("\n")[1] + "\n" + "~~" + "\n" + detailsList.get(0).split("\n")[2] + "\n" + detailsList.get(0).split("\n")[3]);
+                picSpaceName = TextUtils.isEmpty(picSpaceName) ? "~~" : picSpaceName + "###" + "~~";
+
+                if (!TextUtils.isEmpty(picSpaceName)) {
+                    SharedPreferencesUtils.putValue(Constants.GET_UPLOAD_PIC_NAMES, picSpaceName);
+                }
             }
         }
 
