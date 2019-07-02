@@ -834,13 +834,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.resetSku);
                 break;
             case R.string.go_draft_page:
-                String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
-                String title = (null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage];
-                draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + title : draft + "\n" + oldUrl + "\n" + title;
-                LogUtils.e("draft:" + draft);
-                SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, draft);
-                webView.getSettings().setJavaScriptEnabled(false);
-                autoFragmentClick(R.string.nextpage);
+                goDraftPageSave();
 
                 break;
             case R.string.one_piece_send:
@@ -917,6 +911,16 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
     }
 
+    private void goDraftPageSave() {
+        String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
+        String title = (null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage];
+        draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + title : draft + "\n" + oldUrl + "\n" + title;
+        LogUtils.e("draft:" + draft);
+        SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, draft);
+        webView.getSettings().setJavaScriptEnabled(false);
+        autoFragmentClick(R.string.nextpage);
+    }
+
     @Override
     public void afterGetJson(final String json) {
         LogUtils.e("afterGetJson_urlJson:" + json);
@@ -931,6 +935,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                             mHandler.removeCallbacks(this);
                         }
                     }, 1000);
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (clickPosition == R.string.go_draft_page) {
+                                goDraftPageSave();
+                            }
+                            mHandler.removeCallbacks(this);
+                        }
+                    }, 20000);
                 }
             break;
             case R.string.pic_space_search_pic:
