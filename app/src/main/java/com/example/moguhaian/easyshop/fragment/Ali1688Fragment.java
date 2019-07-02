@@ -264,41 +264,44 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
                 break;
             case R.string.detail_1688://1688详情
-                webView.loadUrl("https://detail.1688.com/offer/587652823516.html?sk=consign");
+//                webView.loadUrl("https://detail.1688.com/offer/587652823516.html?sk=consign");
+//                webView.loadUrl("https://detail.1688.com/offer/578607374928.html?sk=consign");
+//                webView.loadUrl("https://detail.1688.com/offer/580549523893.html?sk=consign");
 
-//                vu.blockNetIamge(webView, true);
-//                if (!cacheAvailable && !TextUtils.isEmpty(aliResult)) {
-//                    SharedPreferencesUtils.putValue(Constants.ALI_SHOP_RESULT, aliResult);
-//                }
-//                if (cacheAvailable) {
-//                    aliResult = SharedPreferencesUtils.getValue(Constants.ALI_SHOP_RESULT);
-//                    aliCurrentPage = SharedPreferencesUtils.getIntValue(Constants.ALI_CURRENT_PAGE, 0);
-//                    LogUtils.e("detail_1688 aliResult:" + aliResult);
-//                    LogUtils.e("detail_1688 aliCurrentPage:" + aliCurrentPage);
-//                }
-//
-//                String[] aliTempResutlArray = aliResult.split("\n");
-//                LogUtils.e("aliTempResutlArray:" + aliTempResutlArray.length);
-//                aliResutlArray = TaoUtils.getSingle(aliTempResutlArray);
-//                LogUtils.e("aliResutlArray:" + aliResutlArray.length);
-//                if (aliCurrentPage == -1) {
-//                    aliCurrentPage = 0;
-//                }
-//                LogUtils.e("aliCurrentPage:"+aliCurrentPage);
-//                if (aliCurrentPage>=aliResutlArray.length) {
-//                    ToastUtils.showToast("detail 最大值");
-//                    aliCurrentPage = aliResutlArray.length / 2;
-//                    return;
-//                }
-//                LogUtils.e("1688url:" + aliResutlArray[aliCurrentPage]);
-//                if (!TextUtils.isEmpty(aliResutlArray[aliCurrentPage])) {
-//                    webView.loadUrl(aliResutlArray[aliCurrentPage]);
-//                } else {
-//                    autoFragmentClick(R.string.nextpage);
-//                }
-//                webView.getSettings().setJavaScriptEnabled(true);
+                vu.blockNetIamge(webView, true);
+                if (!cacheAvailable && !TextUtils.isEmpty(aliResult)) {
+                    SharedPreferencesUtils.putValue(Constants.ALI_SHOP_RESULT, aliResult);
+                }
+                if (cacheAvailable) {
+                    aliResult = SharedPreferencesUtils.getValue(Constants.ALI_SHOP_RESULT);
+                    aliCurrentPage = SharedPreferencesUtils.getIntValue(Constants.ALI_CURRENT_PAGE, 0);
+                    LogUtils.e("detail_1688 aliResult:" + aliResult);
+                    LogUtils.e("detail_1688 aliCurrentPage:" + aliCurrentPage);
+                }
+
+                String[] aliTempResutlArray = aliResult.split("\n");
+                LogUtils.e("aliTempResutlArray:" + aliTempResutlArray.length);
+                aliResutlArray = TaoUtils.getSingle(aliTempResutlArray);
+                LogUtils.e("aliResutlArray:" + aliResutlArray.length);
+                if (aliCurrentPage == -1) {
+                    aliCurrentPage = 0;
+                }
+                LogUtils.e("aliCurrentPage:"+aliCurrentPage);
+                if (aliCurrentPage>=aliResutlArray.length) {
+                    ToastUtils.showToast("detail 最大值");
+                    aliCurrentPage = aliResutlArray.length / 2;
+                    return;
+                }
+                LogUtils.e("1688url:" + aliResutlArray[aliCurrentPage]);
+                if (!TextUtils.isEmpty(aliResutlArray[aliCurrentPage])) {
+                    webView.loadUrl(aliResutlArray[aliCurrentPage]);
+                } else {
+                    autoFragmentClick(R.string.nextpage);
+                }
+                webView.getSettings().setJavaScriptEnabled(true);
                 break;
             case R.string.get_detail_1688://获取1688详情图片
+                vu.getLocalMethod().setAliLimitPrice(-1);
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -1058,10 +1061,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                 skuEditPricesPos++;
                                 if (skuEditPricesPos < (skuEditPricesList.size() < skuLimit ? skuEditPricesList.size() : skuLimit)) {
                                     double prices;
-                                    if (Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) < 30) {
+                                    if (Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) < Constants.ADD_PRIFILE) {
                                         prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) * 2 + 10;
+                                        prices = prices < vu.getLocalMethod().getAliLimitPrice() ? vu.getLocalMethod().getAliLimitPrice() : prices;
                                     } else {
-                                        prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) + 40;
+                                        prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) + Constants.ADD_PRIFILE + 10;
+                                        prices = prices < vu.getLocalMethod().getAliLimitPrice() ? vu.getLocalMethod().getAliLimitPrice() : prices;
                                     }
                                     LogUtils.e("origin_prices:" + skuEditPricesList.get(skuEditPricesPos));
                                     webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));
@@ -1136,7 +1141,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.tao_keepworker);
                 break;
             case R.string.get_detail_1688:
-//                autoFragmentClick(R.string.one_click_shop);
+                autoFragmentClick(R.string.one_click_shop);
 
 //                autoFragmentClick(R.string.pics_space);
                 break;

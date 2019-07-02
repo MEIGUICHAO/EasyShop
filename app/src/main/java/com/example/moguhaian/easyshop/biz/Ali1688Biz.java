@@ -17,6 +17,7 @@ import com.example.moguhaian.easyshop.listener.GlideLoadListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 public class Ali1688Biz extends BaseBiz {
     private Bitmap bitmap1;
@@ -46,8 +47,6 @@ public class Ali1688Biz extends BaseBiz {
 
     public void diffResult(final List<String> list1, final List<String> list2, final DiffProgressListener listener) {
         if (detailPosition == -1 && picSpacePosition == -1) {
-            LogUtils.e("对比开始");
-            LogUtils.e("list1:" + list1.size() + ",list2:" + list2.size());
             detailPosition = 0;
             picSpacePosition = 0;
             detailsList = new ArrayList<>();
@@ -57,58 +56,83 @@ public class Ali1688Biz extends BaseBiz {
         } else if (detailPosition == list1.size() - 1) {
             url = list2.get(picSpacePosition).split("\n")[0];
         }
-        glidePic(url, new GlideLoadListener() {
-            @Override
-            public void loadFinish(Bitmap bitmap) {
-                bitmap = ThumbnailUtils.extractThumbnail(bitmap, 8, 8);
-                String picHexString = PicUtils.getPicHexString(bitmap);
-                if (detailPosition < list1.size()-1) {
-                    detailsList.add(list1.get(detailPosition) + "\n" + picHexString);
-                    detailPosition++;
-                    url = list1.get(detailPosition).split("\n")[0];
-                    diffResult(list1, list2,listener);
-                } else if (picSpacePosition < list2.size() - 1) {
-                    picSpacelsList.add(list2.get(picSpacePosition) + "\n" + picHexString);
-                    picSpacePosition++;
-                    url = list2.get(picSpacePosition).split("\n")[0];
-                    diffResult(list1, list2,listener);
-                } else {
-                    String positonStrs = "";
-                    String picSpaceName = "";
-                    for (int i = 0; i < detailsList.size(); i++) {
-                        for (int j = 0; j < picSpacelsList.size(); j++) {
-                            LogUtils.e("总数:" + detailsList.size() * picSpacelsList.size() + ",进度:" + (i * detailsList.size() + j));
-                            int diff = PicUtils.diff(detailsList.get(i).split("\n")[4], picSpacelsList.get(j).split("\n")[2]);
+        LogUtils.e("总数:" + list1.size() * list2.size() + ",进度:" + (detailPosition + picSpacePosition));
+        if (!url.equals("~~")) {
+
+            glidePic(url, new GlideLoadListener() {
+                @Override
+                public void loadFinish(Bitmap bitmap) {
+                    bitmap = ThumbnailUtils.extractThumbnail(bitmap, 8, 8);
+                    String picHexString = PicUtils.getPicHexString(bitmap);
+                    if (detailPosition < list1.size() - 1) {
+                        detailsList.add(list1.get(detailPosition) + "\n" + picHexString);
+                        detailPosition++;
+                        url = list1.get(detailPosition).split("\n")[0];
+                        diffResult(list1, list2, listener);
+                    } else if (picSpacePosition < list2.size() - 1) {
+                        picSpacelsList.add(list2.get(picSpacePosition) + "\n" + picHexString);
+                        picSpacePosition++;
+                        url = list2.get(picSpacePosition).split("\n")[0];
+                        diffResult(list1, list2, listener);
+                    } else {
+                        String positonStrs = "";
+                        String picSpaceName = "";
+                        for (int i = 0; i < detailsList.size(); i++) {
+                            TreeMap<Integer, String> treeMap = new TreeMap<>();
                             String[] detailArray = detailsList.get(i).split("\n");
-                            //名字、图片名字、价格、数量
-                            if (diff < 4) {
+
+                            if (detailsList.get(i).contains("~~")) {
+                                compareResultList.add(detailsList.get(i).split("\n")[1] + "\n" + "~~" + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
+                                picSpaceName = TextUtils.isEmpty(picSpaceName) ? "~~" : picSpaceName + "###" + "~~";
+
+                            } else {
                                 if (Integer.parseInt(detailArray[3]) > 50) {
-                                    LogUtils.e(">50:\n" + i + ",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
-                                    compareResultList.add(detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
-                                    positonStrs = positonStrs + "," + i;
-                                    picSpaceName = TextUtils.isEmpty(picSpaceName) ? picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") : picSpaceName + "###" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "");
-                                } else {
-                                    LogUtils.e("<50:\n" + i + ",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
+                                    for (int j = 0; j < picSpacelsList.size(); j++) {
+                                        int diff = PicUtils.diff(detailsList.get(i).split("\n")[4], picSpacelsList.get(j).split("\n")[2]);
+                                        treeMap.put(diff, detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
+                                        //名字、图片名字、价格、数量
+                                        LogUtils.e(">50:\n" + i + ",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
+                                        positonStrs = positonStrs + "," + i;
+                                        picSpaceName = TextUtils.isEmpty(picSpaceName) ? picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") : picSpaceName + "###" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "");
+
+                                    }
+                                    LogUtils.e("treeMap key:" + treeMap.firstEntry().getKey());
+                                    LogUtils.e("treeMap value:" + treeMap.firstEntry().getValue());
+
+                                    compareResultList.add(treeMap.firstEntry().getValue());
                                 }
-                                break;
                             }
-//                            if (Integer.parseInt(detailArray[3]) < 50) {
-//                                LogUtils.e("less 50:\n" + detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
-//                            }
                         }
+                        if (!TextUtils.isEmpty(picSpaceName)) {
+                            SharedPreferencesUtils.putValue(Constants.GET_UPLOAD_PIC_NAMES, picSpaceName);
+                        }
+                        LogUtils.e("对比结束");
+                        ToastUtils.showToast("对比结束");
+                        LogUtils.e("positonStrs:" + positonStrs);
+                        listener.diffFinish();
+                        detailPosition = -1;
+                        picSpacePosition = -1;
                     }
-                    if (!TextUtils.isEmpty(picSpaceName)) {
-                        SharedPreferencesUtils.putValue(Constants.GET_UPLOAD_PIC_NAMES, picSpaceName);
-                    }
-                    LogUtils.e("对比结束");
-                    ToastUtils.showToast("对比结束");
-                    LogUtils.e("positonStrs:" + positonStrs);
-                    listener.diffFinish();
-                    detailPosition = -1;
-                    picSpacePosition = -1;
+                }
+            });
+        } else {
+            if (detailPosition < list1.size()-1) {
+                detailsList.add(list1.get(detailPosition) + "\n" + "~~");
+                detailPosition++;
+                url = list1.get(detailPosition).split("\n")[0];
+                diffResult(list1, list2,listener);
+            }
+            if (list1.size() == 1) {
+                String picSpaceName = "";
+                detailsList.add(list1.get(detailPosition) + "\n" + "~~");
+                compareResultList.add(detailsList.get(0).split("\n")[1] + "\n" + "~~" + "\n" + detailsList.get(0).split("\n")[2] + "\n" + detailsList.get(0).split("\n")[3]);
+                picSpaceName = TextUtils.isEmpty(picSpaceName) ? "~~" : picSpaceName + "###" + "~~";
+
+                if (!TextUtils.isEmpty(picSpaceName)) {
+                    SharedPreferencesUtils.putValue(Constants.GET_UPLOAD_PIC_NAMES, picSpaceName);
                 }
             }
-        });
+        }
 
     }
 

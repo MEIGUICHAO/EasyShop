@@ -725,6 +725,12 @@ function getAliDetailInfo(){
 
     localMethod.JI_LOG("getSrcAttrByTagName");
     var sku = document.getElementsByClassName("obj-sku");
+    var pricesTag = document.getElementsByClassName("price-text price-num");
+    if(pricesTag.length>1){
+        localMethod.getLimitPrice(pricesTag[1].innerText);
+    } else {
+        localMethod.getLimitPrice("-1");
+    }
     if(sku.length>0){
         var expand = sku[0].getElementsByClassName("obj-expand");
         var style = expand[0].getAttribute("style");
@@ -740,16 +746,34 @@ function getAliDetailInfo(){
             }
         }
 
-
         var style1 = document.getElementsByClassName("unit-detail-spec-operator");
         localMethod.JI_LOG("style1:"+style1.length);
         if(style1.length>0){
             getAliDetailInfoJunma(style1);
+        } else {
+            getAliDetailInfoNormal();
         }
+
+    } else {
+        getAliDetailInfoNoneSku();
     }
 
 
 }
+
+
+
+function getAliDetailInfoNoneSku(){
+
+    localMethod.JI_LOG("getAliDetailInfoNoneSku");
+    var pricesTag = document.getElementsByClassName("price-text price-num");
+    var urls = "~~";
+    var shopName = "默认";
+    var shopPrice = pricesTag[0].innerText;
+    var shopCount = "99";
+    localMethod.get1688details(urls,shopName,shopPrice,shopCount);
+}
+
 
 function getAliDetailInfoJunma(style1){
     localMethod.JI_LOG("getAliDetailInfoJunma");
@@ -765,13 +789,26 @@ function getAliDetailInfoJunma(style1){
     var shopCount = "";
     localMethod.JI_LOG("style1:"+style1.length);
     for(var i=0;i<style1.length;i++){
-        var img = style1[i].getElementsByTagName("img")[0];
-        if(urls.length==0){
-            urls = img.getAttribute("src");
-            shopName = img.getAttribute("alt");
+        var img = style1[i].getElementsByTagName("img");
+        if(img.length>0){
+            if(urls.length==0){
+                urls = img[0].getAttribute("src");
+                shopName = img[0].getAttribute("alt");
+            } else {
+                urls = urls + "###" + img[0].getAttribute("src");
+                shopName = shopName + "###" + img[0].getAttribute("alt");
+            }
         } else {
-            urls = urls + "###" + img.getAttribute("src");
-            shopName = shopName + "###" + img.getAttribute("alt");
+            var nameTag = style1[i].getElementsByClassName("text text-single-line");
+            if(nameTag.length>0){
+                if(urls.length==0){
+                    urls = "~~";
+                    shopName = nameTag[0].innerText;
+                } else {
+                    urls = urls + "###" + "~~";
+                    shopName = shopName + "###" + nameTag[0].innerText;
+                }
+            }
         }
 //        localMethod.JI_LOG("shopName:"+shopName);
 //        localMethod.JI_LOG("urls:"+urls);
@@ -802,7 +839,7 @@ function getAliDetailInfoNormal(){
     var shopPrice = "";
     var shopCount = "";
     if(element.length>0){
-        var tag = element[0].getElementsByTagName("img");
+        var tag = element[0].getElementsByClassName("name");
         var priceTag = element[0].getElementsByClassName("price");
         var countTag = element[0].getElementsByClassName("count");
         localMethod.JI_LOG("tag:"+tag.length);
@@ -810,16 +847,28 @@ function getAliDetailInfoNormal(){
         if(tag.length>0){
 
             for(var j=0;j<tag.length;j++){
-                if(urls.length==0){
-                    urls = tag[j].getAttribute("src");
-                    shopName = tag[j].getAttribute("alt");
-                } else {
-                    urls = urls + "###" + tag[j].getAttribute("src");
-                    shopName = shopName + "###" + tag[j].getAttribute("alt");
+                var imgTag = tag[j].getElementsByTagName("img");
+                if(imgTag.length>0){
+                    if(urls.length==0){
+                        urls = imgTag[0].getAttribute("src");
+                        shopName = imgTag[0].getAttribute("alt");
+                    } else {
+                        urls = urls + "###" + imgTag[0].getAttribute("src");
+                        shopName = shopName + "###" + imgTag[0].getAttribute("alt");
+                    }
 
+                    localMethod.JI_LOG(tag[j].getAttribute("src"));
+                    localMethod.JI_LOG(tag[j].getAttribute("alt"));
+                } else {
+
+                    if(urls.length==0){
+                        urls = "~~";
+                        shopName = tag[j].innerText;
+                    } else {
+                        urls = urls + "###" +"~~";
+                        shopName = shopName + "###" +tag[j].innerText;
+                    }
                 }
-                localMethod.JI_LOG(tag[j].getAttribute("src"));
-                localMethod.JI_LOG(tag[j].getAttribute("alt"));
             }
             for(var j=0;j<priceTag.length;j++){
                 if(shopPrice.length==0){

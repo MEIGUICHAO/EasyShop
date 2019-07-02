@@ -1,0 +1,37 @@
+//删除安装
+C:\Users\mgc>adb shell
+rk3288:/ # cd system
+rk3288:/system # cd priv-app/
+rk3288:/system/priv-app # rm -rf Refrigerator/
+\rk3288:/system/priv-app #
+130|rk3288:/system/priv-app #
+130|rk3288:/system/priv-app #
+130|rk3288:/system/priv-app #
+130|rk3288:/system/priv-app # exit
+
+
+
+//预安装
+C:\Users\mgc>adb root
+C:\Users\mgc>adb remount
+C:\Users\mgc>adb shell
+2|rk3288:/ # cd system
+rk3288:/system # cd priv-app/
+rk3288:/system/priv-app # ls
+BackupRestoreConfirmation DownloadProvider        MmsService           Settings            SystemUI
+BlockedNumberProvider     ExtServices             MtpDocumentsProvider SettingsProvider    TeleService
+CalendarProvider          ExternalStorageProvider MusicFX              SharedStorageBackup Telecom
+CtsShimPrivPrebuilt       FusedLocation           OneTimeInitializer   Shell               TelephonyProvider
+DefaultContainerService   InputDevices            PackageInstaller     StatementService    VpnDialogs
+DeviceTest                ManagedProvisioning     Provision            StorageManager      WallpaperCropper
+DocumentsUI               MediaProvider           ProxyHandler         StressTest
+rk3288:/system/priv-app # mkdir Refrigerator
+rk3288:/system/priv-app # cd Refrigerator/
+rk3288:/system/priv-app/Refrigerator # ls
+rk3288:/system/priv-app/Refrigerator #
+130|rk3288:/system/priv-app/Refrigerator #
+130|rk3288:/system/priv-app/Refrigerator # exit
+C:\Users\mgc>adb push D:\workspace\iot\488\refrigerator\App\release\App-release.apk /system/priv-app/Refrigerator
+D:\workspace\iot\488\refrigerator\App\release\App-release.apk: 1 file pushed. 5.8 MB/s (91385275 bytes in 15.109s)
+
+C:\Users\mgc>adb reboot
