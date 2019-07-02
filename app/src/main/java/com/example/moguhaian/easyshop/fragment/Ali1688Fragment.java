@@ -301,6 +301,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.getSettings().setJavaScriptEnabled(true);
                 break;
             case R.string.get_detail_1688://获取1688详情图片
+                vu.getLocalMethod().setAliLimitPrice(-1);
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -1060,10 +1061,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                 skuEditPricesPos++;
                                 if (skuEditPricesPos < (skuEditPricesList.size() < skuLimit ? skuEditPricesList.size() : skuLimit)) {
                                     double prices;
-                                    if (Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) < 30) {
+                                    if (Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) < Constants.ADD_PRIFILE) {
                                         prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) * 2 + 10;
+                                        prices = prices < vu.getLocalMethod().getAliLimitPrice() ? vu.getLocalMethod().getAliLimitPrice() : prices;
                                     } else {
-                                        prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) + 40;
+                                        prices = Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) + Constants.ADD_PRIFILE + 10;
+                                        prices = prices < vu.getLocalMethod().getAliLimitPrice() ? vu.getLocalMethod().getAliLimitPrice() : prices;
                                     }
                                     LogUtils.e("origin_prices:" + skuEditPricesList.get(skuEditPricesPos));
                                     webView.loadUrl(JsUtils.addJsMethod("setSkuPrice(\"" + skuEditPricesPos + "\",\"" + prices + "\")"));

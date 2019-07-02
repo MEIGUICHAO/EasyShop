@@ -36,6 +36,16 @@ public class LocalMethod {
     private ArrayList<String> picSpaceUrlList = new ArrayList<>();
     private boolean recordAvailable = true;
 
+    public double getAliLimitPrice() {
+        return AliLimitPrice;
+    }
+
+    public void setAliLimitPrice(double aliLimitPrice) {
+        AliLimitPrice = aliLimitPrice;
+    }
+
+    private double AliLimitPrice;
+
 
     public ArrayList<String> getPicSpaceUrlList() {
         return picSpaceUrlList;
@@ -309,6 +319,22 @@ public class LocalMethod {
             @Override
             public void run() {
                 listener.errorOccur();
+            }
+        });
+    }
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void getLimitPrice(final String limitPrice) {
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                LogUtils.e("limitPrice:" + limitPrice);
+                if (!TextUtils.isEmpty(limitPrice)) {
+                    AliLimitPrice = Double.parseDouble(limitPrice);
+                } else {
+                    AliLimitPrice = -1;
+                }
             }
         });
     }

@@ -43,6 +43,7 @@ public interface Constants {
 
 
     int DELAY_TIME = 2400;
+    int ADD_PRIFILE = 30;
 
 
 

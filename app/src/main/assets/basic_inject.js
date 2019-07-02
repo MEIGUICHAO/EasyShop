@@ -725,6 +725,12 @@ function getAliDetailInfo(){
 
     localMethod.JI_LOG("getSrcAttrByTagName");
     var sku = document.getElementsByClassName("obj-sku");
+    var pricesTag = document.getElementsByClassName("price-text price-num");
+    if(pricesTag.length>1){
+        localMethod.getLimitPrice(pricesTag[1].innerText);
+    } else {
+        localMethod.getLimitPrice("-1");
+    }
     if(sku.length>0){
         var expand = sku[0].getElementsByClassName("obj-expand");
         var style = expand[0].getAttribute("style");
