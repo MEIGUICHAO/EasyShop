@@ -767,13 +767,26 @@ function getAliDetailInfoJunma(style1){
     var shopCount = "";
     localMethod.JI_LOG("style1:"+style1.length);
     for(var i=0;i<style1.length;i++){
-        var img = style1[i].getElementsByTagName("img")[0];
-        if(urls.length==0){
-            urls = img.getAttribute("src");
-            shopName = img.getAttribute("alt");
+        var img = style1[i].getElementsByTagName("img");
+        if(img.length>0){
+            if(urls.length==0){
+                urls = img[0].getAttribute("src");
+                shopName = img[0].getAttribute("alt");
+            } else {
+                urls = urls + "###" + img[0].getAttribute("src");
+                shopName = shopName + "###" + img[0].getAttribute("alt");
+            }
         } else {
-            urls = urls + "###" + img.getAttribute("src");
-            shopName = shopName + "###" + img.getAttribute("alt");
+            var nameTag = style1[i].getElementsByClassName("text text-single-line");
+            if(nameTag.length>0){
+                if(urls.length==0){
+                    urls = "~~";
+                    shopName = nameTag[0].innerText;
+                } else {
+                    urls = urls + "###" + "~~";
+                    shopName = shopName + "###" + nameTag[0].innerText;
+                }
+            }
         }
 //        localMethod.JI_LOG("shopName:"+shopName);
 //        localMethod.JI_LOG("urls:"+urls);
