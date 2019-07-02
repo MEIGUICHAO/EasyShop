@@ -79,6 +79,7 @@ public class Ali1688Biz extends BaseBiz {
                         String picSpaceName = "";
                         for (int i = 0; i < detailsList.size(); i++) {
                             TreeMap<Integer, String> treeMap = new TreeMap<>();
+                            TreeMap<Integer, String> treePicNameMap = new TreeMap<>();
                             String[] detailArray = detailsList.get(i).split("\n");
 
                             if (detailsList.get(i).contains("~~")) {
@@ -90,16 +91,21 @@ public class Ali1688Biz extends BaseBiz {
                                     for (int j = 0; j < picSpacelsList.size(); j++) {
                                         int diff = PicUtils.diff(detailsList.get(i).split("\n")[4], picSpacelsList.get(j).split("\n")[2]);
                                         treeMap.put(diff, detailsList.get(i).split("\n")[1] + "\n" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") + "\n" + detailsList.get(i).split("\n")[2] + "\n" + detailsList.get(i).split("\n")[3]);
+                                        treePicNameMap.put(diff, picSpacelsList.get(j).split("\n")[1].replace(".jpg", ""));
                                         //名字、图片名字、价格、数量
-                                        LogUtils.e(">50:\n" + i + ",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
+//                                        LogUtils.e(">50:\n" + i + ",相似:" + diff + "详情:\n" + detailsList.get(i) + "图片空间:\n" + picSpacelsList.get(j));
                                         positonStrs = positonStrs + "," + i;
-                                        picSpaceName = TextUtils.isEmpty(picSpaceName) ? picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") : picSpaceName + "###" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "");
+//                                        picSpaceName = TextUtils.isEmpty(picSpaceName) ? picSpacelsList.get(j).split("\n")[1].replace(".jpg", "") : picSpaceName + "###" + picSpacelsList.get(j).split("\n")[1].replace(".jpg", "");
 
                                     }
                                     LogUtils.e("treeMap key:" + treeMap.firstEntry().getKey());
                                     LogUtils.e("treeMap value:" + treeMap.firstEntry().getValue());
+                                    LogUtils.e("treePicNameMap value:" + treePicNameMap.firstEntry().getValue());
 
                                     compareResultList.add(treeMap.firstEntry().getValue());
+                                    String picName = treePicNameMap.firstEntry().getValue();
+                                    picSpaceName = TextUtils.isEmpty(picSpaceName) ? picName : picSpaceName + "###" + picName;
+
                                 }
                             }
                         }

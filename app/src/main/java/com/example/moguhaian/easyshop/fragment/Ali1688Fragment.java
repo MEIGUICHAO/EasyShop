@@ -117,6 +117,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private String currentAliTitle;
     private String itemId;
     private boolean loadSearchResult;
+    private boolean oneClickShopInit;
+    private boolean officePublishInit;
 
 
     @Override
@@ -214,6 +216,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.detail_1688);
                 break;
             case R.string.one_click_shop:
+                oneClickShopInit = true;
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"menu-item-btn  J_ConsignBtn_DistributeToTaobao\")"));
                 break;
             case R.string.login:
@@ -251,6 +254,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("findMoblieImgLength(\"m-editor-content-body\")"));
                 break;
             case R.string.office_publish:
+                officePublishInit = true;
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassNameWithoutAfterClick(\"btn confirm official-confirm\")"));
                 break;
             case R.string.new_floder:
@@ -761,20 +765,50 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             return;
         }
         if (clickPosition == R.string.one_click_shop) {
+            if (oneClickShopInit) {
+                oneClickShopInit = false;
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (clickPosition == R.string.one_click_shop) {
+                            autoFragmentClick(R.string.office_publish);
+                        }
+                        BaseApplication.getmHandler().removeCallbacks(this);
+                    }
+                }, 5500);
+
+                return;
+            }
             BaseApplication.getmHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     autoFragmentClick(R.string.office_publish);
+                    BaseApplication.getmHandler().removeCallbacks(this);
                 }
-            }, 2500);
+            }, 500);
 
         }
         if (clickPosition == R.string.office_publish) {
+            if (officePublishInit) {
+                officePublishInit = false;
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (clickPosition == R.string.office_publish) {
+                            webView.loadUrl(JsUtils.addJsMethod("checkOfficPublishResult()"));
+                        }
+                        BaseApplication.getmHandler().removeCallbacks(this);
+
+                    }
+                }, 5500);
+
+                return;
+            }
             BaseApplication.getmHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     webView.loadUrl(JsUtils.addJsMethod("checkOfficPublishResult()"));
-
+                    BaseApplication.getmHandler().removeCallbacks(this);
                 }
             }, 1000);
 
@@ -1085,6 +1119,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     @Override
                     public void run() {
                         Instrumentation inst = new Instrumentation();
+                        for (int i = 0; i < 10; i++) {
+                            inst.sendKeyDownUpSync(KeyEvent.KEYCODE_DEL);
+                        }
                         inst.sendStringSync(json);
                         LogUtils.e(json);
                         mHandler.post(new Runnable() {
