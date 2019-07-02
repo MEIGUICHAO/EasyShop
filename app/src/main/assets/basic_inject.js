@@ -745,6 +745,8 @@ function getAliDetailInfo(){
         localMethod.JI_LOG("style1:"+style1.length);
         if(style1.length>0){
             getAliDetailInfoJunma(style1);
+        } else {
+            getAliDetailInfoNormal();
         }
     }
 
@@ -802,7 +804,7 @@ function getAliDetailInfoNormal(){
     var shopPrice = "";
     var shopCount = "";
     if(element.length>0){
-        var tag = element[0].getElementsByTagName("img");
+        var tag = element[0].getElementsByClassName("name");
         var priceTag = element[0].getElementsByClassName("price");
         var countTag = element[0].getElementsByClassName("count");
         localMethod.JI_LOG("tag:"+tag.length);
@@ -810,16 +812,28 @@ function getAliDetailInfoNormal(){
         if(tag.length>0){
 
             for(var j=0;j<tag.length;j++){
-                if(urls.length==0){
-                    urls = tag[j].getAttribute("src");
-                    shopName = tag[j].getAttribute("alt");
-                } else {
-                    urls = urls + "###" + tag[j].getAttribute("src");
-                    shopName = shopName + "###" + tag[j].getAttribute("alt");
+                var imgTag = tag[j].getElementsByTagName("img");
+                if(imgTag.length>0){
+                    if(urls.length==0){
+                        urls = imgTag[0].getAttribute("src");
+                        shopName = imgTag[0].getAttribute("alt");
+                    } else {
+                        urls = urls + "###" + imgTag[0].getAttribute("src");
+                        shopName = shopName + "###" + imgTag[0].getAttribute("alt");
+                    }
 
+                    localMethod.JI_LOG(tag[j].getAttribute("src"));
+                    localMethod.JI_LOG(tag[j].getAttribute("alt"));
+                } else {
+
+                    if(urls.length==0){
+                        urls = "~~";
+                        shopName = tag[j].innerText;
+                    } else {
+                        urls = urls + "###" +"~~";
+                        shopName = shopName + "###" +tag[j].innerText;
+                    }
                 }
-                localMethod.JI_LOG(tag[j].getAttribute("src"));
-                localMethod.JI_LOG(tag[j].getAttribute("alt"));
             }
             for(var j=0;j<priceTag.length;j++){
                 if(shopPrice.length==0){

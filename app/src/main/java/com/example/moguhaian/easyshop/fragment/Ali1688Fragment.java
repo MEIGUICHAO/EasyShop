@@ -264,7 +264,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("setInputValue(\"next-input next-input-single next-input-medium fileCreat-setting-panel-text-input\",\"test\")"));
                 break;
             case R.string.detail_1688://1688详情
-                webView.loadUrl("https://detail.1688.com/offer/587652823516.html?sk=consign");
+//                webView.loadUrl("https://detail.1688.com/offer/587652823516.html?sk=consign");
+                webView.loadUrl("https://detail.1688.com/offer/578607374928.html?sk=consign");
 
 //                vu.blockNetIamge(webView, true);
 //                if (!cacheAvailable && !TextUtils.isEmpty(aliResult)) {
