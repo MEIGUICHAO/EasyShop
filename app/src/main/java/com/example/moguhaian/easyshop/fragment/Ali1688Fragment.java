@@ -326,7 +326,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                         }
 
                     }
-                }, 40000);
+                }, 50000);
 
 
                 break;
@@ -1040,6 +1040,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                 skuEditPos++;
                                 if (skuEditPos < (skuInfo.size() < skuLimit ? skuInfo.size() : skuLimit)) {
                                     webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\"" + "," + "\"next-input next-input-single next-input-medium clear color-dropdown-input\"" + ")"));
+                                } else if (skuEditPos == (skuInfo.size() < skuLimit ? skuInfo.size() : skuLimit)) {
+                                    webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + "" + "\"" + "," + "\"next-input next-input-single next-input-medium clear color-dropdown-input\"" + ")"));
                                 } else {
                                     ToastUtils.showToast("文字sku结束");
                                     webScrollToEnd();
@@ -1298,7 +1300,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 }
                 break;
             case R.string.get_pics_space_pic:
-                errorOcur(R.string.pics_space);
+                if (webView.getUrl().contains("sucai.wangpu.taobao")) {
+                    errorOcur(R.string.pics_space);
+                }
                 break;
             case R.string.office_publish:
                 errorOcur(R.string.office_publish);
