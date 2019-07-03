@@ -91,7 +91,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private int skuEditPicPos = 0;
     private boolean aliOneKeyPublish = false;
     private int skuEditPricesPos;
-    private int skuLimit = 19;
+//    private int skuLimit = 19;
+    private int skuLimit = 12;
     private int aliCurrentPage = -1;
     private int aliMaxPage = -1;
     private boolean notAuto = false;
@@ -321,9 +322,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     public void run() {
                         if (clickPosition == R.string.get_upload_pic) {
                             autoFragmentClick(R.string.get_pics_space_pic);
-                        } else {
-                            BaseApplication.getmHandler().removeCallbacks(this);
                         }
+                        BaseApplication.getmHandler().removeCallbacks(this);
 
                     }
                 }, 50000);
@@ -1040,7 +1040,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                 skuEditPos++;
                                 if (skuEditPos < (skuInfo.size() < skuLimit ? skuInfo.size() : skuLimit)) {
                                     webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + skuInfo.get(skuEditPos) + "\"" + "," + "\"next-input next-input-single next-input-medium clear color-dropdown-input\"" + ")"));
-                                } else if (skuEditPos == (skuInfo.size() < skuLimit ? skuInfo.size() : skuLimit)) {
+                                } else if (skuEditPos == (skuInfo.size() < skuLimit ? skuInfo.size() : skuLimit) && skuInfo.size() < 5) {
                                     webView.loadUrl(JsUtils.addJsMethod("editSKu(\"" + skuEditPos + "\",\"" + "" + "\"" + "," + "\"next-input next-input-single next-input-medium clear color-dropdown-input\"" + ")"));
                                 } else {
                                     ToastUtils.showToast("文字sku结束");
@@ -1108,6 +1108,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                             @Override
                             public void run() {
                                 skuEditPricesPos++;
+                                LogUtils.e("skuEditPricesPos:" + skuEditPricesPos);
                                 if (skuEditPricesPos < (skuEditPricesList.size() < skuLimit ? skuEditPricesList.size() : skuLimit)) {
                                     double prices;
                                     if (Double.parseDouble(skuEditPricesList.get(skuEditPricesPos)) < Constants.ADD_PRIFILE) {
