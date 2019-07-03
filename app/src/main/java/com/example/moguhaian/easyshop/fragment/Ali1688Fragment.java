@@ -1302,6 +1302,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.get_pics_space_pic:
                 if (webView.getUrl().contains("sucai.wangpu.taobao")) {
                     errorOcur(R.string.pics_space);
+                } else if (webView.getUrl().contains("item.publish")) {
+                    autoFragmentClick(R.string.resetSku);
                 }
                 break;
             case R.string.office_publish:
