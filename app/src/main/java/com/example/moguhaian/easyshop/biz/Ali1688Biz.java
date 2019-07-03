@@ -56,7 +56,7 @@ public class Ali1688Biz extends BaseBiz {
         } else if (detailPosition == list1.size() - 1) {
             url = list2.get(picSpacePosition).split("\n")[0];
         }
-        LogUtils.e("总数:" + list1.size() * list2.size() + ",进度:" + (detailPosition + picSpacePosition));
+        LogUtils.e("总数:" +( list1.size() + list2.size()) + ",进度:" + (detailPosition + picSpacePosition));
         if (!url.equals("~~")) {
 
             glidePic(url, new GlideLoadListener() {
@@ -137,6 +137,10 @@ public class Ali1688Biz extends BaseBiz {
                 if (!TextUtils.isEmpty(picSpaceName)) {
                     SharedPreferencesUtils.putValue(Constants.GET_UPLOAD_PIC_NAMES, picSpaceName);
                 }
+
+                LogUtils.e("对比结束");
+                ToastUtils.showToast("对比结束");
+                listener.diffFinish();
             }
         }
 
