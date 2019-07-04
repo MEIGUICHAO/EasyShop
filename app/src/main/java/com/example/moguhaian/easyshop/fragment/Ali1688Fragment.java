@@ -490,7 +490,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.timing_publish_click:
                 if (!YMD_INPUT_FINISH) {
                     getPublishDate();
-                    if (TextUtils.isEmpty(fullDateFromat)) {
+                    if (!TextUtils.isEmpty(fullDateFromat)) {
                         String[] date = fullDateFromat.split(" ");
                         vu.getLocalMethod().clickPublishTime(date[0], date[1]);
                     } else {
@@ -499,8 +499,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }
                 } else if (!HMM_INPUT_FINISH) {
 
-                    getPublishDate();
-                    if (TextUtils.isEmpty(fullDateFromat)) {
+                    if (!TextUtils.isEmpty(fullDateFromat)) {
                         String[] date = fullDateFromat.split(" ");
                         vu.getLocalMethod().clickPublishTimeHmm(date[0], date[1]);
                     } else {
