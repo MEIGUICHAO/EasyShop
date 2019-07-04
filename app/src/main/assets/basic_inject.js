@@ -454,6 +454,20 @@ function goEditDetailArea(){
     }
 }
 
+function goBaseInfoArea(){
+    localMethod.JI_LOG("goEditDetailArea!!!!!!");
+    var element = document.getElementsByClassName("next-menu-item");
+
+    for(var j=0;j<element.length;j++){
+        localMethod.JI_LOG("innerText:"+element[j].innerText);
+
+        if(element[j].innerText.indexOf("基础信息")!=-1){
+            element[j].click();
+            localMethod.getJsonData("基础信息");
+        }
+    }
+}
+
 function goSaleInfoArea(){
     localMethod.JI_LOG("goEditDetailArea!!!!!!");
     var element = document.getElementsByClassName("next-menu-item");
@@ -925,6 +939,35 @@ function foreachTable(tableName,page){
 
 }
 
+
+function clickAttrElementsByClassNameAndInnerText(value){
+    var item = document.getElementsByClassName("sell-catProp-item");
+    var unfind = true;
+    localMethod.JI_LOG("item:"+item.length);
+    for(var i=0;i<item.length;i++){
+        var label = item[i].getElementsByClassName("label required");
+        localMethod.JI_LOG("label:"+label.length);
+        if(label.length>0){
+            localMethod.JI_LOG("label:"+label[0].innerText);
+            if(label[0].innerText.indexOf(value)!=-1){
+                var nextselect = item[i].getElementsByClassName("next-select-inner");
+                localMethod.JI_LOG("nextselect:"+nextselect.length);
+                if(nextselect.length>0){
+                    if(nextselect[0].innerText.indexOf("请选择")!=-1||value.indexOf("品牌")!=-1||value.indexOf("产地")!=-1){
+                        nextselect[0].click();
+                        unfind = false;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    if(unfind){
+        localMethod.errorOccur();
+    } else {
+        localMethod.afterClick();
+    }
+}
 
 function setSkuPrice(position,price){
 //    sell-sku-table-wrap
