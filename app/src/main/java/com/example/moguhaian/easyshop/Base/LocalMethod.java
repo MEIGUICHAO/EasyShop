@@ -591,50 +591,97 @@ public class LocalMethod {
                     instrumentation.sendStringSync(ymd);
                     inputAvaliable();
                     hideKeybord();
+                    listener.inputFinish();
 
 
-                    BaseApplication.getmHandler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+//                    BaseApplication.getmHandler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
+//                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
+//                                    LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
+//                                    LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
+//                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+//                                    hideKeybord();
+//                                    LogUtils.e("时分秒点击");
+//                                }
+//                            }
+//                            singleThreadExecutor.execute(new Runnable() {
+//                                @Override
+//                                public void run() {
+//
+//                                    for (int i = 0; i < 15; i++) {
+//                                        try {
+//                                            typeIn(KeyEvent.KEYCODE_DEL);
+//                                            Thread.sleep(100);
+//                                        } catch (InterruptedException e) {
+//                                            e.printStackTrace();
+//                                        }
+//                                    }
+//                                    instrumentation.sendStringSync(hmm);
+//                                    inputAvaliable();
+//                                    hideKeybord();
+//                                    BaseApplication.getmHandler().postDelayed(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            listener.inputFinish();
+//                                            BaseApplication.getmHandler().removeCallbacks(this);
+//                                        }
+//                                    }, 2500);
+//                                }
+//                            });
+//
+//                            BaseApplication.getmHandler().removeCallbacks(this);
+//
+//                        }
+//                    }, 5000);
 
-                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
-                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
-                                    LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
-                                    LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
-                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
-                                    hideKeybord();
-                                    LogUtils.e("时分秒点击");
-                                }
-                            }
-                            singleThreadExecutor.execute(new Runnable() {
-                                @Override
-                                public void run() {
 
-                                    for (int i = 0; i < 15; i++) {
-                                        try {
-                                            typeIn(KeyEvent.KEYCODE_DEL);
-                                            Thread.sleep(100);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                    instrumentation.sendStringSync(hmm);
-                                    inputAvaliable();
-                                    hideKeybord();
-                                    BaseApplication.getmHandler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            listener.inputFinish();
-                                            BaseApplication.getmHandler().removeCallbacks(this);
-                                        }
-                                    }, 2500);
-                                }
-                            });
+                }
+            });
 
-                            BaseApplication.getmHandler().removeCallbacks(this);
+        }
 
+    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
+    public void clickPublishTimeHmm(final String ymd, final String hmm) {
+        final Instrumentation instrumentation = new Instrumentation();
+
+        LogUtils.e("clickPublishTime:" + ymd + hmm);
+
+        if (judeClickRecordEmpty(Constants.TIME_CLICK_HMM_X, Constants.TIME_CLICK_HMM_Y, "TIME_CLICK_HMM empty"))
+            return;
+        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
+            GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
+            hideKeybord();
+            LogUtils.e("时分秒点击");
+            LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
+            LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
+            singleThreadExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    for (int i = 0; i < 15; i++) {
+                        try {
+                            typeIn(KeyEvent.KEYCODE_DEL);
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    }, 5000);
+                    }
+                    try {
+                        Thread.sleep(1600);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    instrumentation.sendStringSync(hmm);
+                    inputAvaliable();
+                    hideKeybord();
+                    listener.inputFinish();
 
 
                 }
@@ -685,6 +732,7 @@ public class LocalMethod {
     public void clickPublishTimeComfir() {
         if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X)) && !TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y))) {
             GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y)));
+            listener.afterClick();
             LogUtils.e("TIME_CLICK_COMFIR_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_X));
             LogUtils.e("TIME_CLICK_COMFIR_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_COMFIR_Y));
 

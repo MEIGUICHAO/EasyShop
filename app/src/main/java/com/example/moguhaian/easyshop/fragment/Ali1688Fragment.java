@@ -127,6 +127,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     private String[] ATTR_CLICK_X = {Constants.BRAND_CLICK_X, Constants.PRODUCT_POT_CLICK_X, Constants.AGE_AVAILABLE_CLICK_X, Constants.SEX_AVAILABLE_CLICK_X};
     private String[] ATTR_CLICK_Y = {Constants.BRAND_CLICK_Y, Constants.PRODUCT_POT_CLICK_Y, Constants.AGE_AVAILABLE_CLICK_Y, Constants.SEX_AVAILABLE_CLICK_Y};
+    private boolean YMD_INPUT_FINISH = false;
+    private boolean HMM_INPUT_FINISH = false;
 
     @Override
     protected int getLayoutId() {
@@ -486,14 +488,27 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 clickRecord(Constants.TIME_CLICK_HMM_X, Constants.TIME_CLICK_HMM_Y);
                 break;
             case R.string.timing_publish_click:
-                getPublishDate();
-                if (TextUtils.isEmpty(fullDateFromat)) {
-                    String[] date = fullDateFromat.split(" ");
-                    vu.getLocalMethod().clickPublishTime(date[0], date[1]);
-                } else {
-                    String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
-                    vu.getLocalMethod().clickPublishTime(dayFromat, "20:20:20");
+                if (!YMD_INPUT_FINISH) {
+                    getPublishDate();
+                    if (TextUtils.isEmpty(fullDateFromat)) {
+                        String[] date = fullDateFromat.split(" ");
+                        vu.getLocalMethod().clickPublishTime(date[0], date[1]);
+                    } else {
+                        String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
+                        vu.getLocalMethod().clickPublishTime(dayFromat, "20:20:20");
+                    }
+                } else if (!HMM_INPUT_FINISH) {
+
+                    getPublishDate();
+                    if (TextUtils.isEmpty(fullDateFromat)) {
+                        String[] date = fullDateFromat.split(" ");
+                        vu.getLocalMethod().clickPublishTimeHmm(date[0], date[1]);
+                    } else {
+                        String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
+                        vu.getLocalMethod().clickPublishTimeHmm(dayFromat, "20:20:20");
+                    }
                 }
+
                 break;
             case R.string.comfir_publish_click_record:
                 clickRecord(Constants.TIME_CLICK_COMFIR_X, Constants.TIME_CLICK_COMFIR_Y);
@@ -1242,6 +1257,15 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     public void afterClick() {
         LogUtils.e("afterClick:" + ResUtil.getS(clickPosition));
         switch (clickPosition) {
+            case R.string.comfir_publish_click:
+                if (!YMD_INPUT_FINISH) {
+                    YMD_INPUT_FINISH = true;
+                    autoFragmentClick(R.string.timing_publish_click);
+                } else if (!HMM_INPUT_FINISH) {
+                    HMM_INPUT_FINISH = false;
+
+                }
+                break;
             case R.string.base_attr_select:
                 if (attrClickSelectNamesPosition == 0) {
                     typeIn("other/");
