@@ -1370,7 +1370,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void inputFinish() {
-        LogUtils.e("inputFinish");
+        LogUtils.e("inputFinish:" + ResUtil.getS(clickPosition));
         hideKeybord();
         switch (clickPosition) {
             case R.string.tao_guanjia_search:
@@ -1383,6 +1383,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 autoFragmentClick(R.string.sku_pic_name);
                 break;
             case R.string.timing_publish_click:
+                autoFragmentClick(R.string.comfir_publish_click);
+                break;
+            case R.string.comfir_publish_click:
                 autoFragmentClick(R.string.comfir_publish_click);
                 break;
             case R.string.ymd_input:
