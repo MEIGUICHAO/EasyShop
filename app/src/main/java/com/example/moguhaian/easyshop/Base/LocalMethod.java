@@ -591,52 +591,12 @@ public class LocalMethod {
                     instrumentation.sendStringSync(ymd);
                     inputAvaliable();
                     hideKeybord();
-                    listener.inputFinish();
-
-
-//                    BaseApplication.getmHandler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//
-//                            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X))) {
-//                                if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y))) {
-//                                    LogUtils.e("TIME_CLICK_HMM_X:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X));
-//                                    LogUtils.e("TIME_CLICK_HMM_Y:" + SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y));
-//                                    GestureTouchUtils.simulateClick(mWebView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_X)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(Constants.TIME_CLICK_HMM_Y)));
-//                                    hideKeybord();
-//                                    LogUtils.e("时分秒点击");
-//                                }
-//                            }
-//                            singleThreadExecutor.execute(new Runnable() {
-//                                @Override
-//                                public void run() {
-//
-//                                    for (int i = 0; i < 15; i++) {
-//                                        try {
-//                                            typeIn(KeyEvent.KEYCODE_DEL);
-//                                            Thread.sleep(100);
-//                                        } catch (InterruptedException e) {
-//                                            e.printStackTrace();
-//                                        }
-//                                    }
-//                                    instrumentation.sendStringSync(hmm);
-//                                    inputAvaliable();
-//                                    hideKeybord();
-//                                    BaseApplication.getmHandler().postDelayed(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                            listener.inputFinish();
-//                                            BaseApplication.getmHandler().removeCallbacks(this);
-//                                        }
-//                                    }, 2500);
-//                                }
-//                            });
-//
-//                            BaseApplication.getmHandler().removeCallbacks(this);
-//
-//                        }
-//                    }, 5000);
-
+                    BaseApplication.getmHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.inputFinish();
+                        }
+                    });
 
                 }
             });
@@ -681,7 +641,12 @@ public class LocalMethod {
                     instrumentation.sendStringSync(hmm);
                     inputAvaliable();
                     hideKeybord();
-                    listener.inputFinish();
+                    BaseApplication.getmHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            listener.inputFinish();
+                        }
+                    });
 
 
                 }

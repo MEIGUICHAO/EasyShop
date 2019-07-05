@@ -666,9 +666,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("clickChildElementByTagName(\"draft-item\",0,\"div\",0)"));
                 break;
             case R.string.base_attr_select:
-//                webView.loadUrl(JsUtils.addJsMethod("goBaseInfoArea()"));
+//
 
                 if (attrClickSelectNamesPosition == -1) {
+                    webView.loadUrl(JsUtils.addJsMethod("goBaseInfoArea()"));
                     attrClickSelectNamesPosition = 0;
                 } else {
                     attrClickSelectNamesPosition++;
@@ -1280,7 +1281,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                         String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
                                         vu.getLocalMethod().clickPublishTimeHmm(dayFromat, "20:20:20");
                                     }
-                                    HMM_INPUT_FINISH = true;
+
                                     mHandler.removeCallbacks(this);
                                 }
                             }, 2500);
@@ -1288,6 +1289,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                             mHandler.removeCallbacks(this);
                         }
                     }, 2500);
+                } else {
+                    if (HMM_INPUT_FINISH) {
+                        autoFragmentClick(R.string.save_draft);
+                    }
                 }
                 break;
             case R.string.base_attr_select:
@@ -1355,7 +1360,6 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.save_draft:
                 autoFragmentClick(R.string.go_draft_page);
-//                autoFragmentClick(R.string.picspace_clear_up);
                 break;
         }
     }
@@ -1373,6 +1377,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         LogUtils.e("inputFinish:" + ResUtil.getS(clickPosition));
         hideKeybord();
         switch (clickPosition) {
+            case R.string.model_number:
+                autoFragmentClick(R.string.timing_publish);
+                break;
             case R.string.tao_guanjia_search:
                 autoFragmentClick(R.string.tao_guanjia_search_click);
                 break;
@@ -1387,9 +1394,11 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.comfir_publish_click:
                 autoFragmentClick(R.string.comfir_publish_click);
+                HMM_INPUT_FINISH = true;
                 break;
             case R.string.ymd_input:
-                autoFragmentClick(R.string.save_draft);
+                autoFragmentClick(R.string.base_attr_select);
+//                autoFragmentClick(R.string.save_draft);
                 break;
 
             case R.string.save_draft:
