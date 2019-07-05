@@ -488,6 +488,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 clickRecord(Constants.TIME_CLICK_HMM_X, Constants.TIME_CLICK_HMM_Y);
                 break;
             case R.string.timing_publish_click:
+                if (YMD_INPUT_FINISH && HMM_INPUT_FINISH) {
+                    YMD_INPUT_FINISH = false;
+                    HMM_INPUT_FINISH = false;
+                }
                 if (!YMD_INPUT_FINISH) {
                     getPublishDate();
                     if (!TextUtils.isEmpty(fullDateFromat)) {
@@ -497,16 +501,17 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                         String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
                         vu.getLocalMethod().clickPublishTime(dayFromat, "20:20:20");
                     }
-                } else if (!HMM_INPUT_FINISH) {
-
-                    if (!TextUtils.isEmpty(fullDateFromat)) {
-                        String[] date = fullDateFromat.split(" ");
-                        vu.getLocalMethod().clickPublishTimeHmm(date[0], date[1]);
-                    } else {
-                        String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
-                        vu.getLocalMethod().clickPublishTimeHmm(dayFromat, "20:20:20");
-                    }
                 }
+//                else if (!HMM_INPUT_FINISH) {
+//
+//                    if (!TextUtils.isEmpty(fullDateFromat)) {
+//                        String[] date = fullDateFromat.split(" ");
+//                        vu.getLocalMethod().clickPublishTimeHmm(date[0], date[1]);
+//                    } else {
+//                        String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
+//                        vu.getLocalMethod().clickPublishTimeHmm(dayFromat, "20:20:20");
+//                    }
+//                }
 
                 break;
             case R.string.comfir_publish_click_record:
@@ -732,7 +737,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         Long spaceTime = Long.parseLong(endTime) - Long.parseLong(beginTime);
         if (null == aliResutlArray) {
             ToastUtils.showToast("getPublishDate test");
-            fullDateFromat = "2019-06-20 12:12:12";
+            String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
+            fullDateFromat = dayFromat + " 12:12:12";
             return;
         }
         singleSpaceTime = spaceTime / (aliResutlArray.length < 38 ? aliResutlArray.length : 38);
@@ -1259,10 +1265,29 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.comfir_publish_click:
                 if (!YMD_INPUT_FINISH) {
                     YMD_INPUT_FINISH = true;
-                    autoFragmentClick(R.string.timing_publish_click);
-                } else if (!HMM_INPUT_FINISH) {
-                    HMM_INPUT_FINISH = false;
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
 
+                                    if (!TextUtils.isEmpty(fullDateFromat)) {
+                                        String[] date = fullDateFromat.split(" ");
+                                        vu.getLocalMethod().clickPublishTimeHmm(date[0], date[1]);
+                                    } else {
+                                        String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
+                                        vu.getLocalMethod().clickPublishTimeHmm(dayFromat, "20:20:20");
+                                    }
+                                    HMM_INPUT_FINISH = true;
+                                    mHandler.removeCallbacks(this);
+                                }
+                            }, 2500);
+
+                            mHandler.removeCallbacks(this);
+                        }
+                    }, 2500);
                 }
                 break;
             case R.string.base_attr_select:
@@ -1345,6 +1370,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
     @Override
     public void inputFinish() {
+        LogUtils.e("inputFinish");
         hideKeybord();
         switch (clickPosition) {
             case R.string.tao_guanjia_search:
