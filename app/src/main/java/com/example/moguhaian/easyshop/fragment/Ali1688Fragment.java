@@ -945,7 +945,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 //                webView.loadUrl(JsUtils.addJsMethod("getAliPageCount()"));
                 break;
             case R.string.pics_space://加载图片空间
-                autoFragmentClick(R.string.pic_space_search_pic);
+                delayAutoFragmentClick(R.string.pic_space_search_pic);
+//                autoFragmentClick(R.string.pic_space_search_pic);
 //                delayAutoFragmentClick(R.string.get_pics_space_pic);
 //                autoFragmentClick(R.string.get_pics_space_pic);
                 break;
@@ -1166,7 +1167,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                         @Override
                                         public void run() {
                                             mHandler.removeCallbacks(this);
-                                            autoFragmentClick(R.string.ymd_input);
+
+                                            webView.loadUrl(JsUtils.addJsMethod("goBaseInfoArea()"));
+                                            delayAutoFragmentClick(R.string.base_attr_select);
+//                                            autoFragmentClick(R.string.ymd_input);
                                         }
                                     }, 1000);
                                 }
@@ -1378,7 +1382,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         hideKeybord();
         switch (clickPosition) {
             case R.string.model_number:
-                autoFragmentClick(R.string.timing_publish);
+                webScrollToEnd();
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        autoFragmentClick(R.string.timing_publish);
+                        BaseApplication.getmHandler().removeCallbacks(this);
+                    }
+                }, 1000);
                 break;
             case R.string.tao_guanjia_search:
                 autoFragmentClick(R.string.tao_guanjia_search_click);
@@ -1397,7 +1408,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 HMM_INPUT_FINISH = true;
                 break;
             case R.string.ymd_input:
-                autoFragmentClick(R.string.base_attr_select);
+                webView.loadUrl(JsUtils.addJsMethod("goBaseInfoArea()"));
+                delayAutoFragmentClick(R.string.base_attr_select);
+//                autoFragmentClick();
 //                autoFragmentClick(R.string.save_draft);
                 break;
 
