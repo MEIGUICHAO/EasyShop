@@ -1,10 +1,8 @@
 package com.example.moguhaian.easyshop.Base;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -109,6 +107,7 @@ public class MyWebChromeClient extends WebChromeClient {
     public void onProgressChanged(final WebView view, int newProgress) {
         view.loadUrl("javascript:" + BaseApplication.getInjectJS());
         super.onProgressChanged(view, newProgress);
+        LogUtils.e("newProgress:" + newProgress);
         if (newProgress == 100) {
             if (null != listener && needListener) {
                 needListener = false;

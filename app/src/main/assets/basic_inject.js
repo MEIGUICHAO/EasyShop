@@ -377,6 +377,16 @@ function findElementsById(className){
 //    element[0].click();
 }
 
+function checkOfficeAvailable(){
+    var tools = document.getElementsByClassName("tool-name");
+    localMethod.JI_LOG("tools:"+tools.length)
+    if(tools.length>0){
+        localMethod.getJsonData("checkOfficeAvailable");
+    } else {
+        localMethod.errorOccur();
+    }
+}
+
 
 function clickElementsByClassName(className){
     localMethod.JI_LOG("clickElementsByClassName!!!!!!");

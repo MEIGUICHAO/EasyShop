@@ -129,6 +129,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private String[] ATTR_CLICK_Y = {Constants.BRAND_CLICK_Y, Constants.PRODUCT_POT_CLICK_Y, Constants.AGE_AVAILABLE_CLICK_Y, Constants.SEX_AVAILABLE_CLICK_Y};
     private boolean YMD_INPUT_FINISH = false;
     private boolean HMM_INPUT_FINISH = false;
+    private OfficePublishRunnable officePublishRunnable;
 
     @Override
     protected int getLayoutId() {
@@ -844,28 +845,24 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             return;
         }
         if (clickPosition == R.string.one_click_shop) {
-            if (oneClickShopInit) {
-                oneClickShopInit = false;
-                BaseApplication.getmHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (clickPosition == R.string.one_click_shop) {
-                            autoFragmentClick(R.string.office_publish);
-                        }
-                        BaseApplication.getmHandler().removeCallbacks(this);
-                    }
-                }, 5500);
-
-                return;
+//            if (oneClickShopInit) {
+//                oneClickShopInit = false;
+//                BaseApplication.getmHandler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (clickPosition == R.string.one_click_shop) {
+//                            autoFragmentClick(R.string.office_publish);
+//                        }
+//                        BaseApplication.getmHandler().removeCallbacks(this);
+//                    }
+//                }, 5500);
+//
+//                return;
+//            }
+            if (null == officePublishRunnable) {
+                officePublishRunnable = new OfficePublishRunnable();
             }
-            BaseApplication.getmHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    autoFragmentClick(R.string.office_publish);
-                    BaseApplication.getmHandler().removeCallbacks(this);
-                }
-            }, 500);
-
+            BaseApplication.getmHandler().postDelayed(officePublishRunnable, 1000);
         }
         if (clickPosition == R.string.office_publish) {
             if (officePublishInit) {
@@ -909,7 +906,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
 
         switch (clickPosition) {
             case R.string.get_upload_pic:
-                autoFragmentClick(R.string.resetSku);
+                autoFragmentClick(R.string.timing_publish);
                 break;
             case R.string.go_draft_page:
                 goDraftPageSave();
@@ -990,6 +987,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         }
     }
 
+    class OfficePublishRunnable implements Runnable {
+        @Override
+        public void run() {
+            webView.loadUrl(JsUtils.addJsMethod("checkOfficeAvailable()"));
+        }
+    }
+
+
     private void goDraftPageSave() {
         String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
         String title = (null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage];
@@ -1005,6 +1010,10 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         LogUtils.e("afterGetJson_urlJson:" + json);
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
+            case R.string.one_click_shop:
+                BaseApplication.getmHandler().removeCallbacks(officePublishRunnable);
+                autoFragmentClick(R.string.office_publish);
+                break;
             case R.string.go_draft_page:
                 if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(Constants.RELOAD_DRAFT_CLICK_Y))) {
                     mHandler.postDelayed(new Runnable() {
@@ -1169,8 +1178,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                                             mHandler.removeCallbacks(this);
 
                                             webView.loadUrl(JsUtils.addJsMethod("goBaseInfoArea()"));
-                                            delayAutoFragmentClick(R.string.base_attr_select);
-//                                            autoFragmentClick(R.string.ymd_input);
+//                                            delayAutoFragmentClick(R.string.base_attr_select);
+                                            autoFragmentClick(R.string.ymd_input);
                                         }
                                     }, 1000);
                                 }
@@ -1295,7 +1304,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                     }, 2500);
                 } else {
                     if (HMM_INPUT_FINISH) {
-                        autoFragmentClick(R.string.save_draft);
+//                        autoFragmentClick(R.string.save_draft);
+                        autoFragmentClick(R.string.base_attr_select);
+
                     }
                 }
                 break;
@@ -1386,7 +1397,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 BaseApplication.getmHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        autoFragmentClick(R.string.timing_publish);
+                        autoFragmentClick(R.string.resetSku);
+//                        autoFragmentClick(R.string.timing_publish);
                         BaseApplication.getmHandler().removeCallbacks(this);
                     }
                 }, 1000);
@@ -1409,9 +1421,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.ymd_input:
                 webView.loadUrl(JsUtils.addJsMethod("goBaseInfoArea()"));
-                delayAutoFragmentClick(R.string.base_attr_select);
+//                delayAutoFragmentClick(R.string.base_attr_select);
 //                autoFragmentClick();
-//                autoFragmentClick(R.string.save_draft);
+                autoFragmentClick(R.string.save_draft);
                 break;
 
             case R.string.save_draft:
@@ -1441,6 +1453,12 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         LogUtils.e("errorOccur:" + ResUtil.getS(clickPosition));
         isErrorOccur = true;
         switch (clickPosition) {
+            case R.string.one_click_shop:
+                if (null == officePublishRunnable) {
+                    officePublishRunnable = new OfficePublishRunnable();
+                }
+                BaseApplication.getmHandler().postDelayed(officePublishRunnable, 500);
+                break;
             case R.string.base_attr_select:
                 autoFragmentClick(R.string.base_attr_select);
                 break;
@@ -1460,7 +1478,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 if (webView.getUrl().contains("sucai.wangpu.taobao")) {
                     errorOcur(R.string.pics_space);
                 } else if (webView.getUrl().contains("item.publish")) {
-                    autoFragmentClick(R.string.resetSku);
+                    autoFragmentClick(R.string.timing_publish);
+
+//                    autoFragmentClick(R.string.resetSku);
                 }
                 break;
             case R.string.office_publish:
