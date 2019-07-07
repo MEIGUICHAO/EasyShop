@@ -480,7 +480,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.timing_publish:
                 webScrollToEnd();
-                webView.loadUrl(JsUtils.addJsMethod("clickChildElementByTagName(\"sell-o-radio\",\"7\",\"input\",\"1\")"));
+                webView.loadUrl(JsUtils.addJsMethod("timePublish(\"sell-o-radio\",\"7\",\"input\",\"1\")"));
                 break;
             case R.string.ymd_click_record:
                 clickRecord(Constants.TIME_CLICK_YMD_X, Constants.TIME_CLICK_YMD_Y);
@@ -1464,7 +1464,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.tao_guanjia_to_publish_scene:
                 //淘管家缺失ali
-                errorOcur(R.string.tao_guanjia_search);
+                autoFragmentClick(R.string.nextpage);
                 break;
             case R.string.get_detail_1688:
 //                autoFragmentClick(R.string.nextpage);

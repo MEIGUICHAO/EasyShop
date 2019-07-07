@@ -6,6 +6,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.webkit.CookieManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
@@ -102,8 +103,12 @@ public class MyWebViewClient extends WebViewClient {
                 public void run() {
 
                     if (newScale > 0.65) {
-                        if (null != fragment && !view.getUrl().contains("login")) {
-                            fragment.hideKeybord();
+                        if (null != view) {
+                            if (!TextUtils.isEmpty(view.getUrl())) {
+                                if (null != fragment && !view.getUrl().contains("login")) {
+                                    fragment.hideKeybord();
+                                }
+                            }
                         }
                         view.zoomOut();
                     } else {

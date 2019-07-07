@@ -123,7 +123,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 String title = "";
                 String templeTitle = "";
                 for (int i = 0; i < random.length; i++) {
-                    if (templeTitle.length() > 60) {
+                    if (templeTitle.length() > 30) {
                         title = TextUtils.isEmpty(title) ? templeTitle : title + "\n" + templeTitle;
                         templeTitle = biz.getTitleList().get(random[i]);
                     } else {

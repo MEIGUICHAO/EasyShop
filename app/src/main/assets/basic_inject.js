@@ -161,7 +161,8 @@ function login1688(){
     var psws = loginBox[0].getElementById("TPL_password_1");
     localMethod.JI_LOG("psws:"+psws.length);
 
-    accounts.value ="蘑菇海岸梅干菜";
+//    accounts.value ="蘑菇海岸梅干菜";
+    accounts.value ="花花草草kf:鬼鬼";
 }
 
 
@@ -532,6 +533,20 @@ function clickChildElementByTagName(parentName,parentPosition,childTagName,posit
     localMethod.JI_LOG(parentName+":"+parentElement.length);
     if(parentElement.length>0){
         var childElement = parentElement[parentPosition].getElementsByTagName(childTagName);
+        localMethod.JI_LOG(childTagName+":"+childElement[position].value);
+        childElement[position].click();
+        localMethod.getJsonData("clickChildElementByTagName");
+    }
+}
+
+
+
+function timePublish(parentName,parentPosition,childTagName,position){
+    localMethod.JI_LOG("!!!!!!");
+    var parentElement = document.getElementsByClassName(parentName);
+    localMethod.JI_LOG(parentName+":"+parentElement.length);
+    if(parentElement.length>0){
+        var childElement = parentElement[parentElement.length-1].getElementsByTagName(childTagName);
         localMethod.JI_LOG(childTagName+":"+childElement[position].value);
         childElement[position].click();
         localMethod.getJsonData("clickChildElementByTagName");
