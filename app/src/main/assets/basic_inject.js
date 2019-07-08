@@ -586,10 +586,16 @@ function shuaishou(){
     var checkbox = document.getElementsByClassName("isv-readme-checkbox-input");
     localMethod.JI_LOG("checkbox:"+checkbox.length)
     checkbox[0].click();
+    localMethod.afterClick();
+}
+
+function shuaishouComfirm(){
     var confirm = document.getElementsByClassName("btn confirm isv-confirm");
     localMethod.JI_LOG("confirm:"+confirm.length)
     confirm[0].click();
 }
+
+
 
 function clearSku(position,inputvalue){
     editSKu(position,inputvalue);
@@ -769,6 +775,31 @@ function setTitle(className,inputvalue){
     }
     localMethod.clearTitle(inputvalue);
 }
+
+
+//
+function setShuaiShouTitle(inputvalue){
+
+    var titlewordscount = document.getElementById("titlewordscount");
+    localMethod.JI_LOG("titlewordscount:"+titlewordscount.innerText)
+
+    var title = document.getElementById("GoodsTitle");
+    localMethod.JI_LOG(className+":"+element.length);
+    if(element.length>0){
+        var tag = element[0].getElementsByTagName("input");
+        localMethod.JI_LOG("tag:"+tag.length);
+        if(tag.length>0){
+            tag[0].click();
+            tag[0].focus();
+//            tag[0].value=inputvalue;
+        }
+    }
+    localMethod.clearTitle(inputvalue);
+}
+
+
+
+
 
 function getAliDetailTitle(){
     localMethod.JI_LOG("getAliDetailTitle");

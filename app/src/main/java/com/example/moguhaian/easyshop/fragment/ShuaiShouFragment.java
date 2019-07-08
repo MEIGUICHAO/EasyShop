@@ -111,10 +111,6 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
         webView.setOnLongClickListener(this);
         setDataStrs(items);
 
-
-
-
-
     }
 
 
@@ -544,6 +540,9 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
         switch (clickPosition) {
             case R.string.timing_publish:
                 autoFragmentClick(R.string.timing_publish_click);
+                break;
+            case R.string.shuaiShou:
+                webView.loadUrl(JsUtils.addJsMethod("shuaishouComfirm()"));
                 break;
         }
     }
