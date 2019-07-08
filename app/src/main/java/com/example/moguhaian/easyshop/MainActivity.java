@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     RecyclerView rcvRight;
 
     //    private String[] mainList = {"采集", "同款", "3", "1688"};
-    private String[] mainList = {"top20w","同款标题", "1688", "1688 x5"};
+    private String[] mainList = {"top20w","同款标题","甩手", "1688", "1688 x5"};
     private String[] rightList = {};
     private ArrayList<BaseFragment> fragments;
     private ArrayList<String> mTitleList = new ArrayList<>();

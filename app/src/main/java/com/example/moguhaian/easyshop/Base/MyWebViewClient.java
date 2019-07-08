@@ -56,12 +56,21 @@ public class MyWebViewClient extends WebViewClient {
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             view.loadUrl(request.getUrl().toString());
+            LogUtils.e("shouldOverrideUrlLoading:" + request.getUrl().toString());
         } else {
             view.loadUrl(request.toString());
+            LogUtils.e("shouldOverrideUrlLoading:" + request.toString());
+
         }
         return true;
     }
 
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        LogUtils.e("shouldOverrideUrlLoading:" + url);
+        view.loadUrl(url);
+        return true;
+    }
 
     @Override
     public void onPageFinished(WebView view, String url) {

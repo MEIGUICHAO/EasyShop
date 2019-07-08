@@ -569,6 +569,28 @@ function comfirMobileDetail(){
 }
 
 
+function shuaishou(){
+    var toolItems = document.getElementsByClassName("tool-item");
+    localMethod.JI_LOG("toolItems:"+toolItems.length)
+    for(var i=0;i<toolItems.length;i++){
+        var name = toolItems[i].getElementsByClassName("tool-name");
+        if(name.length>0){
+            localMethod.JI_LOG(name[0].innerText);
+            if(name[0].innerText.indexOf("甩手铺货")!=-1){
+                toolItems[i].click();
+                break
+            }
+        }
+    }
+
+    var checkbox = document.getElementsByClassName("isv-readme-checkbox-input");
+    localMethod.JI_LOG("checkbox:"+checkbox.length)
+    checkbox[0].click();
+    var confirm = document.getElementsByClassName("btn confirm isv-confirm");
+    localMethod.JI_LOG("confirm:"+confirm.length)
+    confirm[0].click();
+}
+
 function clearSku(position,inputvalue){
     editSKu(position,inputvalue);
 //    var skuCheckbox = document.getElementsByClassName("sell-color-checkbox-check-wrap");
