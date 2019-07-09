@@ -45,7 +45,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     private int[] items = {R.string.one_key_publish, R.string.go1688, R.string.one_piece_send, R.string.nextpage, R.string.one_click_shop, R.string.login, R.string.filter_word, R.string.detail_1688, R.string.login_name, R.string.slide_record_switch
             , R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish,R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.set_title, R.string.cache_available, R.string.autoDebug_switch, R.string.save_draft,
             R.string.get_publish_result, R.string.refresh_page, R.string.go_draft_page, R.string.reload_draft_click_record, R.string.shuaiShou, R.string.shuaiShou_title, R.string.get_ali_limit_prices, R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_taobao_click_record
-            , R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_publish_click_record, R.string.shuaiShou_to_publish, R.string.click_moblie_detail, R.string.comfir_moblie_detail};
+            , R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_publish_click_record, R.string.shuaiShou_to_publish, R.string.click_moblie_detail, R.string.comfir_moblie_detail, R.string.check_sku_price};
 
     private int pageIndex = 0;
     private String urlOrigin;
@@ -143,6 +143,10 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 
     private void rightClickSwitch(int item) {
         switch (item) {
+            case R.string.check_sku_price:
+                webView.loadUrl(JsUtils.addJsMethod("getSkuPrices(\"0\"" + ",\"" + vu.getLocalMethod().getAliLimitPrice() + "\")"));
+
+                break;
             case R.string.click_moblie_detail:
                 clickRecord(Constants.PUBLISH_MOBILE_DETAIL_X, Constants.PUBLISH_MOBILE_DETAIL_Y);
                 break;
@@ -154,7 +158,8 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                 break;
             case R.string.go1688:
 //                webView.loadUrl("https://page.1688.com/html/shuaishou-puhuo.html?sourceBizId=&appKeyInSourcePlatform=5159993&sign=529B4B7381A0AEC4FDB3899623CBC213ED5EC879&userIdInSourcePlatform=2511106550&targetPlatformId=TAOBAO&targetPlatformShopId=null&pushProductIds=37955297658");
-                webView.loadUrl(TextUtils.isEmpty(nextUrl) ? urlOrigin : nextUrl);
+                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?itemId=597958252566");
+//                webView.loadUrl(TextUtils.isEmpty(nextUrl) ? urlOrigin : nextUrl);
 
                 break;
             case R.string.one_piece_send:
@@ -485,6 +490,9 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
             webView.getSettings().setJavaScriptEnabled(true);
         }
 
+        if (TextUtils.isEmpty(url)) {
+            return;
+        }
         if (url.contains("https://page.1688")) {
             if (clickPosition == R.string.shuaiShou_to_taobao) {
                 shuaishouIndex++;

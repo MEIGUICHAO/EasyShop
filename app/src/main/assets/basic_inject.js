@@ -777,6 +777,50 @@ function setTitle(className,inputvalue){
 }
 
 
+function getSkuPrices(position,limitMoney){
+    var skuMoney = document.getElementsByClassName("sell-sku-cell sell-sku-cell-money");
+    localMethod.JI_LOG("skuMoney:"+skuMoney.length);
+    var money = skuMoney[position].getElementsByTagName("input");
+    localMethod.JI_LOG("money:"+money.length);
+    var originPrice = money[0].getAttribute("required value");
+    if(limitMoney>originPrice){
+        localMethod.JI_LOG("limitMoney>originPrice");
+        setCheckSkuPrice(position,limitMoney,skuMoney.length);
+    } else {
+        position++;
+        if(position<skuMoney.length){
+            getSkuPrices(position,limitMoney);
+        } else {
+            localMethod.getJsonData("价格完成");
+
+        }
+    }
+}
+
+function setCheckSkuPrice(position,price,length){
+//    sell-sku-table-wrap
+    var table = document.getElementsByClassName("sell-sku-table-wrap");
+    localMethod.JI_LOG("table:"+table.length);
+    var skuRow = table[0].getElementsByClassName("sku-table-row");
+    localMethod.JI_LOG("skuRow:"+skuRow.length);
+    var skuPrice = skuRow[position].getElementsByClassName("sell-sku-cell sell-sku-cell-money");
+    localMethod.JI_LOG("skuPrice:"+skuPrice.length);
+    var inputPrice = skuPrice[0].getElementsByTagName("input");
+    localMethod.JI_LOG("inputPrice:"+inputPrice.length);
+    inputPrice[0].click();
+    inputPrice[0].focus();
+    inputPrice[0].value = price;
+    localMethod.inputContentWithoutFinish(price);
+    setTimeout(function(){
+        position++;
+        if(position<length){
+            getSkuPrices(position,price);
+        } else {
+            localMethod.getJsonData("价格完成");
+        }
+    },2000);
+}
+
 //
 function setShuaiShouTitle(){
 

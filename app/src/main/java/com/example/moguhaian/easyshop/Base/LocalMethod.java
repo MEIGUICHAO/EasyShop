@@ -314,6 +314,30 @@ public class LocalMethod {
 
     @SuppressLint("JavascriptInterface")
     @JavascriptInterface
+    public void inputContentWithoutFinish(final String inputvalue) {
+        LogUtils.e("inputContent:" + inputvalue);
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+
+                singleThreadExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Instrumentation instrumentation = new Instrumentation();
+                        for (int i = 0; i < 10; i++) {
+                            instrumentation.sendKeyDownUpSync(KeyEvent.KEYCODE_DEL);
+                        }
+                        instrumentation.sendStringSync(inputvalue);
+                    }
+                });
+            }
+        });
+    }
+
+
+    @SuppressLint("JavascriptInterface")
+    @JavascriptInterface
     public void errorOccur() {
         BaseApplication.getmHandler().post(new Runnable() {
             @Override
