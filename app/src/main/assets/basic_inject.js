@@ -778,22 +778,26 @@ function setTitle(className,inputvalue){
 
 
 //
-function setShuaiShouTitle(inputvalue){
+function setShuaiShouTitle(){
 
-    var titlewordscount = document.getElementById("titlewordscount");
-    localMethod.JI_LOG("titlewordscount:"+titlewordscount.innerText)
+    localMethod.JI_LOG("title:～～～");
+    var title = document.getElementsByClassName("ocms-component-1688-pc-tao-shuaishou-embed-1-0-6");
+    localMethod.JI_LOG("title:"+title.length);
+//    localMethod.JI_LOG("title:"+title[1].innerText);
 
-    var title = document.getElementById("GoodsTitle");
-    localMethod.JI_LOG(className+":"+element.length);
-    if(element.length>0){
-        var tag = element[0].getElementsByTagName("input");
-        localMethod.JI_LOG("tag:"+tag.length);
-        if(tag.length>0){
-            tag[0].click();
-            tag[0].focus();
-//            tag[0].value=inputvalue;
-        }
-    }
+    var titlewordscount = document.getElementsByClassName("col-md-1");
+    localMethod.JI_LOG("titlewordscount:"+titlewordscount.length)
+    localMethod.JI_LOG("titlewordscount:"+titlewordscount[3].innerText)
+
+//    if(title.length>0){
+//        var tag = title[0].getElementsByTagName("input");
+//        localMethod.JI_LOG("tag:"+tag.length);
+//        if(tag.length>0){
+//            tag[0].click();
+//            tag[0].focus();
+////            tag[0].value=inputvalue;
+//        }
+//    }
     localMethod.clearTitle(inputvalue);
 }
 
@@ -851,6 +855,16 @@ function getAliDetailInfo(){
     }
 
 
+}
+
+
+function getAliLimitPrice(){
+    var pricesTag = document.getElementsByClassName("price-text price-num");
+    if(pricesTag.length>1){
+        localMethod.getLimitPrice(pricesTag[1].innerText);
+    } else {
+        localMethod.getLimitPrice("-1");
+    }
 }
 
 

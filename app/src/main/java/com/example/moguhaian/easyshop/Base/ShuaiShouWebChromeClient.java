@@ -15,7 +15,7 @@ import com.example.moguhaian.easyshop.fragment.Ali1688Fragment;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
 
-public class MyWebChromeClient extends WebChromeClient {
+public class ShuaiShouWebChromeClient extends WebChromeClient {
 
     LoadFinishListener listener;
 
@@ -108,7 +108,7 @@ public class MyWebChromeClient extends WebChromeClient {
         view.loadUrl("javascript:" + BaseApplication.getInjectJS());
         super.onProgressChanged(view, newProgress);
         LogUtils.e("newProgress:" + newProgress);
-        if (newProgress == 100) {
+        if ((newProgress == 100 && !view.getUrl().contains("detail.1688.com")) || (newProgress == 90 && view.getUrl().contains("detail.1688.com"))) {
             if (null != listener && needListener) {
                 needListener = false;
                 if (view instanceof MyWebView) {

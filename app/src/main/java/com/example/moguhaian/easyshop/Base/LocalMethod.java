@@ -335,6 +335,7 @@ public class LocalMethod {
                 } else {
                     AliLimitPrice = -1;
                 }
+                listener.inputFinish();
             }
         });
     }

@@ -58,6 +58,8 @@ public class BaseBiz {
     }
 
 
+
+
     public void TBLogin() {
         singleThreadExecutor.execute(new Runnable() {
             @Override

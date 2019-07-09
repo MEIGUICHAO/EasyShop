@@ -105,13 +105,13 @@ public class MyWebViewClient extends WebViewClient {
 //        if (newScale < indexScale) {
 //
 //        }
-        if (newScale > 0.65) {
+        if (newScale > 0.63) {
             view.zoomOut();
             BaseApplication.getmHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
 
-                    if (newScale > 0.65) {
+                    if (newScale > 0.63) {
                         if (null != view) {
                             if (!TextUtils.isEmpty(view.getUrl())) {
                                 if (null != fragment && !view.getUrl().contains("login")) {

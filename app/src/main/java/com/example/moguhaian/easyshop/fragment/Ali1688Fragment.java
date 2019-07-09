@@ -639,7 +639,16 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 break;
             case R.string.get_publish_result:
                 String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
-                LogUtils.e("draft:\n" + draft);
+                String[] resultUrl = draft.split("\n");
+                String titleResult1 = activity.getTitleResult();
+                String[] split = titleResult1.split("\n");
+                String draftResult = "";
+                for (int i = 0; i < resultUrl.length; i++) {
+                    if (resultUrl[i].contains("https")) {
+                        draftResult = TextUtils.isEmpty(draftResult) ? (resultUrl[i] + "\n" + split[i]) : (draftResult + "\n" + (resultUrl[i] + "\n" + split[i]));
+                    }
+                }
+                LogUtils.e("draft:\n" + draftResult);
                 break;
             case R.string.clear_publish_result:
                 aliCurrentPage = -1;
