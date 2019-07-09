@@ -521,8 +521,8 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 //            }
         }
 
-        if (clickPosition == R.string.shuaiShou_to_taobao || clickPosition == R.string.shuaiShou_to_publish) {
-            if (url.contains(" https://item.publish.taobao.com")) {
+        if (clickPosition == R.string.shuaiShou) {
+            if (url.contains("https://item.publish.taobao.com")) {
                 autoFragmentClick(R.string.set_title);
             }
         }
