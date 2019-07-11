@@ -1007,7 +1007,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
     private void goDraftPageSave() {
         String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
         String title = (null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage];
-        draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + title : draft + "\n" + oldUrl + "\n" + title;
+        draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + fullDateFromat : draft + "\n" + oldUrl + "\n" + fullDateFromat;
         LogUtils.e("draft:" + draft);
         SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, draft);
         webView.getSettings().setJavaScriptEnabled(false);

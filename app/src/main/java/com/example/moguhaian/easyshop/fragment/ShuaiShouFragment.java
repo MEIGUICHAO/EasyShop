@@ -143,6 +143,10 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 
     private void rightClickSwitch(int item) {
         switch (item) {
+            case R.string.cache_available:
+                cacheAvailable = !cacheAvailable;
+                ToastUtils.showToast(cacheAvailable ? "开启" : "关闭");
+                break;
             case R.string.check_sku_price:
                 webView.loadUrl(JsUtils.addJsMethod("getSkuPrices(\"0\"" + ",\"" + vu.getLocalMethod().getAliLimitPrice() + "\")"));
 
@@ -663,7 +667,8 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     private void goDraftPageSave() {
         String draft = SharedPreferencesUtils.getValue(Constants.SAVE_DRAFT);
         String title = (null == titlResultArray || aliCurrentPage == -1) ? "test" : titlResultArray[aliCurrentPage];
-        draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + title : draft + "\n" + oldUrl + "\n" + title;
+        getPublishDate();
+        draft = TextUtils.isEmpty(draft) ? oldUrl + "\n" + fullDateFromat : draft + "\n" + oldUrl + "\n" + fullDateFromat;
         LogUtils.e("draft:" + draft);
         SharedPreferencesUtils.putValue(Constants.SAVE_DRAFT, draft);
         webView.getSettings().setJavaScriptEnabled(false);
