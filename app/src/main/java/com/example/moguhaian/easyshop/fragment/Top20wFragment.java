@@ -41,7 +41,7 @@ public class Top20wFragment extends BaseFragment<Top20wVu, Top20wBiz> implements
         LogUtils.e("Top20wFragment loadUrl");
         vu.initWebViewSetting(webView,getActivity());
         biz.initWebView(webView, getActivity());
-        biz.getWebViewClient().setOnLoadFinishListener(Top20wFragment.this);
+        biz.getWebChromeClient().setOnLoadFinishListener(Top20wFragment.this);
         vu.getLocalMethod().setLocalMethodListener(this);
 //        webView.loadUrl(Constants.Top20wUrl);
     }

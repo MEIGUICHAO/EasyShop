@@ -30,13 +30,17 @@ import com.example.moguhaian.easyshop.View.Ali1688Vu;
 import com.example.moguhaian.easyshop.biz.Ali1688Biz;
 import com.example.moguhaian.easyshop.listener.LoadFinishListener;
 import com.example.moguhaian.easyshop.listener.LoalMethodListener;
+import com.example.moguhaian.easyshop.listener.ShouldOverrideUrlLoadingListener;
 import com.example.moguhaian.easyshop.weidge.MyWebView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> implements LoadFinishListener, LoalMethodListener, View.OnLongClickListener {
+public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> implements LoadFinishListener, LoalMethodListener, View.OnLongClickListener, ShouldOverrideUrlLoadingListener {
 
 
     @BindView(R.id.webView)
@@ -86,6 +90,9 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     private int oldClickPosition;
     private int indexAddTime;
     private int shuaishouIndex = 0;
+    private Timer timer;
+    private String refreshUrl = "";
+    private boolean clickEnable = true;
 
     @Override
     protected int getLayoutId() {
@@ -99,7 +106,8 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
         activity = (MainActivity) getActivity();
         vu.initWebViewSetting(webView, getActivity());
         biz.initWebView(webView, getActivity());
-        biz.getWebViewClient().setOnLoadFinishListener(ShuaiShouFragment.this);
+        biz.getWebChromeClient().setOnLoadFinishListener(ShuaiShouFragment.this);
+        biz.getWebViewClient().setShouldLoadingListener(ShuaiShouFragment.this);
         vu.getLocalMethod().setLocalMethodListener(this);
         webView.setOnLongClickListener(this);
         setDataStrs(items);
@@ -121,8 +129,47 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                     if (position == R.string.refresh_page) {
                         oldClickPosition = clickPosition;
                     }
+                    if (null != timer) {
+                        timer.cancel();
+                        timer = new Timer();
+                    } else {
+                        timer = new Timer();
+                    }
                     clickPosition = position;
                     rightClickSwitch(position);
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            //do something
+                            BaseApplication.getmHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    LogUtils.e("timer_schedule:" + webView.getUrl());
+                                    refreshUrl = webView.getUrl();
+                                    if (!TextUtils.isEmpty(refreshUrl)) {
+                                        if (refreshUrl.equals(webView.getUrl())) {
+                                            autoFragmentClick(R.string.nextpage);
+                                            return;
+                                        }
+                                    }
+                                    if (webView.getUrl().contains("https://item.publish.taobao.com")) {
+                                        webView.getSettings().setJavaScriptEnabled(false);
+                                    }
+                                    webView.reload();
+                                    if (webView.getUrl().contains("https://item.publish.taobao.com") && !webView.getUrl().contains("draftId")) {
+                                        autoFragmentClick(R.string.shuaiShou);
+                                    } else if (webView.getUrl().contains("https://item.publish.taobao.com") && webView.getUrl().contains("draftId")) {
+                                        autoFragmentClick(R.string.go_draft_page);
+                                    } else if (webView.getUrl().contains("detail.1688.com")) {
+                                        autoFragmentClick(R.string.get_ali_limit_prices);
+                                    } else if (webView.getUrl().contains("https://page.1688.com/html")) {
+                                        autoFragmentClick(R.string.shuaiShou);
+                                    }
+                                }
+                            });
+                        }
+                    },1000 * 60 * 2);
                 }
             }
         });
@@ -497,11 +544,18 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 
         if (oldUrl.contains("item.publish.taobao.com") && (clickPosition == R.string.refresh_page || clickPosition == R.string.go_draft_page)) {
             webView.getSettings().setJavaScriptEnabled(true);
+        } if (oldUrl.contains("item.publish.taobao.com") ) {
+            clickEnable = true;
         }
 
         if (TextUtils.isEmpty(url)) {
             return;
         }
+
+        if (!refreshUrl.equals(url)) {
+            refreshUrl = "";
+        }
+
         if (url.contains("https://page.1688")) {
             simuateClick(webView, Constants.SHUAISHOU_TAOBAO_CLICK_RECORD_X, Constants.SHUAISHOU_TAOBAO_CLICK_RECORD_Y);
             mHandler.postDelayed(new Runnable() {
@@ -716,11 +770,13 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
         }, 15000);
     }
 
-    private static void simuateClick(MyWebView webView, String constantx,String constanty) {
-        if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(constantx))) {
-            GestureTouchUtils.simulateClick(webView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(constantx)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(constanty)));
-        } else {
-            LogUtils.e(constantx + "," + constanty + "为空");
+    private void simuateClick(MyWebView webView, String constantx,String constanty) {
+        if (clickEnable) {
+            if (!TextUtils.isEmpty(SharedPreferencesUtils.getValue(constantx))) {
+                GestureTouchUtils.simulateClick(webView, (int) Float.parseFloat(SharedPreferencesUtils.getValue(constantx)), (int) Float.parseFloat(SharedPreferencesUtils.getValue(constanty)));
+            } else {
+                LogUtils.e(constantx + "," + constanty + "为空");
+            }
         }
     }
 
@@ -790,5 +846,17 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     public boolean onLongClick(View v) {
         LogUtils.e("onLongClick");
         return false;
+    }
+
+    @Override
+    public void goPublish(final String url) {
+        BaseApplication.getmHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                clickEnable = false;
+                webView.loadUrl(url);
+            }
+        });
+
     }
 }

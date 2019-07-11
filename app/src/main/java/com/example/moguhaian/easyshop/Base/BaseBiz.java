@@ -33,8 +33,13 @@ public class BaseBiz {
 
     public Activity activity;
 
-    public MyWebChromeClient getWebViewClient() {
+    public MyWebChromeClient getWebChromeClient() {
         return webChromeClient;
+    }
+
+
+    public MyWebViewClient getWebViewClient() {
+        return webViewClient;
     }
 
     private MyWebViewClient webViewClient;

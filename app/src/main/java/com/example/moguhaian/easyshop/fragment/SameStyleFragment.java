@@ -71,7 +71,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
         vu.initWebViewSetting(webView, getActivity());
         biz.initWebView(webView, getActivity());
         ips = Ips.ips_dianxin.split("\n");
-        biz.getWebViewClient().setOnLoadFinishListener(SameStyleFragment.this);
+        biz.getWebChromeClient().setOnLoadFinishListener(SameStyleFragment.this);
         vu.getLocalMethod().setLocalMethodListener(this);
 
     }

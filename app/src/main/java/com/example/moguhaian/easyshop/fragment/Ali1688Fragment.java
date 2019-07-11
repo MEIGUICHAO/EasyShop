@@ -143,7 +143,7 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         activity = (MainActivity) getActivity();
         vu.initWebViewSetting(webView, getActivity());
         biz.initWebView(webView, getActivity());
-        biz.getWebViewClient().setOnLoadFinishListener(Ali1688Fragment.this);
+        biz.getWebChromeClient().setOnLoadFinishListener(Ali1688Fragment.this);
         vu.getLocalMethod().setLocalMethodListener(this);
         webView.setOnLongClickListener(this);
         setDataStrs(items);

@@ -19,6 +19,7 @@ import com.example.moguhaian.easyshop.Utils.LogUtils;
 import com.example.moguhaian.easyshop.Utils.SharedPreferencesUtils;
 import com.example.moguhaian.easyshop.Utils.ToastUtils;
 import com.example.moguhaian.easyshop.fragment.Ali1688Fragment;
+import com.example.moguhaian.easyshop.listener.ShouldOverrideUrlLoadingListener;
 
 import java.util.List;
 
@@ -38,6 +39,12 @@ public class MyWebViewClient extends WebViewClient {
 
     private String userAgent = "";
 
+    ShouldOverrideUrlLoadingListener listener;
+
+    public void setShouldLoadingListener(ShouldOverrideUrlLoadingListener shouldLoadingListener) {
+        listener = shouldLoadingListener;
+    }
+
     private float indexScale = -1;
     public MyWebViewClient(Activity activity) {
         mActivity = (MainActivity) activity;
@@ -54,13 +61,20 @@ public class MyWebViewClient extends WebViewClient {
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        String url;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             view.loadUrl(request.getUrl().toString());
             LogUtils.e("shouldOverrideUrlLoading:" + request.getUrl().toString());
+            url = request.getUrl().toString();
         } else {
             view.loadUrl(request.toString());
             LogUtils.e("shouldOverrideUrlLoading:" + request.toString());
-
+            url = request.toString();
+        }
+        if (url.contains("http://item.publish.taobao.com")) {
+            if (null != listener) {
+                listener.goPublish(url);
+            }
         }
         return true;
     }
@@ -68,7 +82,13 @@ public class MyWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         LogUtils.e("shouldOverrideUrlLoading:" + url);
-        view.loadUrl(url);
+        if (url.contains("http://item.publish.taobao.com")) {
+            if (null != listener) {
+                listener.goPublish(url);
+            }
+        } else {
+            view.loadUrl(url);
+        }
         return true;
     }
 

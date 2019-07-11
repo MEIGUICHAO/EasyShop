@@ -108,7 +108,16 @@ public class MyWebChromeClient extends WebChromeClient {
         view.loadUrl("javascript:" + BaseApplication.getInjectJS());
         super.onProgressChanged(view, newProgress);
         LogUtils.e("newProgress:" + newProgress);
-        if (newProgress == 100) {
+        if (view.getUrl().contains("https://page.1688.com/html")) {
+            if (newProgress > 90) {
+                BaseApplication.getmHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.loadFinish(view, view.getUrl());
+                    }
+                });
+            }
+        } else if (newProgress == 100) {
             if (null != listener && needListener) {
                 needListener = false;
                 if (view instanceof MyWebView) {

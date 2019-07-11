@@ -782,11 +782,15 @@ function getSkuPrices(position,limitMoney){
     localMethod.JI_LOG("skuMoney:"+skuMoney.length);
     var money = skuMoney[position].getElementsByTagName("input");
     localMethod.JI_LOG("money:"+money.length);
-    var originPrice = money[0].getAttribute("required value");
-    if(limitMoney>originPrice){
+    var originPrice = money[0].getAttribute("value");
+    if(parseFloat(limitMoney)>parseFloat(originPrice)){
         localMethod.JI_LOG("limitMoney>originPrice");
+        localMethod.JI_LOG("limitMoney:"+limitMoney);
+        localMethod.JI_LOG("originPrice:"+originPrice);
         setCheckSkuPrice(position,limitMoney,skuMoney.length);
     } else {
+        localMethod.JI_LOG("limitMoney:"+limitMoney);
+        localMethod.JI_LOG("originPrice:"+originPrice);
         position++;
         if(position<skuMoney.length){
             getSkuPrices(position,limitMoney);
