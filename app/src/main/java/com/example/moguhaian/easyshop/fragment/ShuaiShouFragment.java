@@ -137,6 +137,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                     }
                     clickPosition = position;
                     rightClickSwitch(position);
+                    refreshUrl = webView.getUrl();
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
@@ -146,7 +147,6 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                                 public void run() {
 
                                     LogUtils.e("timer_schedule:" + webView.getUrl());
-                                    refreshUrl = webView.getUrl();
                                     if (!TextUtils.isEmpty(refreshUrl)) {
                                         if (refreshUrl.equals(webView.getUrl())) {
                                             autoFragmentClick(R.string.nextpage);
@@ -154,17 +154,19 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                                         }
                                     }
                                     if (webView.getUrl().contains("https://item.publish.taobao.com")) {
-                                        webView.getSettings().setJavaScriptEnabled(false);
-                                    }
-                                    webView.reload();
-                                    if (webView.getUrl().contains("https://item.publish.taobao.com") && !webView.getUrl().contains("draftId")) {
-                                        autoFragmentClick(R.string.shuaiShou);
-                                    } else if (webView.getUrl().contains("https://item.publish.taobao.com") && webView.getUrl().contains("draftId")) {
-                                        autoFragmentClick(R.string.go_draft_page);
-                                    } else if (webView.getUrl().contains("detail.1688.com")) {
-                                        autoFragmentClick(R.string.get_ali_limit_prices);
-                                    } else if (webView.getUrl().contains("https://page.1688.com/html")) {
-                                        autoFragmentClick(R.string.shuaiShou);
+                                        if (!webView.getUrl().contains("draftId")) {
+                                            autoFragmentClick(R.string.set_title);
+                                        } else {
+                                            webView.getSettings().setJavaScriptEnabled(false);
+                                            autoFragmentClick(R.string.go_draft_page);
+                                        }
+                                    } else {
+                                        webView.reload();
+                                        if (webView.getUrl().contains("detail.1688.com")) {
+                                            autoFragmentClick(R.string.get_ali_limit_prices);
+                                        } else if (webView.getUrl().contains("https://page.1688.com/html")) {
+                                            autoFragmentClick(R.string.shuaiShou);
+                                        }
                                     }
                                 }
                             });
@@ -228,6 +230,9 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                 }
                 aliCurrentPage++;
                 SharedPreferencesUtils.putIntValue(Constants.ALI_CURRENT_PAGE, aliCurrentPage);
+                if (webView.getUrl().contains("https://item.publish.")) {
+                    webView.getSettings().setJavaScriptEnabled(false);
+                }
                 autoFragmentClick(R.string.detail_1688);
                 break;
             case R.string.one_click_shop:
@@ -650,7 +655,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
             case R.string.check_sku_price:
-                autoFragmentClick(R.string.save_draft);
+                delayAutoFragmentClick(R.string.save_draft);
                 break;
             case R.string.one_piece_send:
                 LogUtils.e("afterGetJson_urlJson:" + "pageIndex\n" + json);
