@@ -269,7 +269,8 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 }, 10000);
                 break;
             case R.string.publish_scene://发布现场
-                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?itemId=597381610891");
+//                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?itemId=597381610891");
+                webView.loadUrl("https://item.publish.taobao.com/sell/draft.htm?draftId=26387548");
                 break;
             case R.string.filter_word://过滤文字
                 webView.scrollTo(0, webView.getScrollY());
@@ -676,23 +677,24 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 webView.loadUrl(JsUtils.addJsMethod("clickChildElementByTagName(\"draft-item\",0,\"div\",0)"));
                 break;
             case R.string.base_attr_select:
+                webView.loadUrl(JsUtils.addJsMethod("checkTimingData()"));
 //
 
-                if (attrClickSelectNamesPosition == -1) {
-                    webView.loadUrl(JsUtils.addJsMethod("goBaseInfoArea()"));
-                    attrClickSelectNamesPosition = 0;
-                } else {
-                    attrClickSelectNamesPosition++;
-                }
-                if (attrClickSelectNamesPosition == 0) {
-                    CommonUtils.copyText("other/其他");
-                }
-                if (attrClickSelectNamesPosition < attrClickSelectNames.length) {
-                    webView.loadUrl(JsUtils.addJsMethod("clickAttrElementsByClassNameAndInnerText(\"" + attrClickSelectNames[attrClickSelectNamesPosition] + "\")"));
-                } else {
-                    attrClickSelectNamesPosition = -1;
-                    autoFragmentClick(R.string.model_number);
-                }
+//                if (attrClickSelectNamesPosition == -1) {
+//                    webView.loadUrl(JsUtils.addJsMethod("goBaseInfoArea()"));
+//                    attrClickSelectNamesPosition = 0;
+//                } else {
+//                    attrClickSelectNamesPosition++;
+//                }
+//                if (attrClickSelectNamesPosition == 0) {
+//                    CommonUtils.copyText("other/其他");
+//                }
+//                if (attrClickSelectNamesPosition < attrClickSelectNames.length) {
+//                    webView.loadUrl(JsUtils.addJsMethod("clickAttrElementsByClassNameAndInnerText(\"" + attrClickSelectNames[attrClickSelectNamesPosition] + "\")"));
+//                } else {
+//                    attrClickSelectNamesPosition = -1;
+//                    autoFragmentClick(R.string.model_number);
+//                }
                 break;
         }
     }
@@ -1314,7 +1316,13 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
                 } else {
                     if (HMM_INPUT_FINISH) {
 //                        autoFragmentClick(R.string.save_draft);
-                        autoFragmentClick(R.string.base_attr_select);
+//                        autoFragmentClick(R.string.base_attr_select);
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                webView.loadUrl(JsUtils.addJsMethod("checkTimingData()"));
+                            }
+                        }, 1000);
 
                     }
                 }

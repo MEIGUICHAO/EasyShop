@@ -3,6 +3,7 @@ package com.example.moguhaian.easyshop.Base;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -108,6 +109,9 @@ public class MyWebChromeClient extends WebChromeClient {
         view.loadUrl("javascript:" + BaseApplication.getInjectJS());
         super.onProgressChanged(view, newProgress);
         LogUtils.e("newProgress:" + newProgress);
+        if (TextUtils.isEmpty(view.getUrl())) {
+            return;
+        }
         if (view.getUrl().contains("https://page.1688.com/html")) {
             if (newProgress > 90) {
                 BaseApplication.getmHandler().post(new Runnable() {

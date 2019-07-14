@@ -7,8 +7,8 @@ public interface Shops {
 //    String aliName = "%BB%FD%C4%BE%D7%C0";
 //    String shopName = "跳跳球";
 //    String aliName = "%CC%F8%CC%F8%C7%F2";
-    String shopName = "吊带连衣裙";
-    String aliName = "%B5%F5%B4%F8%C1%AC%D2%C2%C8%B9";
+    String shopName = "短袖女ins潮短款 高腰";
+    String aliName = "%C5%AEt%D0%F4";
     String shoplv = "服装鞋包###女装/女士精品###连衣裙";
 }
 

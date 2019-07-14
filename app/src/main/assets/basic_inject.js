@@ -776,6 +776,17 @@ function setTitle(className,inputvalue){
     localMethod.clearTitle(inputvalue);
 }
 
+function checkTimingData(){
+    var showTime = document.getElementsByClassName("next-date-picker next-date-picker-medium next-date-picker-show-time");
+    if(showTime.length>0){
+        var timeInput = showTime[0].getElementsByTagName("input");
+        if(timeInput.length>0){
+            var timeValue = timeInput[0].getAttribute("value");
+            localMethod.JI_LOG(timeValue);
+            localMethod.getJsonData(timeValue);
+        }
+    }
+}
 
 function getSkuPrices(position,limitMoney){
     var skuMoney = document.getElementsByClassName("sell-sku-cell sell-sku-cell-money");
