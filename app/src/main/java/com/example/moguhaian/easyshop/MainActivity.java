@@ -50,6 +50,15 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     private ArrayList<BaseFragment> fragments;
     private ArrayList<String> mTitleList = new ArrayList<>();
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    private int index = 0;
+
+
+
+
     public String getTitleResult() {
         titleResult = SharedPreferencesUtils.getValue(Constants.TB_TITLE_RESULT);
         return titleResult;
@@ -88,10 +97,7 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
         vu.setAdapter(this, rcvMian, mainList, true, new AdapterClickListener() {
             @Override
             public void onAdapterClick(int position) {
-                mainDrawerLayout.closeDrawer(mainLeftDrawerLayout);
-                flVp.setCurrentItem(position,false);
-                fragments.get(vu.getLeftPosition()).setItems();
-                vu.notifyRightAdapter(fragments.get(vu.getLeftPosition()).getItems());
+                onMainItemClick(position);
             }
         });
         vu.setAdapter(this, rcvRight, rightList, false, new AdapterClickListener() {
@@ -105,6 +111,13 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
         LogUtils.e("dayFromat:" + dayFromat);
         beginTime = dayFromat + beginTime;
         endTime = dayFromat + endTime;
+    }
+
+    public void onMainItemClick(int position) {
+        mainDrawerLayout.closeDrawer(mainLeftDrawerLayout);
+        flVp.setCurrentItem(position,false);
+        fragments.get(vu.getLeftPosition()).setItems();
+        vu.notifyRightAdapter(fragments.get(vu.getLeftPosition()).getItems());
     }
 
 
@@ -162,5 +175,9 @@ public class MainActivity extends BaseActivity<MainVu, MainBiz> implements LoadF
     public void setTitleResult(String titleOnly) {
         SharedPreferencesUtils.putValue(Constants.TB_TITLE_RESULT, titleOnly);
         titleResult = titleOnly;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }

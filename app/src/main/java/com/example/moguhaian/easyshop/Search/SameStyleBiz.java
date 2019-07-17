@@ -2,6 +2,7 @@ package com.example.moguhaian.easyshop.Search;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebView;
 
 import com.example.moguhaian.easyshop.Base.BaseApplication;
@@ -105,7 +106,7 @@ public class SameStyleBiz extends BaseBiz {
         sortTypeArray = activity.getResources().getStringArray(R.array.sort_type);
     }
 
-    public void getSameUrl(String json, final String url) {
+    public void getSameUrl(String json, final String url, View.OnClickListener listener) {
         isGetSameUrlBegin = true;
         sameStyleUlr = url;
         ArrayList<String> nameSplitResult = TaoUtils.getNameSplitResult(json);
@@ -118,10 +119,18 @@ public class SameStyleBiz extends BaseBiz {
             sameStyleRunnable = new SameStyleRunnable();
         }
 
+        sameStyleRunnable.setListener(listener);
         BaseApplication.getmHandler().postDelayed(sameStyleRunnable, Constants.DELAY_TIME);
     }
 
     public  class SameStyleRunnable implements Runnable {
+
+        private View.OnClickListener listener;
+
+        public void setListener(View.OnClickListener listener) {
+            this.listener = listener;
+        }
+
         @Override
         public void run() {
 
@@ -130,7 +139,7 @@ public class SameStyleBiz extends BaseBiz {
                 LogUtils.e("loadUrl:" + loadUrl);
                 webView.loadUrl(loadUrl);
                 pageIndedx++;
-            } else {
+            } else if (srotTypeIndex < sortTypeArray.length) {
                 pageIndedx = 0;
                 srotTypeIndex++;
                 if (srotTypeIndex < sortTypeArray.length) {
@@ -141,6 +150,10 @@ public class SameStyleBiz extends BaseBiz {
                 } else {
                     isGetSameUrlBegin = false;
                 }
+            } else {
+                pageIndedx = 0;
+                srotTypeIndex = 0;
+                listener.onClick(null);
             }
             BaseApplication.getmHandler().removeCallbacks(this);
         }

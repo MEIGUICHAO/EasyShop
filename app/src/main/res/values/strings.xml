@@ -95,6 +95,39 @@
         <item>@string/set_title</item>
     </string-array>
 
+    <string-array name="shop_name">
+        <item>牛油果绿t恤宽松</item>
+        <item>短袖女ins潮短款 高腰</item>
+        <item>宽松女t恤</item>上衣女夏
+        <item>白色t恤女</item>
+        <item>黑色t恤女</item>
+        <item>肚脐衣服 短款 紧身</item>
+        <item>短袖t恤女</item>
+        <item>宽松女t恤</item>
+        <item>修身女t恤</item>
+        <item>情侣装夏装</item>
+        <item>丧系衣服 慵懒风</item>
+        <item>露肩上衣女</item>
+        <item>泫雅风衣服 复古</item>
+        <item>条纹t恤女</item>
+    </string-array>
+
+    <string-array name="ali_name">
+        <item>%B6%CC%D0%E4t%D0%F4%C5%AE</item>
+        <item>%B6%CC%D0%E4%C5%AEins%B3%B1%B6%CC%BF%EE+%B8%DF%D1%FC</item>
+        <item>%BF%ED%CB%C9%C5%AEt%D0%F4</item>
+        <item>%B0%D7%C9%ABt%D0%F4%C5%AE</item>
+        <item>%D0%DE%C9%ED%C5%AEt%D0%F4</item>
+        <item>%BA%DA%C9%ABt%D0%F4%C5%AE</item>
+        <item>%C5%A3%D3%CD%B9%FB%C2%CCt%D0%F4%BF%ED%CB%C9</item>
+        <item>%C9%CF%D2%C2%C5%AE%CF%C4</item>
+        <item>%B6%C7%C6%EA%D2%C2%B7%FE+%B6%CC%BF%EE+%BD%F4%C9%ED</item>
+        <item>%C7%E9%C2%C2%D7%B0%CF%C4%D7%B0</item>
+        <item>%E3%F9%D1%C5%B7%E7%D2%C2%B7%FE+%B8%B4%B9%C5</item>
+        <item>%C2%B6%BC%E7%C9%CF%D2%C2%C5%AE</item>
+        <item>%C9%A5%CF%B5%D2%C2%B7%FE+%E3%BC%C0%C1%B7%E7</item>
+        <item>%CC%F5%CE%C6t%D0%F4%C5%AE</item>
+    </string-array>
 
     <string name="go1688">1688</string>
     <string name="one_piece_send">一件代发</string>

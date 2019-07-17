@@ -58,6 +58,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 
         private String url = Constants.searchUrl1;
     private MainActivity activity;
+    private String[] shopNames;
 
     @Override
     protected int getLayoutId() {
@@ -83,7 +84,8 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
         clickPosition = position;
         switch (position) {
             case 0://同款链接
-                webView.loadUrl(Constants.searchUrl1 + shopName + Constants.searchUrl2);
+                shopNames = activity.getResources().getStringArray(R.array.shop_name);
+                webView.loadUrl(Constants.searchUrl1 + shopNames[activity.getIndex()] + Constants.searchUrl2);
                 break;
             case 1://获取链接
                 biz.getTitleList().clear();
@@ -256,6 +258,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 LogUtils.e("标题长度：" + titleOnly.split("\n").length);
                 LogUtils.e("标题结果：\n" + titleOnly);
                 activity.setTitleResult(titleOnly);
+                activity.onMainItemClick(2);
                 break;
 //            try {
 ////                String address = InetAddress.getLocalHost().getHostAddress().toString();
@@ -350,7 +353,12 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
         LogUtils.e("afterGetJson!!!");
         switch (biz.getFunctionIndex()) {
             case 0:
-                biz.getSameUrl(json, Constants.searchUrl1 + shopName + Constants.searchUrl2);
+                biz.getSameUrl(json, Constants.searchUrl1 + shopName + Constants.searchUrl2, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragmentRightClick(13);
+                    }
+                });
                 break;
             case 1:
                 BaseApplication.getmHandler().post(new Runnable() {

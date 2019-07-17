@@ -1275,7 +1275,14 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
             case R.string.timing_publish:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
                 break;
+            case R.string.comfir_publish_click:
+                if (fullDateFromat.equals(json)) {
+                    LogUtils.e("fullDateFromat==json");
+                } else {
+                    autoFragmentClick(R.string.timing_publish);
+                }
 
+                break;
         }
     }
 
@@ -1470,6 +1477,9 @@ public class Ali1688Fragment extends BaseFragment<Ali1688Vu, Ali1688Biz> impleme
         LogUtils.e("errorOccur:" + ResUtil.getS(clickPosition));
         isErrorOccur = true;
         switch (clickPosition) {
+            case R.string.comfir_publish_click:
+                autoFragmentClick(R.string.timing_publish);
+                break;
             case R.string.one_click_shop:
                 if (null == officePublishRunnable) {
                     officePublishRunnable = new OfficePublishRunnable();

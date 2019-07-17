@@ -778,13 +778,17 @@ function setTitle(className,inputvalue){
 
 function checkTimingData(){
     var showTime = document.getElementsByClassName("next-date-picker next-date-picker-medium next-date-picker-show-time");
+    localMethod.JI_LOG("showTime:"+showTime.length);
     if(showTime.length>0){
         var timeInput = showTime[0].getElementsByTagName("input");
+        localMethod.JI_LOG("timeInput:"+showTime.length);
         if(timeInput.length>0){
             var timeValue = timeInput[0].getAttribute("value");
             localMethod.JI_LOG(timeValue);
             localMethod.getJsonData(timeValue);
         }
+    } else {
+        localMethod.errorOccur();
     }
 }
 

@@ -15,7 +15,6 @@ import android.webkit.WebView;
 import com.example.moguhaian.easyshop.Base.BaseApplication;
 import com.example.moguhaian.easyshop.Base.BaseFragment;
 import com.example.moguhaian.easyshop.Base.Constants;
-import com.example.moguhaian.easyshop.Base.Shops;
 import com.example.moguhaian.easyshop.MainActivity;
 import com.example.moguhaian.easyshop.R;
 import com.example.moguhaian.easyshop.Utils.DateUtil;
@@ -49,7 +48,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     private int[] items = {R.string.one_key_publish, R.string.go1688, R.string.one_piece_send, R.string.nextpage, R.string.one_click_shop, R.string.login, R.string.filter_word, R.string.detail_1688, R.string.login_name, R.string.slide_record_switch
             , R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish,R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.set_title, R.string.cache_available, R.string.autoDebug_switch, R.string.save_draft,
             R.string.get_publish_result, R.string.refresh_page, R.string.go_draft_page, R.string.reload_draft_click_record, R.string.shuaiShou, R.string.shuaiShou_title, R.string.get_ali_limit_prices, R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_taobao_click_record
-            , R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_publish_click_record, R.string.shuaiShou_to_publish, R.string.click_moblie_detail, R.string.comfir_moblie_detail, R.string.check_sku_price};
+            , R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_publish_click_record, R.string.shuaiShou_to_publish, R.string.click_moblie_detail, R.string.comfir_moblie_detail, R.string.check_sku_price, R.string.publish_scene};
 
     private int pageIndex = 0;
     private String urlOrigin;
@@ -93,6 +92,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     private Timer timer;
     private String refreshUrl = "";
     private boolean clickEnable = true;
+    private String[] aliName;
 
     @Override
     protected int getLayoutId() {
@@ -101,7 +101,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 
     @Override
     protected void afterOnCreate() {
-        urlOrigin = urlOrigin1 + Shops.aliName + urlOrigin2;
+
 
         activity = (MainActivity) getActivity();
         vu.initWebViewSetting(webView, getActivity());
@@ -145,6 +145,10 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                             BaseApplication.getmHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
+                                    if (clickPosition == R.string.save_draft) {
+                                        autoFragmentClick(R.string.save_draft);
+                                        return;
+                                    }
 
                                     LogUtils.e("timer_schedule:" + webView.getUrl());
                                     if (!TextUtils.isEmpty(refreshUrl)) {
@@ -192,6 +196,9 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 
     private void rightClickSwitch(int item) {
         switch (item) {
+            case R.string.publish_scene:
+                webView.loadUrl("https://item.publish.taobao.com/sell/draft.htm?draftId=26387548");
+                break;
             case R.string.cache_available:
                 cacheAvailable = !cacheAvailable;
                 ToastUtils.showToast(cacheAvailable ? "开启" : "关闭");
@@ -210,6 +217,8 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                 webView.loadUrl(JsUtils.addJsMethod("shuaishou()"));
                 break;
             case R.string.go1688:
+                aliName = activity.getResources().getStringArray(R.array.ali_name);
+                urlOrigin = urlOrigin1 + aliName[activity.getIndex()] + urlOrigin2;
 //                webView.loadUrl("https://page.1688.com/html/shuaishou-puhuo.html?sourceBizId=&appKeyInSourcePlatform=5159993&sign=529B4B7381A0AEC4FDB3899623CBC213ED5EC879&userIdInSourcePlatform=2511106550&targetPlatformId=TAOBAO&targetPlatformShopId=null&pushProductIds=37955297658");
 //                webView.loadUrl("https://item.publish.taobao.com/sell/publish.htm?itemId=597958252566");
                 webView.loadUrl(TextUtils.isEmpty(nextUrl) ? urlOrigin : nextUrl);
@@ -280,7 +289,10 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                 LogUtils.e("aliCurrentPage:" + aliCurrentPage);
                 if (aliCurrentPage >= aliResutlArray.length) {
                     ToastUtils.showToast("detail 最大值");
-                    aliCurrentPage = aliResutlArray.length / 2;
+                    aliCurrentPage = -1;
+                    activity.onMainItemClick(1);
+//                    aliCurrentPage = aliResutlArray.length / 2;
+
                     return;
                 }
                 LogUtils.e("1688url:" + aliResutlArray[aliCurrentPage]);
@@ -655,7 +667,8 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
         LogUtils.e("pageIndex:" + pageIndex + "\n" + json);
         switch (clickPosition) {
             case R.string.check_sku_price:
-                delayAutoFragmentClick(R.string.save_draft);
+                delayAutoFragmentClick(R.string.timing_publish);
+
                 break;
             case R.string.one_piece_send:
                 LogUtils.e("afterGetJson_urlJson:" + "pageIndex\n" + json);
@@ -685,6 +698,16 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
             case R.string.timing_publish:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
                 break;
+            case R.string.comfir_publish_click:
+                if (fullDateFromat.equals(json)) {
+                    LogUtils.e("fullDateFromat==json");
+                    clickPosition = 0;
+//                    autoFragmentClick(-1);
+//                    delayAutoFragmentClick(R.string.save_draft);
+                    delayAutoFragmentClick(R.string.save_draft);
+                } else {
+                    autoFragmentClick(R.string.timing_publish);
+                }
 
             case R.string.edit_detail_area:
                 mHandler.postDelayed(new Runnable() {
@@ -695,6 +718,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 
                     }
                 }, 1000);
+
 
                 break;
 
@@ -742,11 +766,59 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     public void afterClick() {
         LogUtils.e("afterClick:" + ResUtil.getS(clickPosition));
         switch (clickPosition) {
+            case R.string.comfir_publish_click:
+                if (!YMD_INPUT_FINISH) {
+                    YMD_INPUT_FINISH = true;
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-date-picker next-date-picker-medium next-date-picker-show-time\")"));
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    if (!TextUtils.isEmpty(fullDateFromat)) {
+                                        String[] date = fullDateFromat.split(" ");
+                                        vu.getLocalMethod().clickPublishTimeHmm(date[0], date[1]);
+                                    } else {
+                                        String dayFromat = DateUtil.getDayFromat(System.currentTimeMillis() + 86400000);
+                                        vu.getLocalMethod().clickPublishTimeHmm(dayFromat, "20:20:20");
+                                    }
+
+                                    mHandler.removeCallbacks(this);
+                                }
+                            }, 2500);
+
+                            mHandler.removeCallbacks(this);
+                        }
+                    }, 2500);
+                } else {
+                    if (HMM_INPUT_FINISH) {
+//                        autoFragmentClick(R.string.save_draft);
+//                        autoFragmentClick(R.string.base_attr_select);
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                webView.loadUrl(JsUtils.addJsMethod("checkTimingData()"));
+                            }
+                        }, 1000);
+
+                    }
+                }
+                break;
             case R.string.save_draft:
                 autoFragmentClick(R.string.go_draft_page);
                 break;
             case R.string.edit_detail_area:
-                autoFragmentClick(R.string.check_sku_price);
+                BaseApplication.getmHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        BaseApplication.getmHandler().removeCallbacks(this);
+                        autoFragmentClick(R.string.check_sku_price);
+                    }
+                }, 2000);
+
+//                autoFragmentClick(R.string.check_sku_price);
                 break;
             case R.string.timing_publish:
                 autoFragmentClick(R.string.timing_publish_click);
@@ -790,6 +862,13 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
         LogUtils.e("inputFinish:" + ResUtil.getS(clickPosition));
         hideKeybord();
         switch (clickPosition) {
+            case R.string.timing_publish_click:
+                autoFragmentClick(R.string.comfir_publish_click);
+                break;
+            case R.string.comfir_publish_click:
+                autoFragmentClick(R.string.comfir_publish_click);
+                HMM_INPUT_FINISH = true;
+                break;
             case R.string.save_draft:
                 webView.loadUrl(JsUtils.addJsMethod("clickElementsByClassName(\"next-btn next-btn-primary next-btn-medium action-btn\")"));
 
@@ -816,6 +895,9 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
         LogUtils.e("errorOccur:" + ResUtil.getS(clickPosition));
         isErrorOccur = true;
         switch (clickPosition) {
+            case R.string.comfir_publish_click:
+                autoFragmentClick(R.string.timing_publish);
+                break;
             case R.string.one_click_shop:
 
                 break;
