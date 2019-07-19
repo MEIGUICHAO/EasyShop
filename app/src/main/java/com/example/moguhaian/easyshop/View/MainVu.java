@@ -176,13 +176,7 @@ public class MainVu extends BaseVu {
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (isLeft) {
-                                leftPosition = position;
-                            } else {
-                                rightPosition = position;
-                            }
-                            listener.onAdapterClick(position);
-                            leftAdapter.notifyDataSetChanged();
+                            onItemViewOnclick(isLeft, position, listener);
                         }
                     });
 
@@ -218,5 +212,15 @@ public class MainVu extends BaseVu {
         }
         recyclerView.setAdapter(isLeft?leftAdapter:rightAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+    }
+
+    public void onItemViewOnclick(boolean isLeft, int position, AdapterClickListener listener) {
+        if (isLeft) {
+            leftPosition = position;
+        } else {
+            rightPosition = position;
+        }
+        listener.onAdapterClick(position);
+        leftAdapter.notifyDataSetChanged();
     }
 }

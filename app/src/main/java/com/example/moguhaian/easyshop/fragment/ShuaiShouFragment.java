@@ -48,7 +48,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     private int[] items = {R.string.one_key_publish, R.string.go1688, R.string.one_piece_send, R.string.nextpage, R.string.one_click_shop, R.string.login, R.string.filter_word, R.string.detail_1688, R.string.login_name, R.string.slide_record_switch
             , R.string.ymd_click_record, R.string.hmm_click_record, R.string.timing_publish,R.string.timing_publish_click, R.string.comfir_publish_click_record, R.string.comfir_publish_click, R.string.set_title, R.string.cache_available, R.string.autoDebug_switch, R.string.save_draft,
             R.string.get_publish_result, R.string.refresh_page, R.string.go_draft_page, R.string.reload_draft_click_record, R.string.shuaiShou, R.string.shuaiShou_title, R.string.get_ali_limit_prices, R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_taobao_click_record
-            , R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_publish_click_record, R.string.shuaiShou_to_publish, R.string.click_moblie_detail, R.string.comfir_moblie_detail, R.string.check_sku_price, R.string.publish_scene};
+            , R.string.shuaiShou_to_taobao, R.string.shuaiShou_to_publish_click_record, R.string.shuaiShou_to_publish, R.string.click_moblie_detail, R.string.comfir_moblie_detail, R.string.check_sku_price, R.string.publish_scene,R.string.shuaishou_2_get_title};
 
     private int pageIndex = 0;
     private String urlOrigin;
@@ -69,6 +69,14 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
     };
     private String oldUrl = "";
 
+    public boolean isAliOneKeyPublish() {
+        return aliOneKeyPublish;
+    }
+
+    public void setAliOneKeyPublish(boolean aliOneKeyPublish) {
+        this.aliOneKeyPublish = aliOneKeyPublish;
+    }
+
     private boolean aliOneKeyPublish = false;
     //    private int skuLimit = 19;
     private int aliCurrentPage = -1;
@@ -76,6 +84,15 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 
     private boolean debug = false;
     private String[] aliResutlArray;
+
+    public boolean isCacheAvailable() {
+        return cacheAvailable;
+    }
+
+    public void setCacheAvailable(boolean cacheAvailable) {
+        this.cacheAvailable = cacheAvailable;
+    }
+
     private boolean cacheAvailable = true;
     private MainActivity activity;
     private Long singleSpaceTime;
@@ -145,10 +162,10 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                             BaseApplication.getmHandler().post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (clickPosition == R.string.save_draft) {
-                                        autoFragmentClick(R.string.save_draft);
-                                        return;
-                                    }
+//                                    if (clickPosition == R.string.save_draft) {
+//                                        autoFragmentClick(R.string.save_draft);
+//                                        return;
+//                                    }
 
                                     LogUtils.e("timer_schedule:" + webView.getUrl());
                                     if (!TextUtils.isEmpty(refreshUrl)) {
@@ -290,9 +307,10 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                 if (aliCurrentPage >= aliResutlArray.length) {
                     ToastUtils.showToast("detail 最大值");
                     aliCurrentPage = -1;
-                    activity.onMainItemClick(1);
+                    activity.setIndex(activity.getIndex() + 1);
+                    activity.switchFragment(1);
+                    cacheAvailable = false;
 //                    aliCurrentPage = aliResutlArray.length / 2;
-
                     return;
                 }
                 LogUtils.e("1688url:" + aliResutlArray[aliCurrentPage]);
@@ -437,6 +455,10 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 //                webView.getSettings().setJavaScriptEnabled(false);
 
                 webView.loadUrl(JsUtils.addJsMethod("clickChildElementByTagName(\"draft-item\",0,\"div\",0)"));
+                break;
+            case R.string.shuaishou_2_get_title:
+                activity.setIndex(activity.getIndex() + 1);
+                activity.switchFragment(1);
                 break;
         }
     }
@@ -617,6 +639,9 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 //        }
 
         switch (clickPosition) {
+            case R.string.go1688:
+                autoFragmentClick(R.string.one_key_publish);
+                break;
 //            case R.string.shuaiShou_to_publish:
 //                autoFragmentClick(R.string.set_title);
 //                break;
@@ -794,14 +819,14 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
                     }, 2500);
                 } else {
                     if (HMM_INPUT_FINISH) {
-//                        autoFragmentClick(R.string.save_draft);
+                        delayAutoFragmentClick(R.string.save_draft);
 //                        autoFragmentClick(R.string.base_attr_select);
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                webView.loadUrl(JsUtils.addJsMethod("checkTimingData()"));
-                            }
-                        }, 1000);
+//                        mHandler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                webView.loadUrl(JsUtils.addJsMethod("checkTimingData()"));
+//                            }
+//                        }, 1000);
 
                     }
                 }
@@ -914,7 +939,7 @@ public class ShuaiShouFragment extends BaseFragment<Ali1688Vu, Ali1688Biz> imple
 
     private void delayAutoFragmentClick(final int nextpage) {
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

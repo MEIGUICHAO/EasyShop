@@ -134,6 +134,13 @@ public class SameStyleBiz extends BaseBiz {
         @Override
         public void run() {
 
+            LogUtils.e("pageIndedx:" + pageIndedx + ",srotTypeIndex:" + srotTypeIndex);
+            if (pageIndedx == 10 && srotTypeIndex == 2) {
+                pageIndedx = 0;
+                srotTypeIndex = 0;
+                listener.onClick(null);
+                return;
+            }
             if (pageIndedx < pageArray.length && srotTypeIndex < sortTypeArray.length) {
                 String loadUrl = sameStyleUlr + "&" + sortTypeArray[srotTypeIndex] + "&" + pageArray[pageIndedx];
                 LogUtils.e("loadUrl:" + loadUrl);
@@ -160,7 +167,7 @@ public class SameStyleBiz extends BaseBiz {
     }
 
 
-    public void getInitShop(final String json) {
+    public void getInitShop(final String json,View.OnClickListener listener) {
 
 
         sameUrlIndex++;
@@ -181,6 +188,10 @@ public class SameStyleBiz extends BaseBiz {
                 LogUtils.e("size:" + sameUrlList.size() + ",progress:" + sameUrlIndex);
             } catch (Exception e) {
                 LogUtils.e("Exception:" + e.toString());
+            }
+        } else {
+            if (null != listener) {
+                listener.onClick(null);
             }
         }
     }

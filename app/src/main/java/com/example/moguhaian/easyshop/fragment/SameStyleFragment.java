@@ -43,7 +43,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
     MyWebView webView;
     Unbinder unbinder;
 
-    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新", "清楚cookie", "开关滑动记录", "获取标题"};
+    private String[] items = {"同款链接", "获取链接", "获取结果", "获取母宝贝", "母宝贝结果", "数据库结果", "login", "关闭cookie", "下一个", "滑动", "刷新", "清楚cookie", "开关滑动记录", "获取标题","title_2_shuaishou"};
     //    private String shopsUrl = "https://www.taobao.com/?spm=a21bo.2017.201857.1.5c0111d9sMj916";
     private String shopsUrl = "https://s.taobao.com/search?spm=a230r.1.14.107.7396d7b2qjum31&type=samestyle&app=i2i&rec_type=1&uniqpid=-580033393&nid=568968377828&sort=sale-desc";
     //    private String sameUrl = "https://s.taobao.com/search?type=samestyle&app=i2i&rec_type=1&uniqpid=-465089991&nid=569519871896&sort=sale-desc";
@@ -85,6 +85,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
         switch (position) {
             case 0://同款链接
                 shopNames = activity.getResources().getStringArray(R.array.shop_name);
+                shopName = shopNames[activity.getIndex()];
                 webView.loadUrl(Constants.searchUrl1 + shopNames[activity.getIndex()] + Constants.searchUrl2);
                 break;
             case 1://获取链接
@@ -170,7 +171,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 //                BaseApplication.setCookieOpen(false);
                 break;
             case 8://下一个
-                biz.getInitShop("");
+                biz.getInitShop("", null);
 //                agentIndedx++;
 //                if (agentIndedx == userAgent.length) {
 //                    agentIndedx = 0;
@@ -258,7 +259,10 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 LogUtils.e("标题长度：" + titleOnly.split("\n").length);
                 LogUtils.e("标题结果：\n" + titleOnly);
                 activity.setTitleResult(titleOnly);
-                activity.onMainItemClick(2);
+                activity.switchFragment(2);
+                break;
+            case 14:
+                activity.switchFragment(2);
                 break;
 //            try {
 ////                String address = InetAddress.getLocalHost().getHostAddress().toString();
@@ -331,6 +335,7 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
 //        LogUtils.e("loadFinish!!!!!");
         switch (clickPosition) {
             case 0:
+                fragmentRightClick(1);
 //                LogUtils.e("getDocument!!!");
                 break;
             case 1:
@@ -364,7 +369,12 @@ public class SameStyleFragment extends BaseFragment<SameStyleVu, SameStyleBiz> i
                 BaseApplication.getmHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        biz.getInitShop(json);
+                        biz.getInitShop(json, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                fragmentRightClick(13);
+                            }
+                        });
                     }
                 });
 
